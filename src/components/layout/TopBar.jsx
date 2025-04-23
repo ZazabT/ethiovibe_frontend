@@ -48,7 +48,7 @@ const TopBar = () => {
           {/* Mobile Menu Button */}
           <motion.button
             whileTap={{ scale: 0.9 }}
-            className="md:hidden text-pink-500"
+            className="md:hidden text-pink-400"
             onClick={() => setIsOpen(!isOpen)}
           >
             <FaBars className="text-xl" />
@@ -66,7 +66,7 @@ const TopBar = () => {
                 key={index}
                 href="#"
                 variants={itemVariants}
-                className="hover:text-pink-500 transition-colors"
+                className="hover:text-pink-400 transition-colors"
                 whileHover={{ 
                   scale: 1.2,
                   rotate: [0, -10, 10, -10, 0],
@@ -81,7 +81,7 @@ const TopBar = () => {
 
           {/* Slogan */}
           <motion.div 
-            className="yuji-font text-pink-500 text-sm md:text-lg cursor-pointer text-center mx-2"
+            className="yuji-font text-pink-400 text-sm md:text-lg cursor-pointer text-center mx-2"
             variants={sloganVariants}
             initial="initial"
             animate="animate"
@@ -99,7 +99,7 @@ const TopBar = () => {
               transition: { duration: 0.3 }
             }}
           >
-            <FaPhoneAlt className="text-pink-500" />
+            <FaPhoneAlt className="text-pink-400" />
             <span className="text-sm md:text-base">+251 913 173 163</span>
           </motion.div>
         </div>
@@ -120,7 +120,7 @@ const TopBar = () => {
                   <motion.a
                     key={index}
                     href="#"
-                    className="text-white hover:text-pink-500"
+                    className="text-white hover:text-pink-400"
                     whileHover={{ scale: 1.2 }}
                     whileTap={{ scale: 0.9 }}
                   >
@@ -129,7 +129,7 @@ const TopBar = () => {
                 ))}
               </div>
               <div className="flex justify-center items-center space-x-2 text-white">
-                <FaPhoneAlt className="text-pink-500" />
+                <FaPhoneAlt className="text-pink-400" />
                 <span>+251 912 345 678</span>
               </div>
             </div>
