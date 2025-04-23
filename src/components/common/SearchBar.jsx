@@ -20,7 +20,7 @@ const SearchBar = () => {
                         initial={{ width: 0, opacity: 0 }}
                         animate={{ width: "300px", opacity: 1 }}
                         exit={{ width: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.6 }}
                         className="flex items-center absolute right-0"
                         onSubmit={handleSearch}
                     >

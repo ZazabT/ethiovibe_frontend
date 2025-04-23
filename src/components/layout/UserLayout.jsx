@@ -1,5 +1,6 @@
 import React from 'react'
 import Header from '../common/Header'
+import Footer from './Footer'
 
 const UserLayout = () => {
   return (
@@ -10,6 +11,7 @@ const UserLayout = () => {
         {/* MainContent */}
         
         {/* Footer */}
+        <Footer/>
     </div>
   )
 }
