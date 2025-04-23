@@ -76,7 +76,7 @@ const Footer = () => {
         </div>
 
         {/* Newsletter */}
-        <div className="border-t border-gray-800 pt-8 pb-12">
+        <div className="border-gray-800 pt-8 pb-12">
           <div className="max-w-md mx-auto text-center">
             <h3 className="exo-font text-xl mb-4">Subscribe to Our Newsletter</h3>
             <form className="flex">

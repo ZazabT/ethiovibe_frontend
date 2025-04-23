@@ -5,11 +5,13 @@ import './App.css'
 import { Routes ,Route } from 'react-router-dom'
 import UserLayout from './components/layout/UserLayout'
 import AdminLayout from './components/layout/AdminLayout'
+import Home from './pages/Home'
 function App() {
   return (
     <Routes>
       {/* UserLayouts */}
       <Route path='/' element={<UserLayout/>}>
+      <Route index element={<Home/>} />
       </Route>
       
       {/* AdminLayouts */}
