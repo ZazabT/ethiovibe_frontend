@@ -9,10 +9,12 @@ function App() {
   return (
     <Routes>
       {/* UserLayouts */}
-      <Route path='/' element={<UserLayout/>} />
+      <Route path='/' element={<UserLayout/>}>
+      </Route>
       
       {/* AdminLayouts */}
-      <Route path='/admin' element={<AdminLayout/>} />
+      <Route path='/admin' element={<AdminLayout/>} >
+      </Route>
     </Routes>
   )
 }
