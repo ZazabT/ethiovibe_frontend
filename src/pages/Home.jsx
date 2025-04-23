@@ -1,6 +1,7 @@
 import React from 'react'
 import Hero from '../components/layout/Hero'
 import Categories from '../components/product/Categories'
+import NewArrives from '../components/product/NewArrives'
 const Home = () => {
   return (
     <div>
@@ -9,6 +10,9 @@ const Home = () => {
 
         {/* Categories */}
         <Categories/>
+
+        {/* New Arrived */}
+        <NewArrives/>
         
     </div>
   )
