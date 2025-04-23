@@ -5,7 +5,7 @@ import { FaArrowRight } from 'react-icons/fa'
 
 const Hero = () => {
   return (
-    <div className="container my-10 mx-auto px-4 py-12 relative">
+    <div className="container my-10 mx-auto px-4 py-12 relative overflow-hidden">
       {/* Decorative Elements */}
       <motion.div 
         initial={{ opacity: 0 }}
