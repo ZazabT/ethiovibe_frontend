@@ -10,12 +10,12 @@ const Hero = () => {
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.1 }}
-        className="absolute -top-20 -left-20 w-64 h-64 bg-pink-500 rounded-full blur-3xl"
+        className="absolute -top-20 -left-20 w-64 h-64 bg-pink-400 rounded-full blur-3xl"
       />
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.1 }}
-        className="absolute -bottom-20 -right-20 w-64 h-64 bg-purple-500 rounded-full blur-3xl"
+        className="absolute -bottom-20 -right-20 w-64 h-64 bg-pink-500 rounded-full blur-3xl"
       />
 
       {/* Header Text */}

@@ -7,6 +7,7 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import newMen1 from '../../assets/newMen1.jpg'
 import newMen2 from '../../assets/newMen2.jpg'
 import newMen3 from '../../assets/newMen3.jpg'
+import newMen4 from '../../assets/newMen4.jpg'
 const NewArrives = () => {
     const newArrives = [
         {
@@ -34,7 +35,7 @@ const NewArrives = () => {
             _id: "na004",
             name: "Embroidered Shemma",
             price: 159.99,
-            image: "https://images.unsplash.com/photo-1603487742131-4160ec999306",
+            image: newMen4,
             altMessage: "Hand-embroidered Ethiopian shemma"
         },
         {
