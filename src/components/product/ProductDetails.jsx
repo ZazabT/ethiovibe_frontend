@@ -63,9 +63,8 @@ const addToCart = () => {
       <div className='max-w-6xl mx-auto px-4'>
           <div className='flex flex-col md:flex-row gap-8'>
             {/* Left images */}
-            <div className='flex-1'>
-              <div className='flex gap-4'>
-                {/* Thumnail */}
+            
+                {/* Thumbnail */}
                 <div className='hidden md:flex flex-col gap-4'>
                   {selectedProduct.images.map((img, index) => (
                     <div 
@@ -77,6 +76,7 @@ const addToCart = () => {
                     </div>
                   ))}
                 </div>
+                {/* Main Image */}
                 <div className='flex-1 rounded-xl overflow-hidden'>
                   <img 
                     src={selectedProduct.images[selectedImage]} 
@@ -84,8 +84,19 @@ const addToCart = () => {
                     className='w-full h-full object-cover'
                   />
                 </div>
-              </div>
-            </div>
+                {/* Mobile Thumbnail */}
+                <div className='md:hidden py-2  mx-2 flex overflow-x-scroll space-x-6 mb-4'>
+                   {selectedProduct.images.map((img, index) => (
+                    <div 
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={`w-20 h-20 rounded-lg overflow-hidden cursor-pointer ${selectedImage === index ? 'ring-2 ring-pink-500' : ''}`}
+                    >
+                      <img src={img} alt="" className='w-full h-full object-cover' />
+                    </div>
+                  ))}
+                </div>
+  
 
             {/* Right content */}
             <div className='flex-1 space-y-6'>
