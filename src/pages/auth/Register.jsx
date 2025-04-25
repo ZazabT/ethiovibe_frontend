@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { FaEnvelope, FaLock, FaGoogle, FaFacebook, FaUser } from 'react-icons/fa'
+import { FaEnvelope, FaLock, FaGoogle, FaFacebook, FaUser  } from 'react-icons/fa'
 import { PiEyeClosedThin, PiEyeThin } from "react-icons/pi";
+import { GiConfirmed } from "react-icons/gi";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -86,7 +87,7 @@ const Register = () => {
 
             {/* Confirm Password Input */}
             <div className="relative">
-              <FaLock className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
+              <GiConfirmed className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
