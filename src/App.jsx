@@ -10,6 +10,7 @@ import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import NotFound from './pages/NotFound'
 import Profile from './pages/Profile'
+import Colloction from './pages/Colloction'
 function App() {
   return (
     <Routes>
@@ -20,6 +21,7 @@ function App() {
       <Route path='register' element={<Register/>} />
       <Route path='profile' element={<Profile/>} />
       <Route path='*' element={<NotFound/>} />
+      <Route path='collections/:collection' element={<Colloction/>} />
       </Route>
       
       {/* AdminLayouts */}

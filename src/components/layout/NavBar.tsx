@@ -26,7 +26,7 @@ const NavBar = () => {
         {/* NavLinks and Icons - 50% width */}
         <div className='hidden md:w-2/3 md:flex justify-between items-center'>
             <div className='hidden md:flex space-x-8'>
-                <Link to='/men' className='hover:text-pink-500 transition-colors exo-font'>Men</Link>
+                <Link to='collections/all' className='hover:text-pink-500 transition-colors exo-font'>Men</Link>
                 <Link to='/women' className='hover:text-pink-500 transition-colors exo-font'>Women</Link>
                 <Link to='/children' className='hover:text-pink-500 transition-colors exo-font'>Children</Link>
                 <Link to='/footwear' className='hover:text-pink-500 transition-colors exo-font'>Footwear</Link>
