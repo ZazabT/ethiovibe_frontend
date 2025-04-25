@@ -10,7 +10,7 @@ const Hero = () => {
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.1 }}
-        className="absolute -top-20 -left-20 w-64 h-64 bg-pink-400 rounded-full blur-3xl"
+        className="absolute -top-20 -left-20 w-84 h-64 bg-pink-400 rounded-full blur-3xl"
       />
       <motion.div 
         initial={{ opacity: 0 }}
@@ -46,7 +46,7 @@ const Hero = () => {
             whileTap={{ scale: 0.95 }}
             className="bg-black text-white px-8 py-3 rounded-full flex items-center gap-2 hover:gap-4 transition-all group"
           >
-            Explore Now <FaArrowRight className="group-hover:text-pink-500 transition-colors" />
+            Shop Now <FaArrowRight className="group-hover:text-pink-500 transition-colors" />
           </motion.button>
           <motion.button
             whileHover={{ scale: 1.05 }}

@@ -8,6 +8,8 @@ import AdminLayout from './components/layout/AdminLayout'
 import Home from './pages/Home'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
+import NotFound from './pages/NotFound'
+import Profile from './pages/Profile'
 function App() {
   return (
     <Routes>
@@ -16,6 +18,8 @@ function App() {
       <Route index element={<Home/>} />
       <Route path='login' element={<Login/>} />
       <Route path='register' element={<Register/>} />
+      <Route path='profile' element={<Profile/>} />
+      <Route path='*' element={<NotFound/>} />
       </Route>
       
       {/* AdminLayouts */}
