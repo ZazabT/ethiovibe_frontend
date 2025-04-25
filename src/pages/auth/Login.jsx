@@ -14,13 +14,14 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex my-10">
+    <div className="min-h-screen flex my-10 bg-gradient-to-br from-pink-100 via-white to-white">
       {/* Left Side - Login Form */}
       <div className="w-full lg:w-1/2 p-8 flex items-center justify-center">
-        <div className="max-w-md w-full space-y-8">
-          <div className="text-center">
-            <h2 className="text-4xl font-bold text-gray-900 mb-2">Welcome Back!</h2>
-            <p className="text-gray-600">Please sign in to your account</p>
+        <div className="max-w-md w-full space-y-8 bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-sm">
+        <div className="text-center space-y-3">
+            <h2 className="text-4xl font-bold text-gray-900 mb-2 yuji-font">Welcome Back!</h2>
+            <p className="text-gray-600 exo-font">Experience the beauty of Ethiopian culture</p>
+            <p className="text-sm text-gray-500">Your fashion journey continues here</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">

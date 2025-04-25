@@ -25,13 +25,14 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen  flex">
+    <div className="min-h-screen flex bg-gradient-to-br from-pink-100 via-white to-white">
       {/* Left Side - Registration Form */}
       <div className="w-full lg:w-1/2 p-8 flex items-center justify-center">
-        <div className="max-w-md w-full space-y-8">
-          <div className="text-center">
-            <h2 className="text-4xl font-bold text-gray-900 mb-2">Create Account</h2>
-            <p className="text-gray-600">Join our community today</p>
+        <div className="max-w-md w-full space-y-8 bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-sm">
+          <div className="text-center space-y-3">
+            <h2 className="text-4xl font-bold text-gray-900 mb-2 yuji-font">Begin Your Journey</h2>
+            <p className="text-gray-600 exo-font">Discover authentic Ethiopian fashion and culture</p>
+            <p className="text-sm text-gray-500">Join thousands of fashion enthusiasts in our community</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
