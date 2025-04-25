@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect} from 'react'
 import { FaStar, FaShoppingCart, FaTruck } from 'react-icons/fa'
 import { motion } from 'framer-motion'
+import { useLocation } from "react-router-dom";
 
 function ProductDetails() {
+  const { pathname } = useLocation();
   const [selectedImage, setSelectedImage] = useState(0)
   const [selectedSize, setSelectedSize] = useState('')
   const [selectedColor, setSelectedColor] = useState('')
@@ -39,6 +41,10 @@ function ProductDetails() {
         validUntil: "2024-03-01"
     }
 };
+
+useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
 // add to cart function
 const addToCart = () => {
