@@ -6,12 +6,16 @@ import { Routes ,Route } from 'react-router-dom'
 import UserLayout from './components/layout/UserLayout'
 import AdminLayout from './components/layout/AdminLayout'
 import Home from './pages/Home'
+import Login from './pages/auth/Login'
+import Register from './pages/auth/Register'
 function App() {
   return (
     <Routes>
       {/* UserLayouts */}
       <Route path='/' element={<UserLayout/>}>
       <Route index element={<Home/>} />
+      <Route path='login' element={<Login/>} />
+      <Route path='register' element={<Register/>} />
       </Route>
       
       {/* AdminLayouts */}
