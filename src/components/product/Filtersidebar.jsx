@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { FaFilter, FaTimes } from 'react-icons/fa';
 
 const Filtersidebar = ({ onClose }) => {
-  const [searchParams] = useSearchParams();
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [filter, setFilter] = useState({
     category: '',
     gender: '',
-    brand: [],
     size: [],
     color: '',
     material: [],
@@ -57,7 +56,6 @@ const Filtersidebar = ({ onClose }) => {
   ];
 
   // Colors
-  // Update the colors array with specific color values
   const colors = [
     { id: 1, name: 'Red', hex: '#FF4444' },
     { id: 2, name: 'Blue', hex: '#4444FF' },
@@ -82,7 +80,6 @@ const Filtersidebar = ({ onClose }) => {
     setFilter({
       category: params.category || '',
       gender: params.gender || '',
-      brand: params.brand ? params.brand.split(',') : [],
       size: params.size ? params.size.split(',') : [],
       color: params.color || '',
       material: params.material ? params.material.split(',') : [],
@@ -95,64 +92,127 @@ const Filtersidebar = ({ onClose }) => {
     });
   }, [searchParams]);
 
+  const updateParams = (newFilter) => {
+    const params = new URLSearchParams();
+    
+    // Only add non-empty values to URL
+    Object.entries(newFilter).forEach(([key, value]) => {
+      if (Array.isArray(value) && value.length > 0) {
+        params.set(key, value.join(','));
+      } 
+      else if (value && !Array.isArray(value)) {
+        params.set(key, value);
+      }
+    });
+
+    setSearchParams(params);
+    navigate(`/products?${params.toString()}`);
+  };
+
+  const handleFilterChange = (type, value) => {
+    let newFilter = { ...filter };
+
+    switch (type) {
+      case 'price':
+        newFilter.minPrice = value.min;
+        newFilter.maxPrice = value.max;
+        setPriceRange(value);
+        break;
+      case 'size':
+      case 'material':
+        const currentArray = newFilter[type];
+        newFilter[type] = currentArray.includes(value)
+          ? currentArray.filter(item => item !== value)
+          : [...currentArray, value];
+        break;
+      default:
+        newFilter[type] = value;
+    }
+
+    setFilter(newFilter);
+    updateParams(newFilter);
+    console.log('Current Filters:', newFilter);
+  };
+
+  const handleClear = () => {
+    const resetFilter = {
+      category: '',
+      gender: '',
+      size: [],
+      color: '',
+      material: [],
+      minPrice: 0,
+      maxPrice: 10000,
+    };
+    setFilter(resetFilter);
+    setPriceRange({ min: 0, max: 10000 });
+    updateParams(resetFilter);
+    console.log('Filters Reset:', resetFilter);
+  };
+
   return (
-    <div className="  bg-white p-6">
+    <div className="p-4 overflow-y-auto scrollbar-none h-full">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6 pb-4 border-b">
+        <h2 className="text-lg font-medium text-gray-800 flex items-center gap-2">
+          <FaFilter className="text-pink-500" size={16} />
+          Filters
+        </h2>
+        <button onClick={handleClear} className="text-sm text-gray-500 hover:text-pink-500">
+          Clear all
+        </button>
+      </div>
+
       {/* Price Range */}
-      <div className="mb-6">
-        <h3 className="font-medium mb-4">Price Range</h3>
-        <div className="space-y-4">
-          <div className="flex items-center gap-4">
-            <input
-              type="number"
-              value={priceRange.min}
-              onChange={(e) =>
-                setPriceRange({ ...priceRange, min: e.target.value })
-              }
-              className="w-24 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
-              placeholder="Min"
-            />
-            <span className="text-gray-500">to</span>
-            <input
-              type="number"
-              value={priceRange.max}
-              onChange={(e) =>
-                setPriceRange({ ...priceRange, max: e.target.value })
-              }
-              className="w-24 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
-              placeholder="Max"
-            />
-          </div>
+      <div className="mb-5">
+        <h3 className="text-sm font-medium mb-3 text-gray-700">Price Range</h3>
+        <div className="flex items-center gap-3">
+          <input
+            type="number"
+            value={priceRange.min}
+            onChange={(e) => handleFilterChange('price', { ...priceRange, min: e.target.value })}
+            className="w-20 px-2 py-1.5 text-sm border rounded-md focus:ring-1 focus:ring-pink-500"
+            placeholder="Min"
+          />
+          <span className="text-gray-400 text-sm">to</span>
+          <input
+            type="number"
+            value={priceRange.max}
+            onChange={(e) => handleFilterChange('price', { ...priceRange, max: e.target.value })}
+            className="w-20 px-2 py-1.5 text-sm border rounded-md focus:ring-1 focus:ring-pink-500"
+            placeholder="Max"
+          />
         </div>
       </div>
 
       {/* Categories */}
-      <div className="mb-6">
-        <h3 className="font-medium mb-4">Categories</h3>
-        <div className="space-y-2">
+      <div className="mb-5">
+        <h3 className="text-sm font-medium mb-3 text-gray-700">Categories</h3>
+        <div className="space-y-1.5">
           {categories.map((category) => (
-            <label key={category.id} className="flex items-center gap-2 cursor-pointer">
+            <label key={category.id} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded-md">
               <input
                 type="radio"
                 name="category"
                 checked={filter.category === category.name}
-                onChange={() => setFilter({ ...filter, category: category.name })}
-                className="text-pink-500 focus:ring-pink-500"
+                onChange={() => handleFilterChange('category', category.name)}
+                className="text-pink-500 focus:ring-pink-500 h-4 w-4"
               />
-              <span className="text-gray-700">{category.name}</span>
+              <span className="text-sm text-gray-600">{category.name}</span>
             </label>
           ))}
         </div>
       </div>
 
       {/* Gender */}
-      <div className="mb-6">
-        <h3 className="font-medium mb-4">Gender</h3>
+      <div className="mb-5">
+        <h3 className="text-sm font-medium mb-3 text-gray-700">Gender</h3>
         <div className="flex gap-2">
           {genders.map((gender) => (
             <button
               key={gender.id}
-              onClick={() => setFilter({ ...filter, gender: gender.name })}
-              className={`px-4 py-2 rounded-lg ${
+              onClick={() => handleFilterChange('gender', gender.name)}
+              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                 filter.gender === gender.name
                   ? 'bg-pink-500 text-white'
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
@@ -165,19 +225,14 @@ const Filtersidebar = ({ onClose }) => {
       </div>
 
       {/* Sizes */}
-      <div className="mb-6">
-        <h3 className="font-medium mb-4">Sizes</h3>
+      <div className="mb-5">
+        <h3 className="text-sm font-medium mb-3 text-gray-700">Sizes</h3>
         <div className="flex flex-wrap gap-2">
           {sizes.map((size) => (
             <button
               key={size.id}
-              onClick={() => {
-                const newSizes = filter.size.includes(size.name)
-                  ? filter.size.filter((s) => s !== size.name)
-                  : [...filter.size, size.name];
-                setFilter({ ...filter, size: newSizes });
-              }}
-              className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+              onClick={() => handleFilterChange('size', size.name)}
+              className={`w-10 h-10 rounded-md flex items-center justify-center text-sm font-medium transition-colors ${
                 filter.size.includes(size.name)
                   ? 'bg-pink-500 text-white'
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
@@ -189,15 +244,15 @@ const Filtersidebar = ({ onClose }) => {
         </div>
       </div>
 
-      {/* Colors Section */}
-      <div className="mb-6">
-        <h3 className="font-medium mb-4">Colors</h3>
-        <div className="flex flex-wrap gap-3">
+      {/* Colors */}
+      <div className="mb-5">
+        <h3 className="text-sm font-medium mb-3 text-gray-700">Colors</h3>
+        <div className="flex flex-wrap gap-2">
           {colors.map((color) => (
             <button
               key={color.id}
-              onClick={() => setFilter({ ...filter, color: color.name })}
-              className={`w-10 h-10 rounded-full flex items-center justify-center ${
+              onClick={() => handleFilterChange('color', color.name)}
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform hover:scale-110 ${
                 filter.color === color.name 
                   ? 'ring-2 ring-offset-2 ring-pink-500' 
                   : ''
@@ -209,7 +264,7 @@ const Filtersidebar = ({ onClose }) => {
               title={color.name}
             >
               {filter.color === color.name && (
-                <span className={`text-${color.name === 'White' ? 'black' : 'white'}`}>
+                <span className={`text-${color.name === 'White' ? 'black' : 'white'} text-xs`}>
                   ✓
                 </span>
               )}
@@ -219,19 +274,14 @@ const Filtersidebar = ({ onClose }) => {
       </div>
 
       {/* Materials */}
-      <div className="mb-6">
-        <h3 className="font-medium mb-4">Materials</h3>
-        <div className="flex flex-wrap gap-2">
+      <div className="mb-5">
+        <h3 className="text-sm font-medium mb-3 text-gray-700">Materials</h3>
+        <div className="flex flex-wrap gap-1.5">
           {materials.map((material) => (
             <button
               key={material.id}
-              onClick={() => {
-                const newMaterials = filter.material.includes(material.name)
-                  ? filter.material.filter(m => m !== material.name)
-                  : [...filter.material, material.name];
-                setFilter({ ...filter, material: newMaterials });
-              }}
-              className={`px-4 py-2 rounded-lg ${
+              onClick={() => handleFilterChange('material', material.name)}
+              className={`px-3 py-1.5 rounded-md text-sm transition-colors ${
                 filter.material.includes(material.name)
                   ? 'bg-pink-500 text-white'
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
@@ -241,37 +291,6 @@ const Filtersidebar = ({ onClose }) => {
             </button>
           ))}
         </div>
-      </div>
-
-      {/* Reset and Apply Buttons */}
-      <div className="flex gap-3 mt-8">
-        <button
-          onClick={() => {
-            setFilter({
-              category: '',
-              gender: '',
-              brand: [],
-              size: [],
-              color: '',
-              material: [],
-              minPrice: 0,
-              maxPrice: 10000,
-            });
-            setPriceRange({ min: 0, max: 10000 });
-          }}
-          className="flex-1 py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
-        >
-          Reset All
-        </button>
-        <button
-          onClick={() => {
-            // Apply filters logic here
-            onClose?.();
-          }}
-          className="flex-1 bg-pink-500 text-white py-3 rounded-lg hover:bg-pink-600 transition-colors"
-        >
-          Apply
-        </button>
       </div>
     </div>
   );

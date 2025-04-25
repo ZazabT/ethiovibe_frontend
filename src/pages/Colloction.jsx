@@ -272,8 +272,6 @@ const Collection = () => {
     };
   }, []);
   
-
-
   const handleClickOutSide = (event) =>{
     // close sidebar when clicking outside
     if(sideBarRef.current && !sideBarRef.current.contains(event.target)){
@@ -285,9 +283,13 @@ const Collection = () => {
     setIsFilterOpen(!isFilterOpen);
   };
 
+  // const handleFilterChange = (e) =>{
+  //   const {name , value , checked} = e.target ;
+  //   let newFilter =
+  // }
 
- 
   const displayProducts = sortProducts(products, sortBy)
+
 
   return (
     <div className='min-h-screen'>
