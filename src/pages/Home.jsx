@@ -4,6 +4,7 @@ import Categories from '../components/product/Categories'
 import NewArrives from '../components/product/NewArrives'
 import ProductDetails from '../components/product/ProductDetails'
 import ProductCard from '../components/product/ProductCard'
+import Feature from '../components/product/Feature'
 // import { FaStar } from 'react-icons/fa'
 const Home = () => {
  // Similar Products Array
@@ -190,7 +191,9 @@ const Home = () => {
         </div>
       </div>
 
-        
+      {/* Our Feather  */}
+      <Feature/>
+
     </div>
   )
 }
