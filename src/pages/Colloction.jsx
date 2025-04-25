@@ -2,12 +2,14 @@ import React, { useState, useEffect , useRef } from 'react'
 import { BsFilterLeft } from "react-icons/bs";
 import Filtersidebar from '../components/product/Filtersidebar'
 import ProductCard from '../components/product/ProductCard';
+import { useSearchParams } from 'react-router-dom';
 const Collection = () => {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [sortBy, setSortBy] = useState('newest')
   const sideBarRef = useRef(null)
+  const [searchParams , setSearchParams] = useSearchParams()
 
   // Sort products based on selected option
   const sortProducts = (products, sortType) => {
@@ -261,6 +263,12 @@ const Collection = () => {
     }, 1500); // 1.5 second delay to simulate network request
   }, []);
 
+  useEffect(() => {
+    const sortParam = searchParams.get('sort');
+    if (sortParam) {
+      setSortBy(sortParam);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     // Add event listener to close the sidebar when clicking outside
@@ -283,10 +291,16 @@ const Collection = () => {
     setIsFilterOpen(!isFilterOpen);
   };
 
-  // const handleFilterChange = (e) =>{
-  //   const {name , value , checked} = e.target ;
-  //   let newFilter =
-  // }
+  const handleSortChange = (event) => {
+    const newSortBy = event.target.value;
+    setSortBy(newSortBy);
+    searchParams.set('sort', newSortBy);
+    setSearchParams(searchParams);
+  };
+
+
+
+
 
   const displayProducts = sortProducts(products, sortBy)
 
@@ -306,7 +320,7 @@ const Collection = () => {
         {/* Filter Sidebar */}
         <div 
           ref={sideBarRef}
-          className={`top-0 h-screen left-0 w-[280px]  shadow-lg transform transition-transform duration-300 ease-in-out z-50 lg:z-0 overflow-hidden ${
+          className={`fixed lg:sticky top-0 h-[120vh] left-0 w-[280px] transform transition-transform duration-300 ease-in-out z-50 lg:z-0 overflow-hidden ${
             isFilterOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
           }`}
         >
@@ -326,8 +340,8 @@ const Collection = () => {
               </div>
               <select 
                 className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none bg-white shadow-sm"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                value={searchParams.get('sort') || ''}
+                onChange={handleSortChange}
               >
                 <option value="newest">Newest First</option>
                 <option value="price-low">Price: Low to High</option>

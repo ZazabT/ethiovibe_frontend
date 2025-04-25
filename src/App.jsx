@@ -11,6 +11,7 @@ import Register from './pages/auth/Register'
 import NotFound from './pages/NotFound'
 import Profile from './pages/Profile'
 import Colloction from './pages/Colloction'
+import ProductDetails from './components/product/ProductDetails'
 function App() {
   return (
     <Routes>
@@ -20,7 +21,8 @@ function App() {
       <Route path='login' element={<Login/>} />
       <Route path='register' element={<Register/>} />
       <Route path='profile' element={<Profile/>} />
-      <Route path='*' element={<NotFound/>} />
+      {/* <Route path='*' element={<NotFound/>} /> */}
+      <Route path='product/:id' element={<ProductDetails/>} />
       <Route path='collections/:collection' element={<Colloction/>} />
       </Route>
       

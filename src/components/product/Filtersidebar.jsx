@@ -106,7 +106,7 @@ const Filtersidebar = ({ onClose }) => {
     });
 
     setSearchParams(params);
-    navigate(`/products?${params.toString()}`);
+    navigate(`?${params.toString()}`);
   };
 
   const handleFilterChange = (type, value) => {
@@ -151,11 +151,10 @@ const Filtersidebar = ({ onClose }) => {
   };
 
   return (
-    <div className="p-4 overflow-y-auto scrollbar-none h-full">
+    <div className="p-4 overflow-y-hidden  h-full">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 pb-4 border-b">
+      <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-500">
         <h2 className="text-lg font-medium text-gray-800 flex items-center gap-2">
-          <FaFilter className="text-pink-500" size={16} />
           Filters
         </h2>
         <button onClick={handleClear} className="text-sm text-gray-500 hover:text-pink-500">
