@@ -16,8 +16,8 @@ const ChapaButton = ({ amount, email, firstName, lastName, txRef }) => {
         <input type="hidden" name="title" value="EthioVibe Purchase" />
         <input type="hidden" name="description" value="Payment for your EthioVibe order" />
         <input type="hidden" name="logo" value="https://your-logo-url.com/logo.png" />
-        <input type="hidden" name="callback_url" value={`${window.location.origin}/payment/callback`} />
-        <input type="hidden" name="return_url" value={`${window.location.origin}/payment/success`} />
+        <input type="hidden" name="callback_url" value='http://localhost:5173/order-confirmation' />
+        <input type="hidden" name="return_url" value='' />
         <input type="hidden" name="meta[title]" value="EthioVibe Order" />
         
         <button 

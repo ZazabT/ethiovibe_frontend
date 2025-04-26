@@ -1,9 +1,14 @@
-import React from 'react'
+import { useEffect } from 'react';
 import { FaCheckCircle, FaHome, FaBox } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-
+import { useLocation } from 'react-router-dom';
 const OrderCompleted = () => {
+
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8  p-8 ">
