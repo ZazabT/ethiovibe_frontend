@@ -12,6 +12,7 @@ import NotFound from './pages/NotFound'
 import Profile from './pages/Profile'
 import Colloction from './pages/Colloction'
 import ProductDetails from './components/product/ProductDetails'
+import CheckOut from './components/cart/CheckOut'
 function App() {
   return (
     <Routes>
@@ -24,6 +25,7 @@ function App() {
       {/* <Route path='*' element={<NotFound/>} /> */}
       <Route path='product/:id' element={<ProductDetails/>} />
       <Route path='collections/:collection' element={<Colloction/>} />
+      <Route path='checkout' element={<CheckOut/>} />
       </Route>
       
       {/* AdminLayouts */}
