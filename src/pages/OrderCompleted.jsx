@@ -69,7 +69,7 @@ const OrderCompleted = () => {
           className="mt-8 space-y-4"
         >
           <Link 
-            to="/" 
+            to='/order/123' 
             className="w-full flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-pink-500 hover:bg-pink-600 transition-colors duration-200"
           >
             
