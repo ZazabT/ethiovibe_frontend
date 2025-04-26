@@ -2,6 +2,7 @@ import { h1 } from "framer-motion/client"
 import { useState } from "react"
 import { FaShoppingBag, FaCreditCard, FaLock } from "react-icons/fa"
 import PayPalButton from "./PayPalButton"
+import ChapaButton from "./ChapaButton"
 import { useNavigate } from "react-router-dom"
 
 const CheckOut = () => {
@@ -224,8 +225,30 @@ const CheckOut = () => {
                         Place Order
                     </button> 
                     ) : (
-                        // paypal componenet
+                        <div>
+                              {/* paypal componenet */}
                         <PayPalButton amount = {cart.totalPrice} onSuccess = {handleSuccess} onError={(err) => alert("Paymenet faild ! try again " + err)}/>
+        
+
+                        <div className="relative my-6">
+                        <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-gray-200"></div>
+                        </div>
+                        <div className="relative flex justify-center text-sm">
+                        <span className="px-2 bg-white text-gray-500">or pay with chapa</span>
+                        </div>
+                       </div>
+                    
+                    {/* Chapa Button */}
+                    <ChapaButton 
+                        amount={cart.totalPrice}
+                        email={formData.email}
+                        firstName={formData.firstName}
+                        lastName={formData.lastName}
+                        txRef={`ethiovibe-${Date.now()}`}
+                    />
+
+                        </div>
                     )
                     }
                     </form>
