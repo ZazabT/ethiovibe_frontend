@@ -13,7 +13,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { name: 'Orders', icon: FaShoppingCart, path: '/admin/orders' },
     { name: 'Customers', icon: FaUsers, path: '/admin/customers' },
     { name: 'Analytics', icon: FaChartBar, path: '/admin/analytics' },
-    { name: 'Settings', icon: FaCog, path: '/admin/settings' },
   ];
 
   return (
@@ -22,9 +21,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     } md:translate-x-0`}>
       <div className="h-full px-6 py-8 overflow-y-auto bg-gradient-to-b from-pink-600 to-pink-700 shadow-xl">
         {/* Logo */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-center mb-8">
           <Link to="/admin" className="flex items-center space-x-3">
-            <span className="text-2xl font-bold text-white tracking-wide">
+            <span className="text-2xl yuji-font  font-bold text-white tracking-wide">
               EthioVibe
             </span>
           </Link>
@@ -37,12 +36,12 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         </div>
 
         {/* Admin Info */}
-        <div className="mb-8 p-4 bg-pink-500/20 rounded-2xl backdrop-blur-sm">
+        <div className="mb-8 p-4 bg-pink-500/100 rounded-2xl backdrop-blur-sm">
           <div className="flex items-center space-x-4">
             <img 
-              src="/admin-avatar.png" 
+              src="/women2.jpg" 
               alt="Admin" 
-              className="w-12 h-12 rounded-full border-2 border-pink-300"
+              className="w-12 h-12 rounded-full border-2 border-gray-300"
             />
             <div>
               <h3 className="text-white font-medium">Admin User</h3>
@@ -52,7 +51,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         </div>
 
         {/* Navigation */}
-        <nav className="space-y-1">
+        <nav className="space-y-2">
           {navigation.map((item) => (
             <Link
               key={item.name}
@@ -60,7 +59,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               className={`flex items-center px-4 py-3 rounded-xl transition-all duration-200 ${
                 location.pathname === item.path 
                   ? 'bg-white text-pink-600 shadow-lg' 
-                  : 'text-pink-100 hover:bg-pink-500/20'
+                  : 'text-pink-100 hover:bg-pink-500/100'
               }`}
             >
               <item.icon className={`w-5 h-5 mr-3 ${
@@ -73,13 +72,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           ))}
         </nav>
 
-        {/* Store Link */}
-        <div className="mt-8 mb-8 p-4 bg-pink-500/20 rounded-2xl">
-          <Link to="/" className="flex items-center text-pink-100 hover:text-white transition-colors">
-            <FaStore className="w-5 h-5 mr-3" />
-            <span>View Store</span>
-          </Link>
-        </div>
 
         {/* Logout Button */}
         <div className="absolute bottom-8 left-6 right-6">
