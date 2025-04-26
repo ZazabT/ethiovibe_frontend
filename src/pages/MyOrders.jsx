@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { FaBox, FaShippingFast, FaCheck, FaClock } from 'react-icons/fa'
 
 const MyOrders = () => {
@@ -127,7 +128,9 @@ const MyOrders = () => {
             {myOrders.map((order) => (
               <tr key={order._id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="text-sm font-medium text-gray-900">#{order._id}</span>
+                  <Link to={`/order/${order._id}`}>
+                  <span className="text-sm font-medium text-gray-900 hover:cursor-pointer hover:text-gray-500">#{order._id}</span>
+                  </Link>
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex flex-col">
