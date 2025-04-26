@@ -13,6 +13,7 @@ import Profile from './pages/Profile'
 import Colloction from './pages/Colloction'
 import ProductDetails from './components/product/ProductDetails'
 import CheckOut from './components/cart/CheckOut'
+import OrderCompleted from './pages/OrderCompleted'
 function App() {
   return (
     <Routes>
@@ -26,6 +27,7 @@ function App() {
       <Route path='product/:id' element={<ProductDetails/>} />
       <Route path='collections/:collection' element={<Colloction/>} />
       <Route path='checkout' element={<CheckOut/>} />
+      <Route path='order-confirmation' element={<OrderCompleted/>} />
       </Route>
       
       {/* AdminLayouts */}

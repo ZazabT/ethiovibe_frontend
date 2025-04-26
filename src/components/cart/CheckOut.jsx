@@ -1,8 +1,12 @@
 import { h1 } from "framer-motion/client"
 import { useState } from "react"
 import { FaShoppingBag, FaCreditCard, FaLock } from "react-icons/fa"
+import PayPalButton from "./PayPalButton"
+import { useNavigate } from "react-router-dom"
 
 const CheckOut = () => {
+    const navigate = useNavigate()
+
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -46,6 +50,11 @@ const CheckOut = () => {
             ...prev,
             [name]: value
         }));
+    }
+
+    const handleSuccess = (paymentResult) => {
+        console.log(paymentResult);
+        navigate("/order-confirmation")
     }
 
     const handleSubmit = (e) => {
@@ -216,9 +225,7 @@ const CheckOut = () => {
                     </button> 
                     ) : (
                         // paypal componenet
-                        <div>
-                            <h1>Pay with Paypal</h1>
-                        </div>
+                        <PayPalButton amount = {cart.totalPrice} onSuccess = {handleSuccess} onError={(err) => alert("Paymenet faild ! try again " + err)}/>
                     )
                     }
                     </form>
