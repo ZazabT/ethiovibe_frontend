@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { 
   FaHome, FaBox, FaUsers, FaShoppingCart, FaChartBar, 
-  FaCog, FaTimes, FaSignOutAlt 
+  FaCog, FaTimes, FaSignOutAlt, FaStore 
 } from 'react-icons/fa';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
@@ -17,44 +17,75 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   ];
 
   return (
-    <aside className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
+    <aside className={`fixed top-0 left-0 z-40 w-72 h-screen transition-transform ${
       isOpen ? 'translate-x-0' : '-translate-x-full'
     } md:translate-x-0`}>
-      <div className="h-full px-3 py-4 overflow-y-auto bg-pink-400">
+      <div className="h-full px-6 py-8 overflow-y-auto bg-gradient-to-b from-pink-600 to-pink-700 shadow-xl">
         {/* Logo */}
-        <div className="flex items-center justify-between mb-6 px-2">
-          <Link to="/admin" className="text-2xl font-bold text-white">
-            EthioVibe
+        <div className="flex items-center justify-between mb-8">
+          <Link to="/admin" className="flex items-center space-x-3">
+            <span className="text-2xl font-bold text-white tracking-wide">
+              EthioVibe
+            </span>
           </Link>
           <button 
             onClick={() => setIsOpen(false)}
-            className="md:hidden text-gray-200 hover:text-white"
+            className="md:hidden text-pink-100 hover:text-white transition-colors"
           >
             <FaTimes size={24} />
           </button>
         </div>
 
+        {/* Admin Info */}
+        <div className="mb-8 p-4 bg-pink-500/20 rounded-2xl backdrop-blur-sm">
+          <div className="flex items-center space-x-4">
+            <img 
+              src="/admin-avatar.png" 
+              alt="Admin" 
+              className="w-12 h-12 rounded-full border-2 border-pink-300"
+            />
+            <div>
+              <h3 className="text-white font-medium">Admin User</h3>
+              <p className="text-pink-200 text-sm">Super Admin</p>
+            </div>
+          </div>
+        </div>
+
         {/* Navigation */}
-        <nav className="space-y-2">
+        <nav className="space-y-1">
           {navigation.map((item) => (
             <Link
               key={item.name}
               to={item.path}
-              className={`flex items-center px-4 py-3 text-gray-200 rounded-lg hover:bg-pink-800 ${
-                location.pathname === item.path ? 'bg-pink-800 text-white' : ''
+              className={`flex items-center px-4 py-3 rounded-xl transition-all duration-200 ${
+                location.pathname === item.path 
+                  ? 'bg-white text-pink-600 shadow-lg' 
+                  : 'text-pink-100 hover:bg-pink-500/20'
               }`}
             >
-              <item.icon className="w-5 h-5 mr-3" />
-              <span>{item.name}</span>
+              <item.icon className={`w-5 h-5 mr-3 ${
+                location.pathname === item.path 
+                  ? 'text-pink-600'
+                  : 'text-pink-300'
+              }`} />
+              <span className="font-medium">{item.name}</span>
             </Link>
           ))}
         </nav>
 
+        {/* Store Link */}
+        <div className="mt-8 mb-8 p-4 bg-pink-500/20 rounded-2xl">
+          <Link to="/" className="flex items-center text-pink-100 hover:text-white transition-colors">
+            <FaStore className="w-5 h-5 mr-3" />
+            <span>View Store</span>
+          </Link>
+        </div>
+
         {/* Logout Button */}
-        <div className="absolute bottom-4 left-4 right-4">
-          <button className="flex items-center w-full px-4 py-3 text-gray-200 rounded-lg hover:bg-pink-800">
+        <div className="absolute bottom-8 left-6 right-6">
+          <button className="flex items-center w-full px-4 py-3 text-pink-100 rounded-xl hover:bg-pink-500/20 transition-all duration-200">
             <FaSignOutAlt className="w-5 h-5 mr-3" />
-            <span>Logout</span>
+            <span className="font-medium">Logout</span>
           </button>
         </div>
       </div>
