@@ -153,7 +153,7 @@ const Filtersidebar = ({ onClose }) => {
   return (
     <div className="p-4 h-full">
       {/* Header */}
-      <div className="flex items-center justify-between mb-5 bg-gray-50 p-4 rounded-xl">
+      <div className="flex items-center border border-gray-300 justify-between mb-5 bg-gray-100 p-4 rounded-xl">
         <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
           <FaFilter className="text-pink-500" />
           Filters

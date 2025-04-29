@@ -347,17 +347,20 @@ const Collection = () => {
                 <h2 className="text-2xl font-semibold text-gray-800">All Products</h2>
                 <p className="text-gray-600 mt-1">Showing {products.length} items</p>
               </div>
-              <select 
-                className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none bg-white shadow-sm"
-                value={searchParams.get('sort') || ''}
-                onChange={handleSortChange}
-              >
-                <option value="newest">Newest First</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="rating">Highest Rated</option>
-                <option value="popular">Most Popular</option>
-              </select>
+              <div className="flex items-center border border-gray-300 px-4 py-2 rounded-xl">
+                <span className="text-gray-500 font-medium">Sort by:</span>
+                <select 
+                  className="px-4 py-2 focus:outline-none"
+                  value={searchParams.get('sort') || ''}
+                  onChange={handleSortChange}
+                >
+                  <option value="newest">Newest First</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="rating">Highest Rated</option>
+                  <option value="popular">Most Popular</option>
+                </select>
+              </div>
             </div>
           </div>
 
