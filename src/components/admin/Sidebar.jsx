@@ -51,7 +51,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         </div>
 
         {/* Navigation */}
-        <nav className="space-y-2">
+        <nav className="space-y-3">
           {navigation.map((item) => (
             <Link
               key={item.name}
@@ -75,7 +75,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
         {/* Logout Button */}
         <div className="absolute bottom-8 left-6 right-6">
-          <button className="flex items-center w-full px-4 py-3 text-pink-100 rounded-xl hover:bg-pink-500/20 transition-all duration-200">
+          <button className="flex items-center w-full px-4 py-3 text-pink-100 rounded-xl hover:bg-pink-500/100 transition-all duration-200">
             <FaSignOutAlt className="w-5 h-5 mr-3" />
             <span className="font-medium">Logout</span>
           </button>

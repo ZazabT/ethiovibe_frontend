@@ -151,41 +151,81 @@ const Filtersidebar = ({ onClose }) => {
   };
 
   return (
-    <div className="p-4 overflow-y-hidden  h-full">
+    <div className="p-4 h-full">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-500">
-        <h2 className="text-lg font-medium text-gray-800 flex items-center gap-2">
+      <div className="flex items-center justify-between mb-5 bg-gray-50 p-4 rounded-xl">
+        <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
+          <FaFilter className="text-pink-500" />
           Filters
         </h2>
-        <button onClick={handleClear} className="text-sm text-gray-500 hover:text-pink-500">
+        <button 
+          onClick={handleClear} 
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-pink-500 hover:bg-white rounded-lg transition-all duration-300"
+        >
+          <FaTimes />
           Clear all
         </button>
       </div>
 
       {/* Price Range */}
-      <div className="mb-5">
+      <div className="mb-5 border border-gray-200 p-4 rounded-xl">
         <h3 className="text-sm font-medium mb-3 text-gray-700">Price Range</h3>
-        <div className="flex items-center gap-3">
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-gray-600">ETB {priceRange.min}</span>
+            <span className="text-sm text-gray-600">ETB {priceRange.max}</span>
+          </div>
           <input
-            type="number"
+            type="range"
+            min="0"
+            max="10000"
             value={priceRange.min}
-            onChange={(e) => handleFilterChange('price', { ...priceRange, min: e.target.value })}
-            className="w-20 px-2 py-1.5 text-sm border rounded-md focus:ring-1 focus:ring-pink-500"
-            placeholder="Min"
+            onChange={(e) => {
+              const value = parseInt(e.target.value);
+              if (value <= priceRange.max) {
+                handleFilterChange('price', { ...priceRange, min: value });
+              }
+            }}
+            className="w-full h-2 bg-pink-400/100 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:bg-pink-700 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-lg"
           />
-          <span className="text-gray-400 text-sm">to</span>
           <input
-            type="number"
+            type="range"
+            min="0"
+            max="10000"
             value={priceRange.max}
-            onChange={(e) => handleFilterChange('price', { ...priceRange, max: e.target.value })}
-            className="w-20 px-2 py-1.5 text-sm border rounded-md focus:ring-1 focus:ring-pink-500"
-            placeholder="Max"
+            onChange={(e) => {
+              const value = parseInt(e.target.value);
+              if (value >= priceRange.min) {
+                handleFilterChange('price', { ...priceRange, max: value });
+              }
+            }}
+            className="w-full h-2 bg-pink-400/100 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:bg-pink-700 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-lg"
           />
         </div>
       </div>
 
+      {/* Sizes */}
+      <div className="mb-5 border border-gray-200 p-4 rounded-xl">
+        <h3 className="text-sm font-medium mb-3 text-gray-700">Sizes</h3>
+        <div className="grid grid-cols-4 gap-2">
+          {sizes.map((size) => (
+            <button
+              key={size.id}
+              onClick={() => handleFilterChange('size', size.name)}
+              className={`w-full h-10 rounded-md flex items-center justify-center text-sm font-medium transition-colors ${
+                filter.size.includes(size.name)
+                  ? 'bg-pink-500 text-white'
+                  : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+              }`}
+            >
+              {size.name}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Categories */}
-      <div className="mb-5">
+      <div className="mb-5 border border-gray-200 p-4 rounded-xl">
         <h3 className="text-sm font-medium mb-3 text-gray-700">Categories</h3>
         <div className="space-y-1.5">
           {categories.map((category) => (
@@ -204,14 +244,14 @@ const Filtersidebar = ({ onClose }) => {
       </div>
 
       {/* Gender */}
-      <div className="mb-5">
+      <div className="mb-5 border border-gray-200 p-4 rounded-xl">
         <h3 className="text-sm font-medium mb-3 text-gray-700">Gender</h3>
-        <div className="flex gap-2">
+        <div className="grid grid-cols-3 gap-2">
           {genders.map((gender) => (
             <button
               key={gender.id}
               onClick={() => handleFilterChange('gender', gender.name)}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+              className={`w-full px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                 filter.gender === gender.name
                   ? 'bg-pink-500 text-white'
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
@@ -224,9 +264,9 @@ const Filtersidebar = ({ onClose }) => {
       </div>
 
       {/* Sizes */}
-      <div className="mb-5">
+      <div className="mb-5 border border-gray-200 p-4 rounded-xl">
         <h3 className="text-sm font-medium mb-3 text-gray-700">Sizes</h3>
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-5 gap-2">
           {sizes.map((size) => (
             <button
               key={size.id}
@@ -244,7 +284,7 @@ const Filtersidebar = ({ onClose }) => {
       </div>
 
       {/* Colors */}
-      <div className="mb-5">
+      <div className="mb-5 border border-gray-200 p-4 rounded-xl">
         <h3 className="text-sm font-medium mb-3 text-gray-700">Colors</h3>
         <div className="flex flex-wrap gap-2">
           {colors.map((color) => (
@@ -273,7 +313,7 @@ const Filtersidebar = ({ onClose }) => {
       </div>
 
       {/* Materials */}
-      <div className="mb-5">
+      <div className="mb-5 border border-gray-200 p-4 rounded-xl">
         <h3 className="text-sm font-medium mb-3 text-gray-700">Materials</h3>
         <div className="flex flex-wrap gap-1.5">
           {materials.map((material) => (

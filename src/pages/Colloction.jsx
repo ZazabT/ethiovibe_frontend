@@ -307,11 +307,19 @@ const Collection = () => {
 
   return (
     <div className='min-h-screen'>
+      {/* Dark Overlay */}
+      <div 
+        className={`fixed inset-0 bg-black/30 transition-opacity duration-300 lg:hidden ${
+          isFilterOpen ? 'opacity-100 z-40' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setIsFilterOpen(false)}
+      />
+
       <div className='flex flex-col lg:flex-row relative max-w-[1600px] mx-auto'>
         {/* Mobile Filter Button */}
         <button 
           onClick={toggleFilter}
-          className='lg:hidden flex items-center gap-2 mx-auto my-4 px-6 py-2.5 bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition-all shadow-md hover:shadow-lg'
+          className='lg:hidden flex items-center mx-4 w-30 gap-2 px-6 py-2.5 bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition-all shadow-md hover:shadow-lg'
         >
           <BsFilterLeft className='text-xl'/>
           <span className='font-medium'>Filters</span>
@@ -320,7 +328,7 @@ const Collection = () => {
         {/* Filter Sidebar */}
         <div 
           ref={sideBarRef}
-          className={`fixed lg:sticky top-0 h-[120vh] left-0 w-[280px] transform transition-transform duration-300 ease-in-out z-50 lg:z-0 overflow-hidden ${
+          className={`fixed bg-white lg:sticky top-0 pb- left-0 w-[300px] transform transition-transform duration-300 ease-in-out z-50  lg:z-0  ${
             isFilterOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
           }`}
         >
@@ -329,6 +337,7 @@ const Collection = () => {
           </div>
         </div>
 
+        
         {/* Main Content Area */}
         <div className="flex-1 p-4 lg:p-6 lg:pl-8">
           {/* Header and Sort Section */}
@@ -353,7 +362,7 @@ const Collection = () => {
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 ">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
             {loading ? (
               <div className="col-span-full h-64 flex justify-center items-center">
                 <div className="animate-spin rounded-full h-16 w-16 border-4 border-pink-500 border-t-transparent"></div>
