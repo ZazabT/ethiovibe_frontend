@@ -22,18 +22,17 @@ const Filtersidebar = ({ onClose }) => {
 
   // Categories
   const categories = [
-    { id: 1, name: 'Tops' },
-    { id: 2, name: 'Bottoms' },
-    { id: 3, name: 'Shoes' },
+    { id: 1, name: 'topwear' },
+    { id: 2, name: 'underwear' },
+    { id: 3, name: 'shoes' },
     { id: 4, name: 'other' },
-    { id: 5, name: 'Kids' },
   ];
 
   // Genders
   const genders = [
-    { id: 1, name: 'All' },
-    { id: 2, name: 'Men' },
-    { id: 3, name: 'Women' },
+    { id: 1, name: 'male' },
+    { id: 2, name: 'female' },
+    { id: 3, name: 'unisex' },
   ];
 
   // Brands
@@ -47,12 +46,13 @@ const Filtersidebar = ({ onClose }) => {
 
   // Sizes
   const sizes = [
-    { id: 1, name: 'S' },
-    { id: 2, name: 'M' },
-    { id: 3, name: 'L' },
-    { id: 4, name: 'XL' },
-    { id: 5, name: 'XXL' },
-    { id: 6, name: 'XXXL' },
+    { id: 2, name: 'XS' },
+    { id: 2, name: 'S' },
+    { id: 3, name: 'M' },
+    { id: 4, name: 'L' },
+    { id: 5, name: 'XL' },
+    { id: 6, name: 'XXL' },
+    { id: 7, name: 'XXXL' },
   ];
 
   // Colors
@@ -71,8 +71,11 @@ const Filtersidebar = ({ onClose }) => {
   const materials = [
     { id: 1, name: 'Cotton' },
     { id: 2, name: 'Polyester' },
-    { id: 3, name: 'Silk' },
-    { id: 4, name: 'other' },
+    { id: 3, name: 'wool' },
+    { id: 4, name: 'denim' },
+    { id: 5, name: 'leather' },
+    { id: 7, name: 'silk' },
+    { id: 7, name: 'other' },
   ];
 
   useEffect(() => {
@@ -211,6 +214,8 @@ const Filtersidebar = ({ onClose }) => {
           {sizes.map((size) => (
             <button
               key={size.id}
+              name='size'
+              value={size.name}
               onClick={() => handleFilterChange('size', size.name)}
               className={`w-full h-10 rounded-md flex items-center justify-center text-sm font-medium transition-colors ${
                 filter.size.includes(size.name)
@@ -226,6 +231,7 @@ const Filtersidebar = ({ onClose }) => {
 
       {/* Categories */}
       <div className="mb-5 border border-gray-200 p-4 rounded-xl">
+      
         <h3 className="text-sm font-medium mb-3 text-gray-700">Categories</h3>
         <div className="space-y-1.5">
           {categories.map((category) => (
@@ -233,6 +239,7 @@ const Filtersidebar = ({ onClose }) => {
               <input
                 type="radio"
                 name="category"
+                value={category.name}
                 checked={filter.category === category.name}
                 onChange={() => handleFilterChange('category', category.name)}
                 className="text-pink-500 focus:ring-pink-500 h-4 w-4"
@@ -250,6 +257,8 @@ const Filtersidebar = ({ onClose }) => {
           {genders.map((gender) => (
             <button
               key={gender.id}
+              name="gender"
+              value={gender.name}
               onClick={() => handleFilterChange('gender', gender.name)}
               className={`w-full px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                 filter.gender === gender.name
@@ -319,6 +328,8 @@ const Filtersidebar = ({ onClose }) => {
           {materials.map((material) => (
             <button
               key={material.id}
+              name="material"
+              value={material.name}
               onClick={() => handleFilterChange('material', material.name)}
               className={`px-3 py-1.5 rounded-md text-sm transition-colors ${
                 filter.material.includes(material.name)
