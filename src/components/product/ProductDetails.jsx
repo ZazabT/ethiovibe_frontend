@@ -2,7 +2,8 @@ import React, { useState , useEffect} from 'react'
 import { FaStar, FaShoppingCart, FaTruck } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 import { useLocation } from "react-router-dom";
-
+import { toast } from 'sonner';
+import { FaExclamationCircle, FaCheckCircle } from 'react-icons/fa';
 function ProductDetails() {
   const { pathname } = useLocation();
   const [selectedImage, setSelectedImage] = useState(0)
@@ -48,7 +49,68 @@ useEffect(() => {
 
 // add to cart function
 const addToCart = () => {
+  if (!selectedSize) {
+    toast.error('Please select a size', {
+      duration: 2000,
+      className: 'bg-white',
+      description: 'Choose your preferred size to continue',
+      icon: <FaExclamationCircle className="text-red-500 text-xl" />,
+      style: {
+        border: '1px solid #fee2e2',
+        padding: '16px',
+        color: '#1f2937',
+      },
+    });
+    return;
+  }
+  
+  if (!selectedColor) {
+    toast.error('Please select a color', {
+      duration: 2000,
+      className: 'bg-white',
+      description: 'Pick your favorite color variant',
+      icon: <FaExclamationCircle className="text-red-500 text-xl" />,
+      style: {
+        border: '1px solid #fee2e2',
+        padding: '16px',
+        color: '#1f2937',
+      },
+    });
+    return;
+  }
 
+  if (quantity < 1) {
+    toast.error('Invalid quantity selected', {
+      duration: 2000,
+      className: 'bg-white',
+      description: 'Please select at least one item',
+      icon: <FaExclamationCircle className="text-red-500 text-xl" />,
+      style: {
+        border: '1px solid #fee2e2',
+        padding: '16px',
+        color: '#1f2937',
+      },
+    });
+    return;
+  }
+
+  toast.success('Added to cart successfully!', {
+    duration: 3000,
+    className: 'bg-white',
+    description: `${quantity} x ${selectedProduct.name} added to your cart`,
+    icon: <FaCheckCircle className="text-green-500 text-xl" />,
+    style: {
+      border: '1px solid #dcfce7',
+      padding: '16px',
+      color: '#1f2937',
+    },
+    // action: {
+    //   label: "View Cart",
+    //   onClick: () => navigate('/cart')
+    // },
+  });
+
+  // Add your cart logic here
 }
 
 // increace quantity
@@ -83,7 +145,7 @@ const addToCart = () => {
                   ))}
                 </div>
                 {/* Main Image */}
-                <div className='flex-1 rounded-xl overflow-hidden'>
+                <div className='flex-1 max-h-[620px] rounded-xl overflow-hidden'>
                   <img 
                     src={selectedProduct.images[selectedImage]} 
                     alt={selectedProduct.name}
@@ -188,6 +250,7 @@ const addToCart = () => {
 
                 {/* Add to Cart Button */}
                 <motion.button
+                    onClick={addToCart}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className='w-full bg-black text-white py-4 rounded-full flex items-center justify-center gap-2 hover:bg-gray-800'
