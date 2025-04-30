@@ -156,7 +156,7 @@ const Filtersidebar = ({ onClose }) => {
   return (
     <div className="p-4 h-full">
       {/* Header */}
-      <div className="flex items-center border border-gray-300 justify-between mb-5 bg-gray-100 p-4 rounded-xl">
+      <div className="flex items-center border border-gray-200 justify-between mb-5 bg-gray-100 p-4 rounded-xl">
         <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
           <FaFilter className="text-pink-500" />
           Filters
@@ -178,32 +178,42 @@ const Filtersidebar = ({ onClose }) => {
             <span className="text-sm text-gray-600">ETB {priceRange.min}</span>
             <span className="text-sm text-gray-600">ETB {priceRange.max}</span>
           </div>
-          <input
-            type="range"
-            min="0"
-            max="10000"
-            value={priceRange.min}
-            onChange={(e) => {
-              const value = parseInt(e.target.value);
-              if (value <= priceRange.max) {
-                handleFilterChange('price', { ...priceRange, min: value });
-              }
-            }}
-            className="w-full h-2 bg-pink-400/100 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:bg-pink-700 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-lg"
-          />
-          <input
-            type="range"
-            min="0"
-            max="10000"
-            value={priceRange.max}
-            onChange={(e) => {
-              const value = parseInt(e.target.value);
-              if (value >= priceRange.min) {
-                handleFilterChange('price', { ...priceRange, max: value });
-              }
-            }}
-            className="w-full h-2 bg-pink-400/100 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:bg-pink-700 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-lg"
-          />
+          <div className="relative pt-1">
+            <div className="h-2 bg-pink-200 rounded-lg"></div>
+            <div
+              className="absolute h-2 bg-pink-500 rounded-lg top-1"
+              style={{
+                left: `${(priceRange.min / 10000) * 100}%`,
+                right: `${100 - (priceRange.max / 10000) * 100}%`
+              }}
+            ></div>
+            <input
+              type="range"
+              min="0"
+              max="10000"
+              value={priceRange.min}
+              onChange={(e) => {
+                const value = parseInt(e.target.value);
+                if (value <= priceRange.max) {
+                  handleFilterChange('price', { ...priceRange, min: value });
+                }
+              }}
+              className="absolute w-full h-0 -top-0 appearance-none pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-pink-400 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-lg"
+            />
+            <input
+              type="range"
+              min="0"
+              max="10000"
+              value={priceRange.max}
+              onChange={(e) => {
+                const value = parseInt(e.target.value);
+                if (value >= priceRange.min) {
+                  handleFilterChange('price', { ...priceRange, max: value });
+                }
+              }}
+              className="absolute w-full h-0 -top-0 appearance-none pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-pink-400 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-lg"
+            />
+          </div>
         </div>
       </div>
 

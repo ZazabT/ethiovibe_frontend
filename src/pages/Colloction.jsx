@@ -348,7 +348,7 @@ const Collection = () => {
                 <p className="text-gray-600 mt-1">Showing {products.length} items</p>
               </div>
               <div className="flex items-center border border-gray-300 px-4 py-2 rounded-xl">
-                <span className="text-gray-500 font-medium">Sort by:</span>
+                <span className="text-gray-700 font-medium">Sort by:</span>
                 <select 
                   className="px-4 py-2 focus:outline-none"
                   value={searchParams.get('sort') || ''}
