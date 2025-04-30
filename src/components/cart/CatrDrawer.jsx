@@ -55,14 +55,13 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 h-screen w-full max-w-md bg-white shadow-xl z-50"
+            className="fixed right-0 top-0 h-screen w-full max-w-md bg-gray-100 shadow-xl z-50"
           >
             <div className="flex flex-col h-full">
               {/* Header */}
-              <div className="p-6 border-b flex justify-between items-center bg-gray-50">
+              <div className="p-6 flex flex-row-reverse max-w-[75%] justify-between items-center">
                 <div>
-                  <h2 className="text-xl font-semibold">Shopping Cart</h2>
-                  <p className="text-sm text-gray-500 mt-1">{products.length} items</p>
+                  <h2 className="text-xl font-semibold">YOUR BAG</h2>
                 </div>
                 <motion.button
                   whileTap={{ scale: 0.9 }}
@@ -90,15 +89,15 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
               </div>
 
               {/* Footer */}
-              <div className="border-t p-6 bg-gray-50">
+              <div className="border-t border-gray-300 p-6">
                 <div className="mb-4 space-y-2">
-                  <div className="flex justify-between text-gray-600">
-                    <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                <div className="flex justify-between text-sm text-gray-500">
+                    <span className="font-normal">Subtotal</span>
+                    <span className="font-medium">${subtotal.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-gray-600">
-                    <span>Shipping</span>
-                    <span>Free</span>
+                  <div className="flex justify-between text-sm text-gray-500">
+                    <span className="font-normal">Shipping</span>
+                    <span className="font-medium text-green-600">Free</span>
                   </div>
                   <div className="flex justify-between text-lg font-semibold">
                     <span>Total</span>
@@ -107,11 +106,15 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
                 </div>
                 <motion.button 
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-pink-500 text-white py-4 rounded-xl font-medium hover:bg-pink-600 transition-colors"
+                  className="w-full bg-pink-500 text-white py-3.5 text-sm font-medium tracking-wide hover:bg-pink-600 transition-all rounded-sm uppercase"
                 >
-                  Checkout
+                  Proceed to Checkout
                 </motion.button>
+                <p className="text-xs text-center text-gray-500 mt-4">
+                  Shipping & taxes calculated at checkout
+                </p>
               </div>
+
             </div>
           </motion.div>
         </>

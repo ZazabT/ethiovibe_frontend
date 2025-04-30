@@ -9,67 +9,65 @@ const CartCard = ({ product, onQuantityChange, onRemove }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="flex gap-4 p-4 bg-white rounded-xl border hover:border-pink-200 transition-all hover:shadow-md"
+      className="flex items-start gap-4 p-4 border-b hover:bg-gray-200  border-gray-200 last:border-none"
     >
-      <div className="relative group">
+      <div className="relative">
         <img
           src={product.image}
           alt={product.name}
-          className="w-24 h-24 object-cover rounded-lg"
+          className="w-20 h-20 object-cover rounded-lg shadow-sm"
         />
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
-          <button 
-            onClick={() => onRemove(product.id)}
-            className="text-white p-2 hover:text-red-400 transition-colors"
-          >
-            <FaTrash />
-          </button>
-        </div>
       </div>
 
-      <div className="flex-1 flex flex-col justify-between">
-        <div>
-          <h3 className="font-medium text-gray-800 line-clamp-1">{product.name}</h3>
-          <div className="mt-1 text-sm text-gray-500 space-x-2">
-            <span className="inline-block px-2 py-1 bg-gray-100 rounded-full">
-              Size: {product.size}
-            </span>
-            <span className="inline-block px-2 py-1 bg-gray-100 rounded-full">
-              Color: {product.color}
-            </span>
+      <div className="flex-1 min-w-0">
+        <div className="flex justify-between items-start">
+          <div>
+            <h3 className="font-medium text-gray-900 text-sm truncate pr-4">
+              {product.name}
+            </h3>
+            <div className="mt-1 flex items-center gap-2 text-xs text-gray-500">
+              <span>{product.size}</span>
+              <span>•</span>
+              <span>{product.color}</span>
+            </div>
+          </div>
+          <div className="text-right">
+            <p className="font-medium text-gray-900 text-sm">
+              ${(product.price * product.quantity).toFixed(2)}
+            </p>
           </div>
         </div>
 
-        <div className="mt-2 flex items-center justify-between">
-          <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
+        <div className="mt-3 flex items-center justify-between">
+          <div className="flex items-center border rounded-lg overflow-hidden">
             <motion.button 
-              whileTap={{ scale: 0.9 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => onQuantityChange(product.id, product.quantity - 1)}
-              className="p-1.5 hover:bg-white rounded-md transition-colors"
+              className="px-2 py-1 hover:bg-gray-50 transition-colors"
               disabled={product.quantity <= 1}
             >
-              <FaMinus className="text-xs" />
+              <FaMinus className="text-xs text-gray-500" />
             </motion.button>
-            <span className="text-sm font-medium w-8 text-center">
+            <span className="w-8 text-center text-sm">
               {product.quantity}
             </span>
             <motion.button 
-              whileTap={{ scale: 0.9 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => onQuantityChange(product.id, product.quantity + 1)}
-              className="p-1.5 hover:bg-white rounded-md transition-colors"
+              className="px-2 py-1 hover:bg-gray-50 transition-colors"
             >
-              <FaPlus className="text-xs" />
+              <FaPlus className="text-xs text-gray-500" />
             </motion.button>
           </div>
-          
-          <div className="text-right">
-            <p className="font-medium text-gray-800">
-              ${(product.price * product.quantity).toFixed(2)}
-            </p>
-            <p className="text-xs text-gray-500">
-              ${product.price.toFixed(2)} each
-            </p>
-          </div>
+
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => onRemove(product.id)}
+            className="text-xs text-gray-400 hover:text-red-500 transition-colors flex items-center gap-1.5"
+          >
+            <FaTrash size={10} />
+            <span>Remove</span>
+          </motion.button>
         </div>
       </div>
     </motion.div>
