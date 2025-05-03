@@ -2,10 +2,10 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
 import CartCard from './CartCard';
-
+import { useState } from 'react';
 const CartDrawer = ({ isOpen, toggleCart }) => {
   // Demo products (move this to a separate file or state management in a real app)
-  const [products, setProducts] = React.useState([
+  const [products, setProducts] = useState([
     {
       id: 1,
       name: "Traditional Habesha Kemis",
@@ -23,6 +23,24 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
       quantity: 2,
       size: "L",
       color: "Gold"
+    },
+    {
+      id: 3,
+      name: "Eritrean Traditional Zuria",
+      price: 259.99,
+      image: "https://images.unsplash.com/photo-1516575334481-f85287c2c82d",
+      quantity: 1,
+      size: "S",
+      color: "Red"
+    },
+    {
+      id: 5,
+      name: "Modern Habesha Kemis",
+      price: 279.99,
+      image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8",
+      quantity: 1,
+      size: "L",
+      color: "Black"
     }
   ]);
 
@@ -104,12 +122,14 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
                     <span>${subtotal.toFixed(2)}</span>
                   </div>
                 </div>
+                <Link to='/checkout'>
                 <motion.button 
                   whileTap={{ scale: 0.98 }}
                   className="w-full bg-pink-500 text-white py-3.5 text-sm font-medium tracking-wide hover:bg-pink-600 transition-all rounded-sm uppercase"
                 >
                   Proceed to Checkout
                 </motion.button>
+                </Link>
                 <p className="text-xs text-center text-gray-500 mt-4">
                   Shipping & taxes calculated at checkout
                 </p>
