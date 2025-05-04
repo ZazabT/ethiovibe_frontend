@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
 import CartCard from './CartCard';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 const CartDrawer = ({ isOpen, toggleCart }) => {
   // Demo products (move this to a separate file or state management in a real app)
   const [products, setProducts] = useState([
@@ -77,7 +78,7 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
           >
             <div className="flex flex-col h-full">
               {/* Header */}
-              <div className="p-6 flex flex-row-reverse max-w-[75%] justify-between items-center">
+              <div className="p-6 flex flex-row-reverse justify-between items-center">
                 <div>
                   <h2 className="text-xl font-semibold">YOUR BAG</h2>
                 </div>
