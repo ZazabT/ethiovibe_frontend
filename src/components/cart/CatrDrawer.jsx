@@ -3,8 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
 import CartCard from './CartCard';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 const CartDrawer = ({ isOpen, toggleCart }) => {
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    toggleCart(); // Close the drawer
+    navigate('/checkout'); // Navigate to checkout
+  };
   // Demo products (move this to a separate file or state management in a real app)
   const [products, setProducts] = useState([
     {
@@ -78,17 +85,27 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
           >
             <div className="flex flex-col h-full">
               {/* Header */}
-              <div className="p-6 flex flex-row-reverse justify-between items-center">
-                <div>
-                  <h2 className="text-xl font-semibold">YOUR BAG</h2>
+              <div className="p-6 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                
+                  
+                  <div className="text-center flex-1">
+                    <h2 className="text-xl font-semibold tracking-wide">SHOPPING BAG</h2>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {products.length} {products.length === 1 ? 'item' : 'items'}
+                    </p>
+                  </div>
+
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={toggleCart}
+                    className="p-2 hover:text-pink-500 rounded-full transition-all duration-200 text-gray-600"
+                  >
+                    <FaTimes className="text-xl" />
+                  </motion.button>
+                  
                 </div>
-                <motion.button
-                  whileTap={{ scale: 0.9 }}
-                  onClick={toggleCart}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                >
-                  <FaTimes className="text-xl" />
-                </motion.button>
               </div>
 
               {/* Cart Items */}
@@ -123,14 +140,15 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
                     <span>${subtotal.toFixed(2)}</span>
                   </div>
                 </div>
-                <Link to='/checkout'>
+                
                 <motion.button 
+                  whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.98 }}
+                  onClick={handleCheckout}
                   className="w-full bg-pink-500 text-white py-3.5 text-sm font-medium tracking-wide hover:bg-pink-600 transition-all rounded-sm uppercase"
                 >
                   Proceed to Checkout
                 </motion.button>
-                </Link>
                 <p className="text-xs text-center text-gray-500 mt-4">
                   Shipping & taxes calculated at checkout
                 </p>
