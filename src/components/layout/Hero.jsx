@@ -46,7 +46,13 @@ const Hero = () => {
             whileTap={{ scale: 0.95 }}
             className="bg-black text-white px-8 py-3 rounded-full flex items-center gap-2 hover:gap-4 transition-all group"
           >
-            Shop Now <FaArrowRight className="group-hover:text-pink-500 transition-colors" />
+            Shop Now 
+            <motion.div
+              whileHover={{ rotate: 90 }}
+              transition={{ duration: 0.3 }}
+            >
+              <FaArrowRight className="group-hover:text-pink-500 transition-colors" />
+            </motion.div>
           </motion.button>
           <motion.button
             whileHover={{ scale: 1.05 }}
