@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { FaFilter, FaTimes } from 'react-icons/fa';
-
+import { MdFilterList } from "react-icons/md";
 const Filtersidebar = ({ onClose }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -158,7 +158,7 @@ const Filtersidebar = ({ onClose }) => {
       {/* Header */}
       <div className="flex items-center border border-gray-200 justify-between mb-5 bg-gray-100 p-4 rounded-xl">
         <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
-          <FaFilter className="text-pink-500" />
+          <MdFilterList className="text-pink-500 text-2xl" />
           Filters
         </h2>
         <button 

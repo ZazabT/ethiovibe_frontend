@@ -1,5 +1,5 @@
 import React, { useState, useEffect , useRef } from 'react'
-import { BsFilterLeft } from "react-icons/bs";
+import { MdFilterList } from "react-icons/md";
 import Filtersidebar from '../components/product/Filtersidebar'
 import ProductCard from '../components/product/ProductCard';
 import { useSearchParams } from 'react-router-dom';
@@ -321,7 +321,7 @@ const Collection = () => {
           onClick={toggleFilter}
           className='lg:hidden flex items-center mx-4 w-30 gap-2 px-6 py-2.5 bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition-all shadow-md hover:shadow-lg'
         >
-          <BsFilterLeft className='text-xl'/>
+          <MdFilterList className='text-xl'/>
           <span className='font-medium'>Filters</span>
         </button>
 
