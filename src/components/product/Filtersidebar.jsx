@@ -217,27 +217,7 @@ const Filtersidebar = ({ onClose }) => {
         </div>
       </div>
 
-      {/* Sizes */}
-      <div className="mb-5 border border-gray-200 p-4 rounded-xl">
-        <h3 className="text-sm font-medium mb-3 text-gray-700">Sizes</h3>
-        <div className="grid grid-cols-4 gap-2">
-          {sizes.map((size) => (
-            <button
-              key={size.id}
-              name='size'
-              value={size.name}
-              onClick={() => handleFilterChange('size', size.name)}
-              className={`w-full h-10 rounded-md flex items-center justify-center text-sm font-medium transition-colors ${
-                filter.size.includes(size.name)
-                  ? 'bg-pink-500 text-white'
-                  : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-              }`}
-            >
-              {size.name}
-            </button>
-          ))}
-        </div>
-      </div>
+     
 
       {/* Categories */}
       <div className="mb-5 border border-gray-200 p-4 rounded-xl">

@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { FaEnvelope, FaLock, FaGoogle, FaFacebook, FaUser  } from 'react-icons/fa'
+import { FaEnvelope, FaLock, FaGoogle, FaFacebook, FaUser } from 'react-icons/fa'
 import { PiEyeClosedThin, PiEyeThin } from "react-icons/pi";
 import { GiConfirmed } from "react-icons/gi";
+import { useDispatch } from 'react-redux';
+import { register } from '../../redux/slices/auth.slice'
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +16,7 @@ const Register = () => {
   })
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -21,7 +24,28 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Handle registration logic here
+
+    // Check if passwords match
+    if (formData.password !== formData.confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    const { userName, email, password } = formData;
+    dispatch(register({ name:userName, email, password }));
+
+    // // Reset form fields
+    // setFormData({
+    //   userName: '',
+    //   email: '',
+    //   password: '',
+    //   confirmPassword: ''
+    // });
+    // // Reset password visibility
+    // setShowPassword(false)
+    // setShowConfirmPassword(false)
+
+    // if registration is successful, redirect to login page
   }
 
   return (
@@ -155,7 +179,7 @@ const Register = () => {
       </div>
 
       {/* Right Side - Image */}
-      <div className="hidden lg:block lg:w-1/2 bg-cover bg-center overflow-hidden m-6" 
+      <div className="hidden lg:block lg:w-1/2 bg-cover bg-center overflow-hidden m-6"
         style={{
           backgroundImage: `url('/hero1.png')`,
           backgroundSize: 'cover',

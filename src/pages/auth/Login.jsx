@@ -3,14 +3,20 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { FaEnvelope, FaLock, FaGoogle, FaFacebook } from 'react-icons/fa'
 import { PiEyeClosedThin, PiEyeThin } from "react-icons/pi";
+import { login } from "../../redux/slices/auth.slice";
+import { useDispatch } from "react-redux";
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-
+  const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Handle login logic here
+    dispatch(login({ email, password }));
+
+    // Reset form fields
+    setEmail('')
+    setPassword('')
   }
 
   return (
