@@ -13,7 +13,7 @@ export const getAllProducts = createAsyncThunk(
             if (value) query.append(key, value);
         });
         const response = await axios.get(`${BASE_URL}/api/products?${query}`);
-        return response.data;
+        return response.data.products;
     }
 );
 
@@ -22,7 +22,7 @@ export const getProductDetails = createAsyncThunk(
     "product/getProductDetails",
     async (id) => {
         const response = await axios.get(`${BASE_URL}/api/products/${id}`);
-        return response.data;
+        return response.data.product;
     }
 );
 
@@ -31,7 +31,7 @@ export const getSimilarProducts = createAsyncThunk(
     "product/getSimilarProducts",
     async (id) => {
         const response = await axios.get(`${BASE_URL}/api/products/similar/${id}`);
-        return response.data;
+        return response.data.similarProducts;
     }
 );
 
@@ -40,7 +40,7 @@ export const getBestSelling = createAsyncThunk(
     "product/getBestSelling",
     async () => {
         const response = await axios.get(`${BASE_URL}/api/products/best-selling`);
-        return response.data;
+        return response.data.bestSellingProduct;
     }
 );
 
@@ -49,7 +49,7 @@ export const getNewArrival = createAsyncThunk(
     "product/getNewArrival",
     async () => {
         const response = await axios.get(`${BASE_URL}/api/products/new-arrivals`);
-        return response.data;
+        return response.data.newArrivalsProduct;
     }
 );
 
@@ -58,7 +58,7 @@ export const getProductOtherCategories = createAsyncThunk(
     "product/getProductOtherCategories",
     async () => {
         const response = await axios.get(`${BASE_URL}/api/products/other-products`);
-        return response.data;
+        return response.data.otherProducts;
     }
 );
 
