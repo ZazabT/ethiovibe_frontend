@@ -228,4 +228,7 @@ const cartSlice = createSlice({
             })
 
     }
-})
+});
+
+export const { clearCart , clearCartError } = cartSlice.actions;
+export default cartSlice.reducer;
