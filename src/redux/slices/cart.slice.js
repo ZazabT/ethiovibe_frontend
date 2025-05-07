@@ -103,22 +103,129 @@ export const removeFromCart = createAsyncThunk("cart/removeFromCart", async ({ p
 
 // Async thunk to merge guest cart with user cart
 export const mergeGuestCart = createAsyncThunk("cart/mergeGuestCart", async ({ guestId }, { rejectWithValue }) => {
-    
+
     try {
-       const response = await axios.post(`${BASE_URL}/api/carts/merge`,
+        const response = await axios.post(`${BASE_URL}/api/carts/merge`,
             {
                 guestId,
             },
 
             {
-                headers:{
-                    Authorization : `Bearer ${localStorage.getItem("token")}`,
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 }
             }
         );
 
-        return response.data.cart; 
+        return response.data.cart;
     } catch (error) {
         return rejectWithValue(error.response.data);
+    }
+});
+
+
+// initial state
+const initialState = {
+    cart: loadCartFromLocalStorage(),
+    isLoading: false,
+    isError: null,
+}
+
+// Cart slice
+const cartSlice = createSlice({
+    name: "cart",
+    initialState,
+    reducers: {
+        clearCart: (state) => {
+            state.cart = { products: [], };
+            saveCartToLocalStorage(state.cart);
+        },
+        clearCartError: (state) => {
+            state.isError = null;
+        },
+    },
+
+    extraReducers: (builder) => {
+        // Fetch cart
+        builder
+            .addCase(fetchCart.pending, (state) => {
+                state.isLoading = true;
+                state.isError = null;
+            })
+            .addCase(fetchCart.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.cart = action.payload;
+                saveCartToLocalStorage(state.cart);
+                state.isError = null;
+            })
+            .addCase(fetchCart.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = action.error.message || 'Failed to fetch cart';
+            })
+
+            // Add to cart
+            .addCase(addToCart.pending, (state) => {
+                state.isLoading = true;
+                state.isError = null;
+            })
+            .addCase(addToCart.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.cart = action.payload;
+                saveCartToLocalStorage(state.cart);
+                state.isError = null;
+            })
+            .addCase(addToCart.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = action.error.message || 'Failed to add to cart';
+            })
+
+            // Update cart quantity
+            .addCase(updateCartQuantity.pending, (state) => {
+                state.isLoading = true;
+                state.isError = null;
+            })
+            .addCase(updateCartQuantity.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.cart = action.payload;
+                saveCartToLocalStorage(state.cart);
+                state.isError = null;
+            })
+            .addCase(updateCartQuantity.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = action.error.message || 'Failed to update cart quantity';
+            })
+
+            // Remove from cart
+            .addCase(removeFromCart.pending, (state) => {
+                state.isLoading = true;
+                state.isError = null;
+            })
+            .addCase(removeFromCart.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.cart = action.payload;
+                saveCartToLocalStorage(state.cart);
+                state.isError = null;
+            })
+            .addCase(removeFromCart.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = action.error.message || 'Failed to remove from cart';
+            })
+
+            // Merge guest cart
+            .addCase(mergeGuestCart.pending, (state) => {
+                state.isLoading = true;
+                state.isError = null;
+            })
+            .addCase(mergeGuestCart.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.cart = action.payload;
+                saveCartToLocalStorage(state.cart);
+                state.isError = null;
+            })
+            .addCase(mergeGuestCart.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = action.error.message || 'Failed to merge guest cart';
+            })
+
     }
 })
