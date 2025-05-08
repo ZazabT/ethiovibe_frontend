@@ -1,72 +1,17 @@
-import { div } from 'framer-motion/client'
-import React from 'react'
+import {useEffect , useState} from 'react'
 import Slider from 'react-slick'
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
-import newMen1 from '../../assets/newMen1.jpg'
-import newMen2 from '../../assets/newMen2.jpg'
-import newMen3 from '../../assets/newMen3.jpg'
-import newMen4 from '../../assets/newMen4.jpg'
+import {useDispatch , useSelector} from 'react-redux'
+import { getNewArrival } from '../../redux/slices/product.slice'
+import ProductCard from '../product/ProductCard'
+import { ImSpinner10 } from "react-icons/im";
+import { ImSpinner2 } from "react-icons/im";
+
 const NewArrives = () => {
-    const newArrives = [
-        {
-            _id: "na001",
-            name: "Ethiopian Modern Dress",
-            price: 129.99,
-            image: "https://images.unsplash.com/photo-1618244972963-dbee1a7edc95",
-            altMessage: "Traditional Ethiopian dress with modern twist"
-        },
-        {
-            _id: "na002",
-            name: "Habesha Kemis",
-            price: 189.99,
-            image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1",
-            altMessage: "Traditional Habesha Kemis dress"
-        },
-        {
-            _id: "na003",
-            name: "Modern Tilfi Suit",
-            price: 249.99,
-            image: "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f",
-            altMessage: "Contemporary Ethiopian men's suit"
-        },
-        {
-            _id: "na004",
-            name: "Embroidered Shemma",
-            price: 159.99,
-            image: newMen4,
-            altMessage: "Hand-embroidered Ethiopian shemma"
-        },
-        {
-            _id: "na005",
-            name: "Ethiopian Blazer",
-            price: 179.99,
-            image: newMen1,
-            altMessage: "Modern Ethiopian style blazer"
-        },
-        {
-            _id: "na006",
-            name: "Axum Collection Dress",
-            price: 219.99,
-            image: newMen2,
-            altMessage: "Axum inspired modern dress"
-        },
-        {
-            _id: "na007",
-            name: "Lalibela Modern Set",
-            price: 299.99,
-            image: newMen3,
-            altMessage: "Contemporary Lalibela inspired outfit"
-        },
-        {
-            _id: "na008",
-            name: "Gondar Evening Dress",
-            price: 269.99,
-            image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8",
-            altMessage: "Elegant Gondar style evening dress"
-        }
-    ]
+    const {newArrival, isLoading, isError, message} = useSelector((state) => state.product);
+    const dispatch = useDispatch();
     const NextArrow = ({ onClick }) => (
         <button
             onClick={onClick}
@@ -117,6 +62,12 @@ const NewArrives = () => {
         ]
     }
 
+
+    // Fetch newArrival
+    useEffect(() => {
+       dispatch(getNewArrival());
+    }, [dispatch])
+
     return (
         <div className="container mx-auto px-4 py-16">
             {/* Header  */}
@@ -130,28 +81,28 @@ const NewArrives = () => {
             </div>
 
             <div className="relative px-10">
-                <Slider {...settings}>
-                    {newArrives.map(product => (
-                        <div key={product._id} className="px-3">
-                            <div className="group cursor-pointer">
-                                <div className="relative overflow-hidden rounded-lg mb-4">
-                                    <img 
-                                        src={product.image} 
-                                        alt={product.altMessage}
-                                        className="w-full h-[350px] object-cover transition-transform duration-500 group-hover:scale-110"
-                                    />
-                                    <span className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-sm">
-                                        New
-                                    </span>
-                                </div>
-                                <div className="space-y-2">
-                                    <h3 className="text-lg font-medium exo-font truncate">{product.name}</h3>
-                                    <p className="text-pink-500 yuji-font">${product.price}</p>
-                                </div>
+                {isLoading ? (
+                    <div className="flex justify-center items-center py-20">
+                        <ImSpinner2 className="animate-spin text-pink-500 text-5xl" />
+                    </div>
+                ) : isError ? (
+                    <div className="text-center py-16 rounded-lg">
+                        <p className="text-red-500 font-medium text-lg">{isError ||"Something went wrong. Please try again later."}</p>
+                    </div>
+                ) : newArrival && newArrival.length > 0 ? (
+                    <Slider {...settings}>
+                        {newArrival.map(product => (
+                            <div key={product._id} className="px-2">
+                                <ProductCard product={product} />
                             </div>
-                        </div>
-                    ))}
-                </Slider>
+                        ))}
+                    </Slider>
+                ) : (
+                    <div className="text-center py-16 bg-gray-50 rounded-lg">
+                        <p className="text-gray-500 font-medium text-lg">No new arrivals available at the moment.</p>
+                        <p className="text-gray-400 mt-2">Check back soon for our latest products!</p>
+                    </div>
+                )}
             </div>
         </div>
     )
