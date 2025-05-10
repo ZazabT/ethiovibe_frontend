@@ -13,13 +13,13 @@ const ProductCard = ({ product }) => {
           <div className="group cursor-pointer">
             <div className="relative overflow-hidden mb-4">
               <img 
-                src={product.images[0]} 
+                src={product.images[0].url} 
                 alt={product.name}
                 className="w-full h-[400px] object-cover transition-transform duration-500 group-hover:scale-110"
               />
-              {product.discount && (
+              {product.discountPercentage && (
               <div className="absolute top-4 left-0 bg-pink-400 text-white px-4 py-1 text-sm font-medium">
-                {product.discount.percentage}% OFF
+                {product.discountPercentage}% OFF
               </div>
             )}
             </div>

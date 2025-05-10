@@ -1,131 +1,59 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import Hero from '../components/layout/Hero'
 import Categories from '../components/product/Categories'
 import NewArrives from '../components/product/NewArrives'
 import ProductDetails from '../components/product/ProductDetails'
 import ProductCard from '../components/product/ProductCard'
 import Feature from '../components/product/Feature'
+import { getBestSelling } from '../redux/slices/product.slice'
+import { useDispatch , useSelector } from 'react-redux'
+import { ImSpinner2 } from "react-icons/im";
+import { BiCommentError } from "react-icons/bi";
+import axios from 'axios'
 // import { FaStar } from 'react-icons/fa'
 const Home = () => {
- // Similar Products Array
- const recommendedProducts = [
-  {
-    _id: "p002",
-    name: "Traditional Habesha Dress",
-    price: 199.99,
-    description: "Elegant traditional Ethiopian dress",
-    images: [
-      "https://images.unsplash.com/photo-1594633313593-bab3825d0caf",
-      "https://images.unsplash.com/photo-1594633313593-bab3825d0caf",
-    ],
-    rating: 4.6,
-    reviews: 89,
-    discount: {
-      percentage: 10,
-      validUntil: "2024-03-01"
-    }
-  },
-  {
-    _id: "p003",
-    name: "Ethiopian Jewelry Set",
-    price: 149.99,
-    description: "Traditional Ethiopian jewelry set",
-    images: [
-      "https://images.unsplash.com/photo-1602173574767-37ac01994b2a",
-      "https://images.unsplash.com/photo-1602173574767-37ac01994b2a",
-    ],
-    rating: 4.9,
-    reviews: 156,
-  },
-  {
-    _id: "p004",
-    name: "Handwoven Scarf",
-    price: 79.99,
-    description: "Traditional Ethiopian cotton scarf",
-    images: [
-      "https://images.unsplash.com/photo-1601244005535-a48d21d951ac",
-      "https://images.unsplash.com/photo-1601244005535-a48d21d951ac",
-    ],
-    rating: 4.7,
-    reviews: 92,
-    discount: {
-      percentage: 15,
-      validUntil: "2024-03-01"
-    }
-  },
-  {
-    _id: "p005",
-    name: "Traditional Shoes",
-    price: 89.99,
-    description: "Handcrafted Ethiopian leather shoes",
-    images: [
-      "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a",
-      "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a",
-    ],
-    rating: 4.8,
-    reviews: 78,
-  },
-];
+  const baseUrl = import.meta.env.VITE_BACKEND_URL;
+  const dispatch = useDispatch();
+ 
+  // States for best selling products
+  const [bestSelling, setBestSelling] = useState(null);
+  const [isBestSellingLoading, setIsBestSellingLoading] = useState(false);
+  const [bestSellingError, setBestSellingError] = useState(null);
+  
+  // States for other categories
+  const [otherCategories, setOtherCategories] = useState([]);
+  const [isOtherCategoriesLoading, setIsOtherCategoriesLoading] = useState(false);
+  const [otherCategoriesError, setOtherCategoriesError] = useState(null);
 
-  // Top Other Categories Array
-  const otherCategories = [
-    {
-      _id: "c001",
-      name: "Ethiopian Electronics",
-      price: 299.99,
-      description: "Modern electronics with Ethiopian design",
-      images: [
-        "https://images.unsplash.com/photo-1468495244123-6c6c332eeece",
-        "https://images.unsplash.com/photo-1468495244123-6c6c332eeece",
-      ],
-      rating: 4.5,
-      reviews: 65,
-      discount: {
-        percentage: 20,
-        validUntil: "2024-03-01"
+  useEffect(() => {
+    const fetchBestSelling = async () => {
+      setIsBestSellingLoading(true);
+      try {
+        const response = await axios.get(`${baseUrl}/api/products/best-selling`);
+        setBestSelling(response.data.bestSellingProduct);
+      } catch (error) {
+        setBestSellingError(error.message || 'Failed to fetch best selling products');
+      } finally {
+        setIsBestSellingLoading(false);
       }
-    },
-    {
-      _id: "c002",
-      name: "Traditional Hats",
-      price: 59.99,
-      description: "Authentic Ethiopian headwear",
-      images: [
-        "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a",
-        "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a",
-      ],
-      rating: 4.7,
-      reviews: 43,
-    },
-    {
-      _id: "c003",
-      name: "Silver Chain Set",
-      price: 199.99,
-      description: "Handcrafted Ethiopian silver chains",
-      images: [
-        "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f",
-        "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f",
-      ],
-      rating: 4.9,
-      reviews: 91,
-      discount: {
-        percentage: 10,
-        validUntil: "2024-03-01"
+    };
+
+    const fetchOtherCategories = async () => {
+      setIsOtherCategoriesLoading(true);
+      try {
+        const response = await axios.get(`${baseUrl}/api/products/other-products`);
+        setOtherCategories(response.data.otherProducts || []);
+      } catch (error) {
+        setOtherCategoriesError(error.message || 'Failed to fetch other categories');
+      } finally {
+        setIsOtherCategoriesLoading(false);
       }
-    },
-    {
-      _id: "c004",
-      name: "Home Decor",
-      price: 149.99,
-      description: "Ethiopian traditional home decorations",
-      images: [
-        "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
-        "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
-      ],
-      rating: 4.6,
-      reviews: 87,
-    },
-  ];
+    };
+
+    fetchBestSelling();
+    fetchOtherCategories();
+  }, [baseUrl]);
+
   return (
     <div>
         {/* Hero */}
@@ -148,46 +76,46 @@ const Home = () => {
                     <span className="w-10 h-[2px] bg-pink-500"/>
                 </div>
           </div>
-           <ProductDetails/>
-        </div>
-
-        {/* Products You May Like Section */}
-      <div className="py-16 mx-auto max-w-6xl">
-        <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-                <h2 className="md:text-4xl text-xl yuji-font font-semibold mb-4">Similar Products</h2>
-                <div className="flex items-center justify-center gap-4">
-                    <span className="w-10 h-[2px] bg-pink-500"/>
-                    <p className=" md:text-xl text-sm text-gray-600">You May Also Like</p>
-                    <span className="w-10 h-[2px] bg-pink-500"/>
-                </div>
+          {
+          isBestSellingLoading ? (
+            <div className="flex justify-center items-center py-20">
+              <ImSpinner2 className="animate-spin text-pink-500 text-5xl" />
             </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {recommendedProducts.map(product => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+          ) : bestSellingError ? (
+            <div className="text-center py-16 rounded-lg">
+              <p className="text-red-500 font-medium text-lg">{bestSellingError}</p>
+            </div>
+          ) : bestSelling && bestSelling._id ? (
+            <ProductDetails productId={bestSelling._id} />
+          ) : (
+            <div className="text-center py-12 max-w-2xl mx-auto border border-gray-100 rounded-4xl shadow-md overflow-hidden">
+            {/* Empty state content remains the same */}
           </div>
-        </div>
+        )}
       </div>
 
-       {/* Top oters catagories */}
-       <div className="py-16 mx-auto max-w-7xl">
+      {/* Other Categories Section */}
+      <div className="py-16 mx-auto max-w-7xl">
         <div className="container mx-auto px-4">
-          {/* Header */}
-         <div className="text-center mb-12">
-                <h2 className="md:text-4xl text-xl yuji-font font-semibold mb-4">Other Products</h2>
-                <div className="flex items-center justify-center gap-4">
-                    <span className="w-10 h-[2px] bg-pink-500"/>
-                    <p className=" md:text-xl text-sm text-gray-600">Our Defferent Categories</p>
-                    <span className="w-10 h-[2px] bg-pink-500"/>
-                </div>
-          </div>
-         
-      
+          {/* Header remains the same */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {otherCategories.map(product => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+            {isOtherCategoriesLoading ? (
+              <div className="col-span-full flex justify-center items-center py-20">
+                <ImSpinner2 className="animate-spin text-pink-500 text-5xl" />
+              </div>
+            ) : otherCategoriesError ? (
+              <div className="col-span-full text-center py-16 rounded-lg">
+                <p className="text-red-500 font-medium text-lg">{otherCategoriesError}</p>
+              </div>
+            ) : otherCategories.length > 0 ? (
+              otherCategories.map(product => (
+                <ProductCard key={product._id} product={product} />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <p className="text-gray-500">No other categories available</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

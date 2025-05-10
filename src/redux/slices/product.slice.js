@@ -67,7 +67,7 @@ const initialState = {
     products: [],
     selectedProduct: null,
     similarProducts: [],
-    bestSelling: [],
+    bestSelling: null,
     newArrival: [],
     productOtherCategories: [],
     isLoading: false,
@@ -134,7 +134,7 @@ const productSlice = createSlice({
 
             .addCase(getBestSelling.pending, handlePending)
             .addCase(getBestSelling.fulfilled, (state, action) => {
-                state.bestSelling = Array.isArray(action.payload) ? action.payload : [];
+                state.bestSelling = action.payload;
                 state.isLoading = false;
             })
             .addCase(getBestSelling.rejected, handleRejected)

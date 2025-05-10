@@ -6,11 +6,10 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import {useDispatch , useSelector} from 'react-redux'
 import { getNewArrival } from '../../redux/slices/product.slice'
 import ProductCard from '../product/ProductCard'
-import { ImSpinner10 } from "react-icons/im";
 import { ImSpinner2 } from "react-icons/im";
-
+import { BiCommentError } from "react-icons/bi";
 const NewArrives = () => {
-    const {newArrival, isLoading, isError, message} = useSelector((state) => state.product);
+    const {newArrival, isLoading, isError} = useSelector((state) => state.product);
     const dispatch = useDispatch();
     const NextArrow = ({ onClick }) => (
         <button
@@ -98,9 +97,19 @@ const NewArrives = () => {
                         ))}
                     </Slider>
                 ) : (
-                    <div className="text-center py-16 bg-gray-50 rounded-lg">
-                        <p className="text-gray-500 font-medium text-lg">No new arrivals available at the moment.</p>
-                        <p className="text-gray-400 mt-2">Check back soon for our latest products!</p>
+                    <div className="text-center py-12 max-w-2xl mx-auto  rounded-4xl border border-gray-100 shadow-md overflow-hidden">
+                        <div className="relative flex flex-col items-center justify-center gap-5 px-4">
+                            <div className="w-20 h-20 rounded-full bg-pink-50 flex items-center justify-center shadow-inner border border-pink-100 transform transition-all duration-500 hover:scale-110">
+                                <BiCommentError className="text-pink-500 text-3xl" />
+                            </div>
+                            <h3 className="text-gray-800 font-semibold text-2xl yuji-font">No new arrivals yet</h3>
+                            <p className="text-gray-600 max-w-md leading-relaxed">We're working on adding exciting new products to our collection. Check back soon for fresh Ethiopian treasures!</p>
+                            <div className="mt-4 flex space-x-2">
+                                <span className="inline-block w-2 h-2 rounded-full bg-pink-300 animate-pulse"></span>
+                                <span className="inline-block w-2 h-2 rounded-full bg-pink-400 animate-pulse delay-100"></span>
+                                <span className="inline-block w-2 h-2 rounded-full bg-pink-500 animate-pulse delay-200"></span>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>
