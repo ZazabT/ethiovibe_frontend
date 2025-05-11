@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import SearchBar from '../common/SearchBar';
 import { GiHamburgerMenu } from "react-icons/gi";
 import CatrDrawer from '../cart/CatrDrawer';
-
+import { useDispatch , useSelector} from 'react-redux';
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -21,6 +21,7 @@ const NavBar = () => {
     { to: '/collections/all?category=other', label: 'Others' },
   ];
 
+  const { cart } = useSelector( (state) => state.cart);
   return (
     <>
       <nav className='container mx-auto my-2 flex py-4 px-10 justify-between'>
@@ -55,7 +56,7 @@ const NavBar = () => {
             <SearchBar />
             <button onClick={toggleCart} className='relative hover:text-pink-500 transition-colors'>
               <FaShoppingCart className='text-xl' />
-              <span className='absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center'>0</span>
+              <span className='absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center'>{cart.products.length}</span>
             </button>
             <Link to='/profile' className='hover:text-pink-500 transition-colors'>
               <FaUser className='text-xl' />
@@ -67,7 +68,7 @@ const NavBar = () => {
         <div className='md:hidden flex items-center gap-4'>
           <button onClick={toggleCart} className='relative hover:text-pink-500 transition-colors'>
             <FaShoppingCart className='text-xl'  />
-            <span className='absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center'>0</span>
+            <span className='absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center'>{cart.products.length}</span>
           </button>
           <motion.button
             onClick={() => setIsMenuOpen(!isMenuOpen)}

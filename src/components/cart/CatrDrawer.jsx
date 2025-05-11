@@ -4,13 +4,20 @@ import { FaTimes } from 'react-icons/fa';
 import CartCard from './CartCard';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch , useSelector} from 'react-redux';
 
 const CartDrawer = ({ isOpen, toggleCart }) => {
   const navigate = useNavigate();
-
+  const { guestId , user} = useSelector( (state) => state.auth);
+  const {cart} = useSelector( (state) => state.cart);
+  const userId = user ? user._id : null ;
   const handleCheckout = () => {
-    toggleCart(); // Close the drawer
-    navigate('/checkout'); // Navigate to checkout
+    toggleCart();
+    if(!user) {
+      navigate('/login?redirect=checkout');
+    }else{
+      navigate('/checkout'); 
+    }
   };
   // Demo products (move this to a separate file or state management in a real app)
   const [products, setProducts] = useState([
@@ -63,7 +70,7 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
     setProducts(products.filter(p => p.id !== id));
   };
 
-  const subtotal = products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+  const subtotal =cart.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
 
   return (
     <AnimatePresence>
@@ -92,7 +99,7 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
                   <div className="text-center flex-1">
                     <h2 className="text-xl font-semibold tracking-wide">SHOPPING BAG</h2>
                     <p className="text-sm text-gray-500 mt-1">
-                      {products.length} {products.length === 1 ? 'item' : 'items'}
+                      {cart.products.length} {cart.products.length === 1 ? 'item' : 'items'}
                     </p>
                   </div>
 
@@ -112,12 +119,14 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
               <div className="flex-1 overflow-y-auto p-6">
                 <AnimatePresence>
                   <div className="space-y-4">
-                    {products.map((product) => (
+                    {cart.products.map((product) => (
                       <CartCard
-                        key={product.id}
+                        key={product.productId}
                         product={product}
                         onQuantityChange={handleQuantityChange}
                         onRemove={handleRemove}
+                        userId={userId}
+                        guestId={guestId}
                       />
                     ))}
                   </div>
