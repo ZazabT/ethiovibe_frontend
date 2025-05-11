@@ -6,16 +6,27 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 // Get all products (with filters)
 export const getAllProducts = createAsyncThunk(
-    "product/getAllProducts",
-    async (filters) => {
+    'product/getAllProducts',
+    async (filters, thunkAPI) => {
+      try {
         const query = new URLSearchParams();
         Object.entries(filters).forEach(([key, value]) => {
-            if (value) query.append(key, value);
+          if (value) query.append(key, value);
         });
+  
         const response = await axios.get(`${BASE_URL}/api/products?${query}`);
         return response.data.products;
+      } catch (error) {
+        // Log the error details for debugging
+        console.error('Error fetching products:', error);
+  
+        // Optionally, you can use rejectWithValue to pass a custom error message
+        return thunkAPI.rejectWithValue(
+          error.response?.data?.message || 'Failed to fetch products'
+        );
+      }
     }
-);
+  );
 
 // Get product details
 export const getProductDetails = createAsyncThunk(

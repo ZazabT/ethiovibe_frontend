@@ -12,12 +12,12 @@ const Filtersidebar = ({ onClose }) => {
     color: '',
     material: [],
     minPrice: 0,
-    maxPrice: 10000,
+    maxPrice: 100000,
   });
 
   const [priceRange, setPriceRange] = useState({
     min: 0,
-    max: 10000,
+    max: 100000,
   });
 
   // Categories
@@ -46,7 +46,7 @@ const Filtersidebar = ({ onClose }) => {
 
   // Sizes
   const sizes = [
-    { id: 2, name: 'XS' },
+    { id: 1, name: 'XS' },
     { id: 2, name: 'S' },
     { id: 3, name: 'M' },
     { id: 4, name: 'L' },
@@ -74,7 +74,7 @@ const Filtersidebar = ({ onClose }) => {
     { id: 3, name: 'wool' },
     { id: 4, name: 'denim' },
     { id: 5, name: 'leather' },
-    { id: 7, name: 'silk' },
+    { id: 6, name: 'silk' },
     { id: 7, name: 'other' },
   ];
 

@@ -1,274 +1,37 @@
-import React, { useState, useEffect , useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { MdFilterList } from "react-icons/md";
 import Filtersidebar from '../components/product/Filtersidebar'
 import ProductCard from '../components/product/ProductCard';
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams ,useLocation} from 'react-router-dom';
+import { ImSpinner2 } from 'react-icons/im';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllProducts } from '../redux/slices/product.slice';
+
 const Collection = () => {
-  const [products, setProducts] = useState([])
-  const [loading, setLoading] = useState(true)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
-  const [sortBy, setSortBy] = useState('newest')
   const sideBarRef = useRef(null)
-  const [searchParams , setSearchParams] = useSearchParams()
-
-  // Sort products based on selected option
-  const sortProducts = (products, sortType) => {
-    const sortedProducts = [...products]
-    switch (sortType) {
-      case 'price-low':
-        return sortedProducts.sort((a, b) => a.price - b.price)
-      case 'price-high':
-        return sortedProducts.sort((a, b) => b.price - a.price)
-      case 'rating':
-        return sortedProducts.sort((a, b) => b.rating - a.rating)
-      case 'popular':
-        return sortedProducts.sort((a, b) => b.reviews - a.reviews)
-      default:
-        return sortedProducts
-    }
-  }
+ const {pathname } = useLocation()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { collection } = useParams()
+  const dispatch = useDispatch()
+  const { isLoading, isError, products } = useSelector((state) => state.product)
+  
+  const queryParams = Object.fromEntries(searchParams.entries());
 
   useEffect(() => {
-    // Simulate API fetch
-    setTimeout(() => {
-        const Products = [
-            {
-              _id: "p002",
-              name: "Traditional Habesha Dress",
-              price: 199.99,
-              description: "Elegant traditional Ethiopian dress",
-              images: [
-                "https://images.unsplash.com/photo-1594633313593-bab3825d0caf",
-                "https://images.unsplash.com/photo-1594633313593-bab3825d0caf",
-              ],
-              rating: 4.6,
-              reviews: 89,
-              discount: {
-                percentage: 10,
-                validUntil: "2024-03-01"
-              }
-            },
-            {
-              _id: "p003",
-              name: "Ethiopian Jewelry Set",
-              price: 149.99,
-              description: "Traditional Ethiopian jewelry set",
-              images: [
-                "https://images.unsplash.com/photo-1602173574767-37ac01994b2a",
-                "https://images.unsplash.com/photo-1602173574767-37ac01994b2a",
-              ],
-              rating: 4.9,
-              reviews: 156,
-            },
-            {
-              _id: "p004",
-              name: "Handwoven Scarf",
-              price: 79.99,
-              description: "Traditional Ethiopian cotton scarf",
-              images: [
-                "https://images.unsplash.com/photo-1601244005535-a48d21d951ac",
-                "https://images.unsplash.com/photo-1601244005535-a48d21d951ac",
-              ],
-              rating: 4.7,
-              reviews: 92,
-              discount: {
-                percentage: 15,
-                validUntil: "2024-03-01"
-              }
-            },
-            {
-              _id: "p005",
-              name: "Traditional Shoes",
-              price: 89.99,
-              description: "Handcrafted Ethiopian leather shoes",
-              images: [
-                "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a",
-                "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a",
-              ],
-              rating: 4.8,
-              reviews: 78,
-            },
-            {
-                _id: "c001",
-                name: "Ethiopian Electronics",
-                price: 299.99,
-                description: "Modern electronics with Ethiopian design",
-                images: [
-                  "https://images.unsplash.com/photo-1468495244123-6c6c332eeece",
-                  "https://images.unsplash.com/photo-1468495244123-6c6c332eeece",
-                ],
-                rating: 4.5,
-                reviews: 65,
-                discount: {
-                  percentage: 20,
-                  validUntil: "2024-03-01"
-                }
-              },
-              {
-                _id: "c002",
-                name: "Traditional Hats",
-                price: 59.99,
-                description: "Authentic Ethiopian headwear",
-                images: [
-                  "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a",
-                  "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a",
-                ],
-                rating: 4.7,
-                reviews: 43,
-              },
-              {
-                _id: "c003",
-                name: "Silver Chain Set",
-                price: 199.99,
-                description: "Handcrafted Ethiopian silver chains",
-                images: [
-                  "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f",
-                  "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f",
-                ],
-                rating: 4.9,
-                reviews: 91,
-                discount: {
-                  percentage: 10,
-                  validUntil: "2024-03-01"
-                }
-              },
-              {
-                _id: "c004",
-                name: "Home Decor",
-                price: 149.99,
-                description: "Ethiopian traditional home decorations",
-                images: [
-                  "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
-                  "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
-                ],
-                rating: 4.6,
-                reviews: 87,
-              },
-              {
-                _id: "p002",
-                name: "Traditional Habesha Dress",
-                price: 199.99,
-                description: "Elegant traditional Ethiopian dress",
-                images: [
-                  "https://images.unsplash.com/photo-1594633313593-bab3825d0caf",
-                  "https://images.unsplash.com/photo-1594633313593-bab3825d0caf",
-                ],
-                rating: 4.6,
-                reviews: 89,
-                discount: {
-                  percentage: 10,
-                  validUntil: "2024-03-01"
-                }
-              },
-              {
-                _id: "p003",
-                name: "Ethiopian Jewelry Set",
-                price: 149.99,
-                description: "Traditional Ethiopian jewelry set",
-                images: [
-                  "https://images.unsplash.com/photo-1602173574767-37ac01994b2a",
-                  "https://images.unsplash.com/photo-1602173574767-37ac01994b2a",
-                ],
-                rating: 4.9,
-                reviews: 156,
-              },
-              {
-                _id: "p004",
-                name: "Handwoven Scarf",
-                price: 79.99,
-                description: "Traditional Ethiopian cotton scarf",
-                images: [
-                  "https://images.unsplash.com/photo-1601244005535-a48d21d951ac",
-                  "https://images.unsplash.com/photo-1601244005535-a48d21d951ac",
-                ],
-                rating: 4.7,
-                reviews: 92,
-                discount: {
-                  percentage: 15,
-                  validUntil: "2024-03-01"
-                }
-              },
-              {
-                _id: "p005",
-                name: "Traditional Shoes",
-                price: 89.99,
-                description: "Handcrafted Ethiopian leather shoes",
-                images: [
-                  "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a",
-                  "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a",
-                ],
-                rating: 4.8,
-                reviews: 78,
-              },
-              {
-                  _id: "c001",
-                  name: "Ethiopian Electronics",
-                  price: 299.99,
-                  description: "Modern electronics with Ethiopian design",
-                  images: [
-                    "https://images.unsplash.com/photo-1468495244123-6c6c332eeece",
-                    "https://images.unsplash.com/photo-1468495244123-6c6c332eeece",
-                  ],
-                  rating: 4.5,
-                  reviews: 65,
-                  discount: {
-                    percentage: 20,
-                    validUntil: "2024-03-01"
-                  }
-                },
-                {
-                  _id: "c002",
-                  name: "Traditional Hats",
-                  price: 59.99,
-                  description: "Authentic Ethiopian headwear",
-                  images: [
-                    "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a",
-                    "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a",
-                  ],
-                  rating: 4.7,
-                  reviews: 43,
-                },
-                {
-                  _id: "c003",
-                  name: "Silver Chain Set",
-                  price: 199.99,
-                  description: "Handcrafted Ethiopian silver chains",
-                  images: [
-                    "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f",
-                    "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f",
-                  ],
-                  rating: 4.9,
-                  reviews: 91,
-                  discount: {
-                    percentage: 10,
-                    validUntil: "2024-03-01"
-                  }
-                },
-                {
-                  _id: "c004",
-                  name: "Home Decor",
-                  price: 149.99,
-                  description: "Ethiopian traditional home decorations",
-                  images: [
-                    "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
-                    "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
-                  ],
-                  rating: 4.6,
-                  reviews: 87,
-                },
-          ];
-      
-      setProducts(Products);
-      setLoading(false);
-    }, 1500); // 1.5 second delay to simulate network request
-  }, []);
+    dispatch(getAllProducts({ collection, ...queryParams }));
+    // Scroll to top when products are being fetched
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }, [dispatch, collection, searchParams]);
 
+  // Remove the pathname-based scroll effect since we want to scroll on data fetch
   useEffect(() => {
-    const sortParam = searchParams.get('sort');
-    if (sortParam) {
-      setSortBy(sortParam);
-    }
-  }, [searchParams]);
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
 
   useEffect(() => {
     // Add event listener to close the sidebar when clicking outside
@@ -279,6 +42,11 @@ const Collection = () => {
       document.removeEventListener('mousedown', handleClickOutSide);
     };
   }, []);
+
+  // go to topof the page 
+  useEffect( () => {
+   window.scrollTo(0 ,0 );
+  } , [pathname])
   
   const handleClickOutSide = (event) =>{
     // close sidebar when clicking outside
@@ -293,17 +61,9 @@ const Collection = () => {
 
   const handleSortChange = (event) => {
     const newSortBy = event.target.value;
-    setSortBy(newSortBy);
     searchParams.set('sort', newSortBy);
     setSearchParams(searchParams);
   };
-
-
-
-
-
-  const displayProducts = sortProducts(products, sortBy)
-
 
   return (
     <div className='min-h-screen'>
@@ -365,18 +125,22 @@ const Collection = () => {
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
-            {loading ? (
-              <div className="col-span-full h-64 flex justify-center items-center">
-                <div className="animate-spin rounded-full h-16 w-16 border-4 border-pink-500 border-t-transparent"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {isLoading ? (
+              <div className="col-span-full h-[50vh] flex justify-center items-center">
+                <ImSpinner2 className="animate-spin text-pink-500 text-5xl" />
               </div>
-            ) : displayProducts.length === 0 ? (
+            ) : isError ? (
+              <div className="col-span-full  h-[50vh] flex justify-center items-center">
+                <h3 className="text-xl font-medium text-red-600">{isError}</h3>
+              </div>
+            ) : !products?.length ? (
               <div className="col-span-full text-center py-12">
                 <h3 className="text-xl font-medium text-gray-600">No products found</h3>
                 <p className="text-gray-500 mt-2">Try adjusting your filters</p>
               </div>
             ) : (
-              displayProducts.map((product) => (
+              products.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))
             )}
@@ -384,7 +148,7 @@ const Collection = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Collection
