@@ -12,10 +12,12 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
   const {cart} = useSelector( (state) => state.cart);
   const userId = user ? user._id : null ;
   const dispatch = useDispatch();
+
+
   const handleCheckout = () => {
     toggleCart();
     if(!user) {
-      navigate('/login?redirect=checkout');
+      navigate('/login');
     }else{
       navigate('/checkout'); 
     }

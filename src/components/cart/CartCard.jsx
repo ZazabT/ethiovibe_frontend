@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FaTrash, FaPlus, FaMinus } from 'react-icons/fa';
 
-const CartCard = ({ product, onQuantityChange, onRemove }) => {
+const CartCard = ({ product, onQuantityChange, onRemove}) => {
   return (
     <motion.div
       layout

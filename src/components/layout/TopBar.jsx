@@ -81,7 +81,7 @@ const TopBar = () => {
 
           {/* Slogan */}
           <motion.div 
-            className="yuji-font text-pink-400 text-sm md:text-lg cursor-pointer text-center mx-2"
+            className="yuji-font text-pink-400 flex-1 text-sm md:text-lg cursor-pointer text-center mx-2"
             variants={sloganVariants}
             initial="initial"
             animate="animate"

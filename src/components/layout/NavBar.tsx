@@ -6,6 +6,8 @@ import SearchBar from '../common/SearchBar';
 import { GiHamburgerMenu } from "react-icons/gi";
 import CatrDrawer from '../cart/CatrDrawer';
 import { useDispatch , useSelector} from 'react-redux';
+import {  FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { logout } from '../../redux/slices/auth.slice'
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -23,6 +25,12 @@ const NavBar = () => {
 
   const { cart } = useSelector( (state) => state.cart);
   const { user ,guestId } = useSelector( (state) => state.auth);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
     <>
       <nav className='container mx-auto my-2 flex py-4 px-10 justify-between'>
@@ -59,9 +67,71 @@ const NavBar = () => {
               <FaShoppingCart className='text-xl' />
               <span className='absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center'>{cart.products.length}</span>
             </button>
-            <Link to='/profile' className='hover:text-pink-500 transition-colors'>
-              <FaUser className='text-xl' />
-            </Link>
+            
+            {user ? (
+              <div className="relative group">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center space-x-3 px-3 py-2 cursor-pointer rounded-lg bg-gray-50/50 backdrop-blur-sm hover:bg-white transition-all duration-300 hover:shadow-lg"
+                >
+                  <motion.div 
+                    whileHover={{ rotate: 5 }}
+                    className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center text-white font-semibold shadow-md ring-2 ring-pink-200"
+                  >
+                    {user.name.charAt(0).toUpperCase()}
+                  </motion.div>
+                  <div className="hidden md:flex flex-col leading-tight">
+                    <motion.span 
+                      className="text-sm font-medium text-gray-900"
+                      whileHover={{ color: '#EC4899' }}
+                    >
+                      {user.name}
+                    </motion.span>
+                    <span className="text-xs text-gray-500 truncate max-w-[150px]">
+                      {user.email}
+                    </span>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute right-0 mt-1 w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl py-2 hidden group-hover:block z-50 border border-gray-100"
+                >
+                  <Link to="/profile" className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-500 transition-colors">
+                    <FaUser className="mr-3 text-xs" />
+                    My Profile
+                  </Link>
+                  {user.role === 'admin' && (
+                    <Link to="/admin" className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-500 transition-colors">
+                      <FaCog className="mr-3 text-xs" />
+                      Admin Dashboard
+                    </Link>
+                  )}
+                  <div className="h-[1px] bg-gray-100 my-1"></div>
+                  <button 
+                    onClick={handleLogout}
+                    className="w-full flex items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                  >
+                    <FaSignOutAlt className="mr-3 text-xs" />
+                    Logout
+                  </button>
+                </motion.div>
+              </div>
+            ) : (
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link 
+                  to="/login" 
+                  className="px-4 py-2 bg-white text-pink-500 font-medium rounded-full border-2 border-pink-500 hover:bg-pink-500 hover:text-white transition-all duration-600 flex items-center space-x-2 shadow-md hover:shadow-pink-200"
+                >
+                  <FaUser className="text-sm" />
+                  <span>Login</span>
+                </Link>
+              </motion.div>
+            )}
           </div>
         </div>
 
@@ -146,6 +216,8 @@ const NavBar = () => {
       <CatrDrawer isOpen={isCartOpen} toggleCart={toggleCart} />
     </>
   );
+
+ 
 };
 
 export default NavBar;
