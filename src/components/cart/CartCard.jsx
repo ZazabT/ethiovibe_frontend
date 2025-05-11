@@ -42,7 +42,7 @@ const CartCard = ({ product, onQuantityChange, onRemove }) => {
           <div className="flex items-center border rounded-lg overflow-hidden">
             <motion.button 
               whileTap={{ scale: 0.95 }}
-              onClick={() => onQuantityChange(product.id, product.quantity - 1)}
+              onClick={() => onQuantityChange(product.productId,  - 1 , product.size , product.color)}
               className="px-2 py-1 hover:bg-gray-50 transition-colors"
               disabled={product.quantity <= 1}
             >
@@ -53,7 +53,7 @@ const CartCard = ({ product, onQuantityChange, onRemove }) => {
             </span>
             <motion.button 
               whileTap={{ scale: 0.95 }}
-              onClick={() => onQuantityChange(product.id, product.quantity + 1)}
+              onClick={() => onQuantityChange(product.productId,  1 , product.size , product.color)}
               className="px-2 py-1 hover:bg-gray-50 transition-colors"
             >
               <FaPlus className="text-xs text-gray-500" />
@@ -62,7 +62,7 @@ const CartCard = ({ product, onQuantityChange, onRemove }) => {
 
           <motion.button
             whileTap={{ scale: 0.95 }}
-            onClick={() => onRemove(product.id)}
+            onClick={() => onRemove(product.productId, product.size , product.color)}
             className="text-xs text-gray-400 hover:text-red-500 transition-colors flex items-center gap-1.5"
           >
             <FaTrash size={10} />

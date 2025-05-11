@@ -5,12 +5,13 @@ import CartCard from './CartCard';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch , useSelector} from 'react-redux';
-
+import { updateCartQuantity ,removeFromCart , } from '../../redux/slices/cart.slice';
 const CartDrawer = ({ isOpen, toggleCart }) => {
   const navigate = useNavigate();
   const { guestId , user} = useSelector( (state) => state.auth);
   const {cart} = useSelector( (state) => state.cart);
   const userId = user ? user._id : null ;
+  const dispatch = useDispatch();
   const handleCheckout = () => {
     toggleCart();
     if(!user) {
@@ -19,55 +20,25 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
       navigate('/checkout'); 
     }
   };
-  // Demo products (move this to a separate file or state management in a real app)
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "Traditional Habesha Kemis",
-      price: 299.99,
-      image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1",
-      quantity: 1,
-      size: "M",
-      color: "White"
-    },
-    {
-      id: 2,
-      name: "Ethiopian Coffee Dress",
-      price: 199.99,
-      image: "https://images.unsplash.com/photo-1618244972963-dbee1a7edc95",
-      quantity: 2,
-      size: "L",
-      color: "Gold"
-    },
-    {
-      id: 3,
-      name: "Eritrean Traditional Zuria",
-      price: 259.99,
-      image: "https://images.unsplash.com/photo-1516575334481-f85287c2c82d",
-      quantity: 1,
-      size: "S",
-      color: "Red"
-    },
-    {
-      id: 5,
-      name: "Modern Habesha Kemis",
-      price: 279.99,
-      image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8",
-      quantity: 1,
-      size: "L",
-      color: "Black"
-    }
-  ]);
 
-  const handleQuantityChange = (id, newQuantity) => {
-    if (newQuantity < 1) return;
-    setProducts(products.map(p => 
-      p.id === id ? { ...p, quantity: newQuantity } : p
-    ));
+  const handleQuantityChange = (productId, delta, size, color) => {
+    const quantity = cart.products.find(p => p.productId === productId)?.quantity || 0;
+    const newQuantity = quantity + delta;
+    
+    if (newQuantity > 0) {
+      dispatch(updateCartQuantity({ 
+        productId, 
+        quantity : newQuantity, 
+        size,
+        color,
+        guestId, 
+        userId 
+      }));
+    }
   };
 
-  const handleRemove = (id) => {
-    setProducts(products.filter(p => p.id !== id));
+  const handleRemove = (  productId, size, color ) => {
+    dispatch(removeFromCart({ productId, size, color, guestId, userId}));
   };
 
   const subtotal =cart.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
@@ -121,13 +92,13 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
                   <div className="space-y-4">
                     {cart.products.map((product) => (
                       <CartCard
-                        key={product.productId}
-                        product={product}
-                        onQuantityChange={handleQuantityChange}
-                        onRemove={handleRemove}
-                        userId={userId}
-                        guestId={guestId}
-                      />
+                      key={`${product.productId}-${product.color}-${product.size}`}
+                      product={product}
+                      onQuantityChange={handleQuantityChange}
+                      onRemove={handleRemove}
+                      userId={userId}
+                      guestId={guestId}
+                    />
                     ))}
                   </div>
                 </AnimatePresence>

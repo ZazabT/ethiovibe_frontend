@@ -84,16 +84,16 @@ export const updateCartQuantity = createAsyncThunk("cart/updateCartQuantity", as
 export const removeFromCart = createAsyncThunk("cart/removeFromCart", async ({ productId, size, color, guestId, userId }, { rejectWithValue }) => {
 
     try {
-        const response = await axios.delete(`${BASE_URL}/api/carts`,
-            {
-                productId,
-                size,
-                color,
-                guestId,
-                userId,
-            }
-        );
-
+        await axios.delete(`${BASE_URL}/api/carts`, {
+            data: {
+              productId,
+              size,
+              color,
+              guestId,
+              userId,
+            },
+          });
+          
         return response.data.cart;
     } catch (error) {
         return rejectWithValue(error.response.data);

@@ -22,6 +22,7 @@ const NavBar = () => {
   ];
 
   const { cart } = useSelector( (state) => state.cart);
+  const { user ,guestId } = useSelector( (state) => state.auth);
   return (
     <>
       <nav className='container mx-auto my-2 flex py-4 px-10 justify-between'>
