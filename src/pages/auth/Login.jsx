@@ -5,20 +5,33 @@ import { FaEnvelope, FaLock, FaGoogle, FaFacebook } from 'react-icons/fa'
 import { PiEyeClosedThin, PiEyeThin } from "react-icons/pi";
 import { login } from "../../redux/slices/auth.slice";
 import { useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const dispatch = useDispatch();
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    dispatch(login({ email, password }));
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(login({ email, password }));
+      toast.success('Welcome back!');
+      navigate('/');
+
+      // reset states
+      setEmail('');
+      setPassword('');
+    } catch (error) {
+      toast.error('Login failed. Please check your credentials.');
+    }
 
     // Reset form fields
-    setEmail('')
-    setPassword('')
-  }
-
+    setEmail('');
+    setPassword('');
+  };
   return (
     <div className="min-h-screen flex my-10 bg-gradient-to-br from-pink-100 via-white to-white">
       {/* Left Side - Login Form */}

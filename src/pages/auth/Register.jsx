@@ -22,31 +22,24 @@ const Register = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(register({ name : userName, email, password }));
+      toast.success('Registration successful! Please login to continue.');
+      navigate('/login');
 
-    // Check if passwords match
-    if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match');
-      return;
+      // reset form fields
+      setFormData({
+        userName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      });
+    } catch (error) {
+      toast.error('Registration failed. Please try again.');
     }
-
-    const { userName, email, password } = formData;
-    dispatch(register({ name:userName, email, password }));
-
-    // // Reset form fields
-    // setFormData({
-    //   userName: '',
-    //   email: '',
-    //   password: '',
-    //   confirmPassword: ''
-    // });
-    // // Reset password visibility
-    // setShowPassword(false)
-    // setShowConfirmPassword(false)
-
-    // if registration is successful, redirect to login page
-  }
+  };
 
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-pink-100 via-white to-white">
