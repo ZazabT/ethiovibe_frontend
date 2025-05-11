@@ -62,7 +62,7 @@ const Collection = () => {
 
   const handleSortChange = (event) => {
     const newSortBy = event.target.value;
-    searchParams.set('sort', newSortBy);
+    searchParams.set('sortBy', newSortBy);
     setSearchParams(searchParams);
   };
 
@@ -109,19 +109,24 @@ const Collection = () => {
                 <p className="text-gray-600 mt-1">Showing {products.length} items</p>
               </div>
               <div className="flex items-center border border-gray-300 px-4 py-2 rounded-xl">
-                <span className="text-gray-700 font-medium">Sort by:</span>
-                <select 
-                  className="px-4 py-2 focus:outline-none"
-                  value={searchParams.get('sort') || ''}
-                  onChange={handleSortChange}
-                >
-                  <option value="newest">Newest First</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="rating">Highest Rated</option>
-                  <option value="popular">Most Popular</option>
-                </select>
-              </div>
+              <span className="text-gray-700 font-medium mr-2">Sort by:</span>
+              <select 
+                className="px-4 py-2 focus:outline-none"
+                value={searchParams.get('sortBy') || ''}
+                onChange={handleSortChange}
+              >
+                <option value="">Default</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="name-asc">Name: A to Z</option>
+                <option value="name-desc">Name: Z to A</option>
+                <option value="createdAt-desc">Newest First</option>
+                <option value="createdAt-asc">Oldest First</option>
+                <option value="popularity-desc">Most Popular</option>
+                <option value="popularity-asc">Least Popular</option>
+              </select>
+            </div>
+
             </div>
           </div>
 
