@@ -31,7 +31,7 @@ const Categories = () => {
                 <p className='dancing-font text-2xl'>Collection</p>
               </motion.div>
               <h2 className='text-5xl yuji-font mt-4'>Men's</h2>
-              <Link to="/men">
+              <Link to="/collections/all?gender=male">
                 <motion.button
                   whileHover={{ scale: 1.05, x: 10 }}
                   className='mt-6 text-sm border-b-2 pb-1 exo-font'
@@ -66,7 +66,7 @@ const Categories = () => {
                 <p className='dancing-font text-2xl'>Collection</p>
               </motion.div>
               <h2 className='text-5xl yuji-font mt-4'>Women's</h2>
-              <Link to="/women">
+              <Link to="/collections/all?gender=female">
                 <motion.button
                   whileHover={{ scale: 1.05, x: 10 }}
                   className='mt-6 text-sm border-b-2 pb-1 exo-font'
