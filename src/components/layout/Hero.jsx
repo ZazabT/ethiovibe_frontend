@@ -59,6 +59,7 @@ const Hero = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => navigate('/learn-more')}
             className="border-2 border-black px-8 py-3 rounded-full hover:bg-black hover:text-white transition-all"
           >
             Learn More

@@ -15,6 +15,7 @@ import ProductDetails from './components/product/ProductDetails'
 import CheckOut from './components/cart/CheckOut'
 import OrderCompleted from './pages/OrderCompleted'
 import OrderDetail from './pages/OrderDetail'
+import LearnMore from './pages/LearnMore'
 
 function App() {
   return (
@@ -25,12 +26,13 @@ function App() {
       <Route path='login' element={<Login/>} />
       <Route path='register' element={<Register/>} />
       <Route path='profile' element={<Profile/>} />
-      {/* <Route path='*' element={<NotFound/>} /> */}
+      <Route path='*' element={<NotFound/>} />
       <Route path='product/:id' element={<ProductDetails/>} />
       <Route path='collections/:collection' element={<Colloction/>} />
       <Route path='checkout' element={<CheckOut/>} />
       <Route path='order-confirmation' element={<OrderCompleted/>} />
       <Route path='order/:id' element={<OrderDetail/>} />
+      <Route path='/learn-more' element={<LearnMore/>}/>
       </Route>
       
       {/* AdminLayouts */}
