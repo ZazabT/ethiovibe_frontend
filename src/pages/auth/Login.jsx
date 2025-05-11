@@ -18,22 +18,34 @@ const Login = () => {
   const { isLoading } = useSelector((state) => state.auth);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Early validation for email and password
+    if (!email || !password) {
+      toast.error('Please enter both email and password.');
+      return;
+    }
+  
     try {
-      dispatch(login({ email, password }));
-      toast.success('Welcome back!');
-      navigate('/');
-
-      // reset states
+      // Dispatch the login action with email and password
+      const resultAction = await dispatch(login({ email, password }));
+  
+      if (login.fulfilled.match(resultAction)) {
+        // Assuming the user data contains a name
+        const userName = resultAction.payload?.user?.name || "User";
+        toast.success(`Welcome back, ${userName}!`);
+        navigate('/');
+      } else {
+        toast.error(resultAction.payload || 'Login failed. Please check your credentials.');
+      }
+  
+      // Reset form fields after successful login
       setEmail('');
       setPassword('');
     } catch (error) {
-      toast.error('Login failed. Please check your credentials.');
+      toast.error('Something went wrong. Please try again.');
     }
-
-    // Reset form fields
-    setEmail('');
-    setPassword('');
   };
+  
   return (
     <div className="min-h-screen flex my-10 bg-gradient-to-br from-pink-100 via-white to-white">
       {/* Left Side - Login Form */}
