@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { FaEnvelope, FaLock, FaGoogle, FaFacebook } from 'react-icons/fa'
 import { PiEyeClosedThin, PiEyeThin } from "react-icons/pi";
 import { login } from "../../redux/slices/auth.slice";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector} from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ImSpinner2 } from "react-icons/im";
