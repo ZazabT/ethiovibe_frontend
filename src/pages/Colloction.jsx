@@ -89,7 +89,7 @@ const Collection = () => {
         {/* Filter Sidebar */}
         <div 
           ref={sideBarRef}
-          className={`fixed max-h-[calc(100vh-100px)] overflow-y-auto bg-white lg:sticky top-0 left-0 w-[300px] transform transition-transform duration-300 ease-in-out z-50 lg:z-0 lg:h-screen ${
+          className={`fixed max-h-screen overflow-y-auto bg-white lg:sticky top-0 left-0 w-[300px] transform transition-transform duration-300 ease-in-out z-50 lg:z-0 lg:h-screen ${
             isFilterOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
           }`}
         >
