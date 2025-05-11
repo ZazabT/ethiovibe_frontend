@@ -15,7 +15,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading } = useSelector((state) => state.auth);
+  const { isLoading , user } = useSelector((state) => state.auth);
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -30,7 +30,7 @@ const Login = () => {
       const resultAction = await dispatch(login({ email, password }));
   
       if (login.fulfilled.match(resultAction)) {
-        // Assuming the user data contains a name
+        
         const userName = resultAction.payload?.user?.name || "User";
         toast.success(`Welcome back, ${userName}!`);
         navigate('/');

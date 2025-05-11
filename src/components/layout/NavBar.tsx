@@ -78,7 +78,7 @@ const NavBar = () => {
                     whileHover={{ rotate: 5 }}
                     className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center text-white font-semibold shadow-md ring-2 ring-pink-200"
                   >
-                    {user.name.charAt(0).toUpperCase()}
+                    {user.name?.charAt(0).toUpperCase()}
                   </motion.div>
                   <div className="hidden md:flex flex-col leading-tight">
                     <motion.span 
