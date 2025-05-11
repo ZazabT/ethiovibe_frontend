@@ -24,7 +24,7 @@ const Filtersidebar = ({ onClose }) => {
   const categories = [
     { id: 1, name: 'topwear' },
     { id: 2, name: 'underwear' },
-    { id: 3, name: 'shoes' },
+    { id: 3, name: 'children' },
     { id: 4, name: 'other' },
   ];
 

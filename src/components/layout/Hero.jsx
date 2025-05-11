@@ -2,8 +2,9 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import HeroImg from '../../assets/hero4.png'
 import { FaArrowRight } from 'react-icons/fa'
-
+import { useNavigate } from 'react-router-dom'
 const Hero = () => {
+  const navigate = useNavigate()
   return (
     <div className="container my-10 mx-auto px-4 py-12 relative overflow-hidden">
       {/* Decorative Elements */}
@@ -44,6 +45,7 @@ const Hero = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => navigate('/collections/all')}
             className="bg-black text-white px-8 py-3 rounded-full flex items-center gap-2 hover:gap-4 transition-all group"
           >
             Shop Now 

@@ -13,11 +13,12 @@ const NavBar = () => {
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 
   const navLinks = [
-    { to: '/collections/all', label: 'Men' },
-    { to: '/women', label: 'Women' },
-    { to: '/children', label: 'Children' },
-    { to: '/footwear', label: 'Footwear' },
-    { to: '/other', label: 'Others' },
+    { to: '/collections/all?gender=male', label: 'Men' },
+    { to: '/collections/all?gender=female', label: 'Women' },
+    { to: '/collections/all?category=children', label: 'Children' },
+    { to: '/collections/all?category=topwear', label: 'Topwear' },
+    { to: '/collections/all?category=underwear', label: 'Underwear' },
+    { to: '/collections/all?category=other', label: 'Others' },
   ];
 
   return (
