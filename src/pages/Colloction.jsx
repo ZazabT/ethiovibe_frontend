@@ -6,6 +6,7 @@ import { useParams, useSearchParams ,useLocation} from 'react-router-dom';
 import { ImSpinner2 } from 'react-icons/im';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts } from '../redux/slices/product.slice';
+import { BsSearch } from "react-icons/bs";
 
 const Collection = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
@@ -88,7 +89,7 @@ const Collection = () => {
         {/* Filter Sidebar */}
         <div 
           ref={sideBarRef}
-          className={`fixed max-h-[calc(100vh-80px)] overflow-y-auto bg-white lg:sticky top-0 left-0 w-[300px] transform transition-transform duration-300 ease-in-out z-50 lg:z-0 lg:h-screen ${
+          className={`fixed max-h-[calc(100vh-100px)] overflow-y-auto bg-white lg:sticky top-0 left-0 w-[300px] transform transition-transform duration-300 ease-in-out z-50 lg:z-0 lg:h-screen ${
             isFilterOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
           }`}
         >
@@ -124,6 +125,7 @@ const Collection = () => {
             </div>
           </div>
 
+
           {/* Products Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {isLoading ? (
@@ -135,9 +137,20 @@ const Collection = () => {
                 <h3 className="text-xl font-medium text-red-600">{isError}</h3>
               </div>
             ) : !products?.length ? (
-              <div className="col-span-full text-center py-12">
-                <h3 className="text-xl font-medium text-gray-600">No products found</h3>
-                <p className="text-gray-500 mt-2">Try adjusting your filters</p>
+              <div className="col-span-full flex flex-col items-center justify-center py-16 px-4">
+                <div className="w-24 h-24 mb-6 text-gray-300">
+                  <BsSearch className="w-full h-full" />
+                </div>
+                <h3 className="text-2xl font-semibold text-gray-700 mb-3">No Products Found</h3>
+                <div className="max-w-md text-center space-y-3">
+                  <p className="text-gray-500">We couldn't find any products matching your current filters.</p>
+                </div>
+                <button 
+                  onClick={() => window.location.search = ''} 
+                  className="mt-8 px-6 py-2 text-sm font-semibold text-pink-400 rounded-full hover:scale-110 hover:text-pink-600 transition duration-600"
+                >
+                  Clear All Filters
+                </button>
               </div>
             ) : (
               products.map((product) => (
