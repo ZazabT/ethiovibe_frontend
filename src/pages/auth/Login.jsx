@@ -7,6 +7,7 @@ import { login } from "../../redux/slices/auth.slice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { ImSpinner2 } from "react-icons/im";
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -99,12 +100,20 @@ const Login = () => {
 
             {/* Login Button */}
             <motion.button
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
               type="submit"
-              className="w-full bg-pink-400 text-white py-3 rounded-lg hover:bg-pink-600 transition-colors"
+              disabled={isLoading}
+              whileHover={{ scale: isLoading ? 1 : 1.02 }}
+              whileTap={{ scale: isLoading ? 1 : 0.98 }}
+              className={`w-full py-3 rounded-lg flex items-center justify-center gap-2 ${
+                isLoading 
+                  ? 'bg-pink-300 cursor-not-allowed' 
+                  : 'bg-pink-400 hover:bg-pink-600'
+              } text-white transition-colors`}
             >
-              Sign in
+              {isLoading ? (
+                <ImSpinner2 className="animate-spin" />
+              ) : null}
+              {isLoading ? 'Signing in...' : 'Sign in'}
             </motion.button>
 
             {/* Social Login */}

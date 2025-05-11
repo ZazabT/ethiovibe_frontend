@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { FaEnvelope, FaLock, FaGoogle, FaFacebook, FaUser } from 'react-icons/fa'
-import { PiEyeClosedThin, PiEyeThin } from "react-icons/pi";
-import { GiConfirmed } from "react-icons/gi";
-import { useDispatch } from 'react-redux';
+import { PiEyeClosedThin, PiEyeThin } from "react-icons/pi"
+import { GiConfirmed } from "react-icons/gi"
+import { useDispatch, useSelector } from 'react-redux'
 import { register } from '../../redux/slices/auth.slice'
+import { toast } from 'sonner'
+import { ImSpinner2 } from "react-icons/im"
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -16,34 +18,50 @@ const Register = () => {
   })
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { isLoading } = useSelector((state) => state.auth)
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      dispatch(register({ name : userName, email, password }));
-      toast.success('Registration successful! Please login to continue.');
-      navigate('/login');
+    e.preventDefault()
+    const { userName, email, password, confirmPassword } = formData
 
-      // reset form fields
-      setFormData({
-        userName: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-      });
-    } catch (error) {
-      toast.error('Registration failed. Please try again.');
+    if (!userName || !email || !password || !confirmPassword) {
+      toast.error("Please fill in all fields.")
+      return
     }
-  };
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.")
+      return
+    }
+
+    try {
+      const resultAction = await dispatch(register({ name: userName, email, password }))
+
+      if (register.fulfilled.match(resultAction)) {
+        toast.success("Registration successful! Please login to continue.")
+        setFormData({
+          userName: '',
+          email: '',
+          password: '',
+          confirmPassword: ''
+        })
+        navigate("/login")
+      } else {
+        toast.error(resultAction.payload || "Registration failed.")
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.")
+    }
+  }
 
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-pink-100 via-white to-white">
-      {/* Left Side - Registration Form */}
       <div className="w-full lg:w-1/2 p-8 flex items-center justify-center">
         <div className="max-w-md w-full space-y-8 bg-white/80 backdrop-blur-sm p-8 rounded-4xl shadow-sm">
           <div className="text-center space-y-3">
@@ -53,7 +71,6 @@ const Register = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Username Input */}
             <div className="relative">
               <FaUser className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
               <input
@@ -66,7 +83,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Email Input */}
             <div className="relative">
               <FaEnvelope className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
               <input
@@ -79,7 +95,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Password Input */}
             <div className="relative">
               <FaLock className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
               <input
@@ -103,7 +118,6 @@ const Register = () => {
               )}
             </div>
 
-            {/* Confirm Password Input */}
             <div className="relative">
               <GiConfirmed className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
               <input
@@ -127,17 +141,20 @@ const Register = () => {
               )}
             </div>
 
-            {/* Register Button */}
             <motion.button
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
               type="submit"
-              className="w-full bg-pink-400 text-white py-3 rounded-lg hover:bg-pink-600 transition-colors"
+              disabled={isLoading}
+              whileHover={{ scale: isLoading ? 1 : 1.02 }}
+              whileTap={{ scale: isLoading ? 1 : 0.98 }}
+              className={`w-full py-3 rounded-lg flex items-center justify-center gap-2 ${isLoading
+                ? 'bg-pink-300 cursor-not-allowed'
+                : 'bg-pink-400 hover:bg-pink-600'
+              } text-white transition-colors`}
             >
-              Create Account
+              {isLoading && <ImSpinner2 className="animate-spin" />}
+              {isLoading ? 'Creating Account...' : 'Create Account'}
             </motion.button>
 
-            {/* Social Registration */}
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
@@ -149,18 +166,17 @@ const Register = () => {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <button className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                <button type="button" className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
                   <FaGoogle className="text-red-400 mr-2" />
                   Google
                 </button>
-                <button className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                <button type="button" className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
                   <FaFacebook className="text-blue-400 mr-2" />
                   Facebook
                 </button>
               </div>
             </div>
 
-            {/* Login Link */}
             <p className="text-center text-sm text-gray-600">
               Already have an account?{' '}
               <Link to="/login" className="text-pink-500 hover:text-pink-700 font-medium">
@@ -171,13 +187,14 @@ const Register = () => {
         </div>
       </div>
 
-      {/* Right Side - Image */}
-      <div className="hidden lg:block lg:w-1/2 bg-cover bg-center overflow-hidden m-6"
+      <div
+        className="hidden lg:block lg:w-1/2 bg-cover bg-center overflow-hidden m-6"
         style={{
           backgroundImage: `url('/hero1.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
-        }}>
+        }}
+      >
         <div className="h-full w-full bg-black/30 backdrop-blur-[2px] flex items-center justify-center">
           <div className="text-center text-white p-8">
             <h2 className="text-5xl font-bold mb-4 yuji-font">EthioVibe</h2>

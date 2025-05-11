@@ -68,7 +68,7 @@ function ProductDetails({ productId }) {
 
     try {
       setIsButtonDisabled(true);
-      await dispatch(addToCart(cartItem));
+     dispatch(addToCart(cartItem));
       toast.success('Product added to cart successfully!', {
         icon: <FaCheckCircle className="text-green-700" />
       });
