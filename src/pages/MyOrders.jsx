@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { FaBox, FaShippingFast, FaCheck, FaClock, FaTruck, FaTimes, FaBan, FaUndo, FaMoneyBill } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrderDetail , getUserOrders } from '../redux/slices/order.slice'
+import { getUserOrders } from '../redux/slices/order.slice'
 import { ImSpinner2 } from "react-icons/im";
 const MyOrders = () => {
   const { orders, isLoading, isError } = useSelector((state) => state.order);
@@ -94,7 +94,7 @@ const MyOrders = () => {
         <FaBox className="mx-auto text-4xl text-gray-300 mb-4" />
         <h3 className="text-lg font-medium text-gray-900">No Orders Yet</h3>
         <p className="text-gray-500 mt-2">Start shopping to see your orders here</p>
-        <Link to="/shop" className="mt-4 inline-block bg-pink-500 text-white px-6 py-2 rounded-lg hover:bg-pink-600 transition-colors">
+        <Link to="/" className="mt-4 inline-block bg-pink-500 text-white px-6 py-2 rounded-lg hover:bg-pink-600 transition-colors">
           Browse Products
         </Link>
       </div>
@@ -126,7 +126,7 @@ const MyOrders = () => {
               {orders.map((order) => (
                 <tr key={order._id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <Link to={`/orders/my-order/${order._id}`} className="group">
+                    <Link to={`/order/${order._id}`} className="group">
                       <span className="text-sm font-medium text-gray-900 group-hover:text-pink-500">
                         #{order._id.slice(-6)}
                       </span>

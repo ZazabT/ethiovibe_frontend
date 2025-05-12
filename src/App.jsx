@@ -31,7 +31,7 @@ function App() {
       <Route path='collections/:collection' element={<Colloction/>} />
       <Route path='checkout' element={<CheckOut/>} />
       <Route path='order-confirmation' element={<OrderCompleted/>} />
-      <Route path='order/:id' element={<OrderDetail/>} />
+      <Route path='order/:orderId' element={<OrderDetail/>} />
       <Route path='/learn-more' element={<LearnMore/>}/>
       </Route>
       
