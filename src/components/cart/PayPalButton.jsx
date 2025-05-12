@@ -11,7 +11,7 @@ const PayPalButton = ({amount, onSuccess, onError}) => {
                return actions.order.create({
                   purchase_units: [{
                      amount: {
-                        value: Float(amount).toFixed(2),
+                        value: parseFloat(amount).toFixed(2)
                      }
                   }]
                }) 
