@@ -37,10 +37,11 @@ const CheckOut = () => {
     });
 
     useEffect(() => {
-        if (!cart || !cart.products || cart.products.length === 0) {
+        // Only redirect to home if there's no checkout ID and cart is empty
+        if (!checkedOutId && (!cart || !cart.products || cart.products.length === 0)) {
             navigate('/');
         }
-    }, [cart, navigate]);
+    }, [cart, navigate, checkedOutId]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -67,7 +68,7 @@ const CheckOut = () => {
 
             await handleFinalize(checkedOutId);
         } catch (error) {
-            console.error("Payment Success Error →", error);
+            console.error("Payment Error →", error);
             toast.error(`${formData.paymentMethod} payment failed. Please try again.`);
             setSubmitError(error.message || 'Payment processing failed');
         } finally {
@@ -78,13 +79,16 @@ const CheckOut = () => {
     const handleFinalize = async (checkoutId) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.post(`${BASE_URL}/api/checkouts/${checkoutId}/finalize`, {}, {
+            const response = await axios.post(`${BASE_URL}/api/checkouts/${checkoutId}/finalize`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-
+    
+            // Clear cart and checkout ID after successful order
             dispatch(clearCart());
             localStorage.removeItem('checkoutId');
-            navigate(`/order-confirmation`);
+            
+            // Navigate to order confirmation page
+            navigate('/order-confirmation');
             toast.success('Order placed successfully!');
         } catch (error) {
             toast.error('Failed to finalize order. Please contact support.');
