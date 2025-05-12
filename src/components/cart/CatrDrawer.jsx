@@ -2,15 +2,15 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
 import CartCard from './CartCard';
-import { useState } from 'react';
+import { useState ,useEffect  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch , useSelector} from 'react-redux';
-import { updateCartQuantity ,removeFromCart , } from '../../redux/slices/cart.slice';
+import { updateCartQuantity ,removeFromCart , fetchCart } from '../../redux/slices/cart.slice';
 const CartDrawer = ({ isOpen, toggleCart }) => {
   const navigate = useNavigate();
   const { guestId , user} = useSelector( (state) => state.auth);
   const {cart} = useSelector( (state) => state.cart);
-  const userId = user ? user._id : null ;
+  const userId = user ? user.id : null ;
   const dispatch = useDispatch();
 
 
@@ -43,7 +43,17 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
     dispatch(removeFromCart({ productId, size, color, guestId, userId}));
   };
 
-  const subtotal =cart.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+
+
+  useEffect(() => {
+    console.log(userId)
+    if (guestId || userId) {
+      dispatch(fetchCart({ guestId, userId }));
+    }
+  }, [guestId, userId, dispatch]);
+
+
+  const subtotal = cart.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
 
   return (
     <AnimatePresence>

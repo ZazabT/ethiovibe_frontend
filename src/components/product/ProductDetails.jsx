@@ -62,7 +62,7 @@ function ProductDetails({ productId }) {
       size: selectedSize,
       color: selectedColor,
       quantity: quantity,
-      userId: user?._id,
+      userId: user?.id,
       guestId: guestId,
     };
 

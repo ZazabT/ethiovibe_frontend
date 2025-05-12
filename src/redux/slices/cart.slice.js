@@ -116,7 +116,6 @@ export const mergeGuestCart = createAsyncThunk("cart/mergeGuestCart", async ( { 
     }
 
     try {
-        console.log('Token', token);
         const response = await axios.post(`${BASE_URL}/api/carts/merge`,
             {
                 guestId,
