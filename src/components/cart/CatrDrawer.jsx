@@ -46,7 +46,6 @@ const CartDrawer = ({ isOpen, toggleCart }) => {
 
 
   useEffect(() => {
-    console.log(userId)
     if (guestId || userId) {
       dispatch(fetchCart({ guestId, userId }));
     }

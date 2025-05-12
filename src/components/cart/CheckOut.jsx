@@ -1,16 +1,24 @@
-
-import { useEffect, useState } from "react"
-import { FaShoppingBag, FaCreditCard, FaLock } from "react-icons/fa"
-import PayPalButton from "./PayPalButton"
-import ChapaButton from "./ChapaButton"
-import { useNavigate } from "react-router-dom"
-import { useDispatch , useSelector } from "react-redux"
+import { useEffect, useState } from "react";
+import { FaShoppingBag, FaCreditCard, FaLock } from "react-icons/fa";
+import PayPalButton from "./PayPalButton";
+import ChapaButton from "./ChapaButton";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { ImSpinner2 } from "react-icons/im";
+import axios from "axios";
+import { createCheckout } from '../../redux/slices/checkout.slice';
+import { toast } from "sonner";
+import { clearCart } from '../../redux/slices/cart.slice';
 
 const CheckOut = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { cart , isLoading , isError } = useSelector( (state) =>state.cart);
-    const { user } = useSelector( (state) =>state.auth);
+    const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState(null);
+    const { cart, isLoading, isError } = useSelector((state) => state.cart);
+    const { user } = useSelector((state) => state.auth);
+
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -21,17 +29,18 @@ const CheckOut = () => {
         state: '',
         country: '',
         postalCode: '',
-    })
+        paymentMethod: 'paypal',
+    });
 
-    const [checkedOutId , setCheckedOutId]  = useState(null)
+    const [checkedOutId, setCheckedOutId] = useState(() => {
+        return localStorage.getItem('checkoutId') || null;
+    });
 
- 
-    // Ensure cart must be load first and have product 
-    useEffect( () =>{
-      if(!cart || !cart.products || cart.products.length ===0){
-        navigate('/');
-      }
-    } , [cart , navigate])
+    useEffect(() => {
+        if (!cart || !cart.products || cart.products.length === 0) {
+            navigate('/');
+        }
+    }, [cart, navigate]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -39,26 +48,116 @@ const CheckOut = () => {
             ...prev,
             [name]: value
         }));
-    }
+    };
 
-    const handleSuccess = (paymentResult) => {
-        console.log(paymentResult);
-        navigate("/order-confirmation")
-    }
+    const handleSuccess = async (paymentResult) => {
+        setIsSubmitting(true);
+        try {
+            const token = localStorage.getItem('token');
+            await axios.put(
+                `${BASE_URL}/api/checkouts/${checkedOutId}/pay`,
+                {
+                    paymentStatus: 'paid',
+                    paymentDetail: paymentResult,
+                },
+                {
+                    headers: { Authorization: `Bearer ${token}` }
+                }
+            );
 
-    const handleSubmit = (e) => {
+            await handleFinalize(checkedOutId);
+        } catch (error) {
+            console.error("Payment Success Error →", error);
+            toast.error(`${formData.paymentMethod} payment failed. Please try again.`);
+            setSubmitError(error.message || 'Payment processing failed');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleFinalize = async (checkoutId) => {
+        try {
+            const token = localStorage.getItem('token');
+            await axios.post(`${BASE_URL}/api/checkouts/${checkoutId}/finalize`, {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            dispatch(clearCart());
+            localStorage.removeItem('checkoutId');
+            navigate(`/order-confirmation`);
+            toast.success('Order placed successfully!');
+        } catch (error) {
+            toast.error('Failed to finalize order. Please contact support.');
+        }
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setCheckedOutId(123);
-        // You can add form validation here
-        
+        setIsSubmitting(true);
+        setSubmitError(null);
+
+        if (cart && cart.products && cart.products.length > 0) {
+            try {
+                const { firstName, lastName, email, phone, address, city, state, country, postalCode, paymentMethod } = formData;
+                const totalPrice = cart.totalPrice;
+
+                const response = await dispatch(
+                    createCheckout({
+                        checkoutItems: cart.products,
+                        firstName,
+                        lastName,
+                        email,
+                        phone,
+                        streetAddress: address,
+                        city,
+                        state,
+                        country,
+                        postalCode,
+                        paymentMethod,
+                        totalPrice
+                    })
+                ).unwrap();
+
+                if (response && response._id) {
+                    setCheckedOutId(response._id);
+                    localStorage.setItem('checkoutId', response._id);
+                } else {
+                    throw new Error('Failed to get checkout ID');
+                }
+            } catch (error) {
+                console.error("Checkout Submit Error →", error);
+                setSubmitError(error.message || 'Failed to create checkout');
+                toast.error('Failed to create checkout. Please try again.');
+            } finally {
+                setIsSubmitting(false);
+            }
+        } else {
+            setIsSubmitting(false);
+            toast.error('Your cart is empty');
+        }
+    };
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <ImSpinner2 className="animate-spin text-pink-500 text-4xl" />
+            </div>
+        );
+    }
+
+    if (isError) {
+        return (
+            <div className="text-center text-red-500 py-8">
+                {isError}
+            </div>
+        );
     }
 
     return (
         <div className='max-w-5xl mx-auto px-4 py-8 my-10'>
             <div className="flex flex-col-reverse lg:flex-row gap-8">
-                {/* Left Side - Shipping Address Form */}
+                {/* Left Side - Form */}
                 <div className="flex-1 p-6">
-                    {/* Header */}
                     <div className="pb-6 mb-8 border-b border-gray-100">
                         <h2 className="text-3xl font-semibold flex items-center gap-3 text-gray-800">
                             <FaShoppingBag className="text-pink-500" />
@@ -67,7 +166,6 @@ const CheckOut = () => {
                         <p className="text-gray-500 mt-2">Complete your purchase by providing your shipping details</p>
                     </div>
 
-                    {/* Shipping Form */}
                     <form onSubmit={handleSubmit} className="space-y-8">
                         {/* Name Section */}
                         <div className="space-y-6">
@@ -84,7 +182,7 @@ const CheckOut = () => {
                                         placeholder="John"
                                     />
                                 </div>
-                               
+
                                 <div className="group">
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
                                     <input
@@ -96,7 +194,6 @@ const CheckOut = () => {
                                         placeholder="Doe"
                                     />
                                 </div>
-
                             </div>
                         </div>
 
@@ -115,6 +212,7 @@ const CheckOut = () => {
                                         placeholder="your@email.com"
                                     />
                                 </div>
+
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
                                     <div className="relative">
@@ -160,6 +258,7 @@ const CheckOut = () => {
                                             placeholder="Addis Ababa"
                                         />
                                     </div>
+
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">Region/State</label>
                                         <input
@@ -171,6 +270,7 @@ const CheckOut = () => {
                                             placeholder="Oromia"
                                         />
                                     </div>
+
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">Postal Code</label>
                                         <input
@@ -182,6 +282,7 @@ const CheckOut = () => {
                                             placeholder="1000"
                                         />
                                     </div>
+
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">Country</label>
                                         <select
@@ -191,59 +292,91 @@ const CheckOut = () => {
                                             className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200 outline-none hover:border-pink-200 bg-white"
                                         >
                                             <option value="">Select Country</option>
-                                            <option value="ET">Ethiopia</option>
-                                            <option value="KE">Kenya</option>
-                                            <option value="ER">Eritrea</option>
-                                            <option value="DJ">Djibouti</option>
-                                            <option value="SO">Somalia</option>
-                                            <option value="SD">Sudan</option>
+                                            <option value="Ethiopia">Ethiopia</option>
+                                            <option value="Kenya">Kenya</option>
+                                            <option value="Eritrea">Eritrea</option>
+                                            <option value="Djibouti">Djibouti</option>
+                                            <option value="Somalia">Somalia</option>
+                                            <option value="Sudan">Sudan</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                     {/* submit button  */}
+                        {!checkedOutId ? (
+                            <>
+                                <div className="space-y-6">
+                                    <h3 className="text-lg font-medium text-gray-700">Select Payment Method</h3>
+                                    <div className="flex items-center gap-4">
+                                        <label className={`flex-1 py-3 px-4 rounded-xl border cursor-pointer ${formData.paymentMethod === 'paypal'
+                                                ? 'border-pink-500 bg-pink-50 text-pink-500'
+                                                : 'border-gray-200 hover:border-pink-200'
+                                            }`}>
+                                            <input
+                                                type="radio"
+                                                name="paymentMethod"
+                                                value="paypal"
+                                                checked={formData.paymentMethod === 'paypal'}
+                                                onChange={handleInputChange}
+                                                className="hidden"
+                                            />
+                                            PayPal
+                                        </label>
+                                        <label className={`flex-1 py-3 px-4 rounded-xl border cursor-pointer ${formData.paymentMethod === 'chapa'
+                                                ? 'border-lime-500 bg-lime-50 text-lime-600'
+                                                : 'border-gray-200 hover:border-lime-200'
+                                            }`}>
+                                            <input
+                                                type="radio"
+                                                name="paymentMethod"
+                                                value="chapa"
+                                                checked={formData.paymentMethod === 'chapa'}
+                                                onChange={handleInputChange}
+                                                className="hidden"
+                                            />
+                                            Chapa
+                                        </label>
+                                    </div>
+                                </div>
 
-                     
-                    {/* Place Order Button */}
-                    {
-                    !checkedOutId ? (
-                        <button type="submit" className="w-full mt-6 bg-pink-500 text-white py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-pink-600 transition-colors">
-                        <FaLock />
-                        Place Order
-                    </button> 
-                    ) : (
-                        <div>
-                              {/* paypal componenet */}
-                        <PayPalButton amount = {cart.totalPrice} onSuccess = {handleSuccess} onError={(err) => alert("Paymenet faild ! try again " + err)}/>
-        
-
-                        <div className="relative my-6">
-                        <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-gray-200"></div>
-                        </div>
-                        <div className="relative flex justify-center text-sm">
-                        <span className="px-2 bg-white text-gray-500">or pay with chapa</span>
-                        </div>
-                       </div>
-                    
-                    {/* Chapa Button */}
-                    <ChapaButton 
-                        amount={cart.totalPrice}
-                        email={formData.email}
-                        firstName={formData.firstName}
-                        lastName={formData.lastName}
-                        txRef={`ethiovibe-${Date.now()}`}
-                    />
-
-                        </div>
-                    )
-                    }
+                                {submitError && <div className="text-red-500 text-sm">{submitError}</div>}
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className={`w-full mt-6 bg-pink-500 text-white py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-pink-600 transition-colors ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+                                        }`}
+                                >
+                                    {isSubmitting ? <ImSpinner2 className="animate-spin text-white" /> : <FaLock />}
+                                    {isSubmitting ? 'Processing...' : 'Place Order'}
+                                </button>
+                            </>
+                        ) : (
+                            <div className="space-y-6 mt-4">
+                                {formData.paymentMethod === 'paypal' ? (
+                                    <PayPalButton
+                                        amount={cart.totalPrice}
+                                        onSuccess={handleSuccess}
+                                        onError={(err) => {
+                                            console.error("PayPal error →", err);
+                                            toast.error("PayPal payment failed. Please try again.");
+                                        }}
+                                    />
+                                ) : (
+                                    <ChapaButton
+                                        amount={cart.totalPrice}
+                                        email={formData.email}
+                                        firstName={formData.firstName}
+                                        lastName={formData.lastName}
+                                        txRef={`ethiovibe-${Date.now()}`}
+                                    />
+                                )}
+                            </div>
+                        )}
                     </form>
                 </div>
 
-                {/* Right Side - Order Summary */}
+                {/* Right Side - Summary */}
                 <div className="lg:w-[380px] p-6">
                     <div className="border-b pb-4 mb-6">
                         <h3 className="text-xl font-semibold flex items-center gap-2">
@@ -281,15 +414,13 @@ const CheckOut = () => {
                         </div>
                     </div>
 
-                  
-
                     <p className="text-sm text-gray-500 text-center mt-4">
                         Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.
                     </p>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default CheckOut
+export default CheckOut;
