@@ -397,7 +397,7 @@ const CheckOut = () => {
                                     <h4 className="font-medium">{product.name}</h4>
                                     <p className="text-sm text-gray-600">Size: {product.size} | Color: {product.color}</p>
                                     <p className="text-sm text-gray-600">Quantity: {product.quantity}</p>
-                                    <p className="font-medium">${product.price * product.quantity}</p>
+                                    <p className="font-medium">br{parseFloat(product.price * product.quantity).toFixed(2)}</p>
                                 </div>
                             </div>
                         ))}
@@ -406,7 +406,7 @@ const CheckOut = () => {
                     <div className="border-t pt-4 space-y-3">
                         <div className="flex justify-between text-gray-600">
                             <span>Subtotal</span>
-                            <span>${cart.totalPrice}</span>
+                            <span>br{parseFloat(cart.totalPrice).toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-gray-600">
                             <span>Shipping</span>
@@ -414,7 +414,7 @@ const CheckOut = () => {
                         </div>
                         <div className="flex justify-between font-semibold text-lg">
                             <span className="text-green-500">Total</span>
-                            <span className="text-green-500">${cart.totalPrice}</span>
+                            <span className="text-green-500">br{parseFloat(cart.totalPrice).toFixed(2)}</span>
                         </div>
                     </div>
 
