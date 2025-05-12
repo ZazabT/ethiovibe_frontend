@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams , Link} from 'react-router-dom';
+import { useParams , Link , useNavigate} from 'react-router-dom';
 import { FaBox, FaTruck, FaMapMarkerAlt, FaCreditCard, FaCalendarAlt ,FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrderDetail } from '../redux/slices/order.slice';
@@ -9,13 +9,21 @@ const OrderDetail = () => {
   const { orderId } = useParams();
   const dispatch = useDispatch();
   const { order, isLoading, isError } = useSelector((state) => state.order); // Changed from orderDetail to order
-
+  const navigate = useNavigate();
+  const { token } = useSelector((state) => state.auth);
   useEffect(() => {
     console.log('OrderId:', orderId); // Debug log
     if (orderId) {
       dispatch(getOrderDetail(orderId));
     }
   }, [dispatch, orderId]);
+  
+  // check if the user is logged is other with go to home page 
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    }
+  }, [token, navigate]);
 
   if (isLoading) {
     return (
@@ -126,7 +134,7 @@ const OrderDetail = () => {
           <div className="p-6 bg-gray-50">
             <div className="flex justify-between items-center text-lg font-medium">
               <span>Total</span>
-              <span>Br {order.totalPrice.toLocaleString()}</span>
+              <span className='text-green-500'>Br {order.totalPrice.toLocaleString()}</span>
             </div>
           </div>
         </div>

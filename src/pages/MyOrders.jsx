@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaBox, FaShippingFast, FaCheck, FaClock, FaTruck, FaTimes, FaBan, FaUndo, FaMoneyBill } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserOrders } from '../redux/slices/order.slice'
@@ -7,11 +7,18 @@ import { ImSpinner2 } from "react-icons/im";
 const MyOrders = () => {
   const { orders, isLoading, isError } = useSelector((state) => state.order);
   const dispatch = useDispatch();
-
+  const { token } = useSelector((state) => state.auth);
+  const navigate =useNavigate();
   useEffect(() => {
     dispatch(getUserOrders());
   }, [dispatch]);
 
+  // check if the user is logged is other with go to home page 
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    }
+  }, [token, navigate]);
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -71,7 +78,7 @@ const MyOrders = () => {
         return <FaBox className="mr-2" />;
     }
   };
-  
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -136,9 +143,9 @@ const MyOrders = () => {
                     <div className="flex flex-col gap-3">
                       {order.orderItems.map((item, idx) => (
                         <div key={idx} className="flex items-center gap-4">
-                          <img 
-                            src={item.image} 
-                            alt={item.name} 
+                          <img
+                            src={item.image}
+                            alt={item.name}
                             className="w-16 h-16 rounded-lg object-cover border border-gray-100"
                           />
                           <div>
@@ -166,7 +173,7 @@ const MyOrders = () => {
                     <span className="text-sm font-semibold text-gray-900">Br {order.totalPrice.toLocaleString()}</span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <Link 
+                    <Link
                       to={`/orders/${order._id}`}
                       className="inline-flex items-center px-4 py-2 text-sm font-medium text-pink-600 bg-pink-50 rounded-lg hover:bg-pink-100 transition-colors"
                     >
