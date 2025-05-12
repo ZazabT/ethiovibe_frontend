@@ -1,13 +1,16 @@
-import { h1 } from "framer-motion/client"
-import { useState } from "react"
+
+import { useEffect, useState } from "react"
 import { FaShoppingBag, FaCreditCard, FaLock } from "react-icons/fa"
 import PayPalButton from "./PayPalButton"
 import ChapaButton from "./ChapaButton"
 import { useNavigate } from "react-router-dom"
+import { useDispatch , useSelector } from "react-redux"
 
 const CheckOut = () => {
-    const navigate = useNavigate()
-
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { cart , isLoading , isError } = useSelector( (state) =>state.cart);
+    const { user } = useSelector( (state) =>state.auth);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -22,28 +25,13 @@ const CheckOut = () => {
 
     const [checkedOutId , setCheckedOutId]  = useState(null)
 
-    const cart = {
-        products: [
-            {
-                name: "Product 1",
-                size: "S",
-                price: 20,
-                quantity: 2,
-                color: "Red",
-                image: "/hero1.png"
-            },
-            {
-                name: "Product 2",
-                size: "XL",
-                price: 40,
-                quantity: 1,
-                color: "blue",
-                image: "/hero1.png"
-            }
-        ],
-        totalPrice: 60,
-        totalQuantity: 3
-    }
+ 
+    // Ensure cart must be load first and have product 
+    useEffect( () =>{
+      if(!cart || !cart.products || cart.products.length ===0){
+        navigate('/');
+      }
+    } , [cart , navigate])
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -62,6 +50,7 @@ const CheckOut = () => {
         e.preventDefault();
         setCheckedOutId(123);
         // You can add form validation here
+        
     }
 
     return (
