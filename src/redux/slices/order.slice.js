@@ -15,7 +15,7 @@ export const getUserOrders = createAsyncThunk(
             if (!token) {
                 return rejectWithValue("No token found.");
             }
-            const response = await axios.get(`${BASE_URL}/api/orders/my-order`, {},
+            const response = await axios.get(`${BASE_URL}/api/orders/my-order`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -48,7 +48,7 @@ export const getOrderDetail = createAsyncThunk(
                     }
                 }
             );
-            return response.data.orders;
+            return response.data.order;
         } catch (error) {
             console.error('Error fetching order detail:', error);
             return rejectWithValue(
@@ -81,8 +81,10 @@ const orderSlice = createSlice({
         })
         .addCase(getUserOrders.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.orders = Array.isArray(action.payload) ? action.payload : [];;
-            state.totalOrder = action.payload.length;
+            const orders = Array.isArray(action.payload) ? action.payload : [];
+            state.orders = orders;
+            state.totalOrder = orders.length;
+            state.isError = null;
         })
         .addCase(getUserOrders.rejected , (state , action)=>{
             state.isLoading = false;
