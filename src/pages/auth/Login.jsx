@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { FaEnvelope, FaLock, FaGoogle, FaFacebook } from 'react-icons/fa'
 import { PiEyeClosedThin, PiEyeThin } from "react-icons/pi";
 import { login } from "../../redux/slices/auth.slice";
+import { mergeGuestCart } from '../../redux/slices/cart.slice';
 import { useDispatch , useSelector} from "react-redux";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate , useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ImSpinner2 } from "react-icons/im";
 
@@ -15,7 +16,29 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading , user } = useSelector((state) => state.auth);
+  const { isLoading , user  , guestId} = useSelector((state) => state.auth);
+  const location = useLocation();
+  const { cart } = useSelector( (state) => state.cart);
+
+
+  useEffect(() => {
+    const redirect = new URLSearchParams(location.search).get('redirect') || '/';
+    const isCheckout = redirect.includes('checkout');
+  
+    if (user) {
+      const hasProducts = cart?.products?.length > 0;
+  
+      if (hasProducts && guestId) {
+        dispatch(mergeGuestCart( {guestId})).then(() => {
+          navigate(isCheckout ? '/checkout' : '/');
+        });
+      } else {
+        navigate(isCheckout ? '/checkout' : '/');
+      }
+    }
+  }, [user, guestId, dispatch, cart?.products?.length, navigate, location.search]);
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     

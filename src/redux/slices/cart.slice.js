@@ -84,17 +84,18 @@ export const updateCartQuantity = createAsyncThunk("cart/updateCartQuantity", as
 export const removeFromCart = createAsyncThunk("cart/removeFromCart", async ({ productId, size, color, guestId, userId }, { rejectWithValue }) => {
 
     try {
-        await axios.delete(`${BASE_URL}/api/carts`, {
+        const response = await axios.delete(`${BASE_URL}/api/carts`, {
             data: {
-              productId,
-              size,
-              color,
-              guestId,
-              userId,
+                productId,
+                size,
+                color,
+                guestId,
+                userId,
             },
-          });
-          
+        });
+
         return response.data.cart;
+
     } catch (error) {
         return rejectWithValue(error.response.data);
     }
@@ -102,9 +103,20 @@ export const removeFromCart = createAsyncThunk("cart/removeFromCart", async ({ p
 
 
 // Async thunk to merge guest cart with user cart
-export const mergeGuestCart = createAsyncThunk("cart/mergeGuestCart", async ({ guestId }, { rejectWithValue }) => {
+export const mergeGuestCart = createAsyncThunk("cart/mergeGuestCart", async ( { guestId } , { rejectWithValue }) => {
+
+
+    const token = localStorage.getItem("token");
+    if (!guestId){
+        return rejectWithValue("No Guest found.");
+    }
+
+    if (!token) {
+        return rejectWithValue("No token found.");
+    }
 
     try {
+        console.log('Token', token);
         const response = await axios.post(`${BASE_URL}/api/carts/merge`,
             {
                 guestId,
@@ -112,7 +124,7 @@ export const mergeGuestCart = createAsyncThunk("cart/mergeGuestCart", async ({ g
 
             {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    Authorization: `Bearer ${token}`,
                 }
             }
         );
@@ -230,5 +242,5 @@ const cartSlice = createSlice({
     }
 });
 
-export const { clearCart , clearCartError } = cartSlice.actions;
+export const { clearCart, clearCartError } = cartSlice.actions;
 export default cartSlice.reducer;

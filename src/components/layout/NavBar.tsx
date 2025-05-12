@@ -8,6 +8,7 @@ import CatrDrawer from '../cart/CatrDrawer';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaCog, FaSignOutAlt } from 'react-icons/fa';
 import { logout } from '../../redux/slices/auth.slice'
+import { clearCart } from '../../redux/slices/cart.slice'
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -28,7 +29,10 @@ const NavBar = () => {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
+    // handle Loging out 
     dispatch(logout());
+    // handle cleaning cart
+    dispatch(clearCart());
   };
 
   return (

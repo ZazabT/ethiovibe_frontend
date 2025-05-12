@@ -6,7 +6,7 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 // Load from localStorage
 const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
-const token = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : null;
+const token = localStorage.getItem("token")? localStorage.getItem("token") : null;
 const guestId = localStorage.getItem("guestId")
   ? JSON.parse(localStorage.getItem("guestId"))
   : `guest-${Date.now()}`;
@@ -48,7 +48,7 @@ export const login = createAsyncThunk(
       const response = await axios.post(`${BASE_URL}/api/users/login`, user);
       // Save user and token to localStorage
       localStorage.setItem("user", JSON.stringify(response.data.user));
-      localStorage.setItem("token", JSON.stringify(response.data.accessToken));
+      localStorage.setItem("token", response.data.accessToken);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -103,7 +103,7 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
-        state.token = action.payload.token;
+        state.token = action.payload.accessToken;
         state.isError = null;
       })
       .addCase(login.rejected, (state, action) => {

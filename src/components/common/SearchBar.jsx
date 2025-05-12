@@ -13,7 +13,7 @@ const SearchBar = () => {
     }
 
     return (
-        <div className="relative flex items-center">
+        <div className="relative flex  items-center">
             <AnimatePresence>
                 {isOpen ? (
                     <motion.form
@@ -28,7 +28,7 @@ const SearchBar = () => {
                             type="text"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full py-2 px-4 pr-10 rounded-full border border-gray-300 focus:outline-none focus:border-pink-500"
+                            className="w-full py-2 px-4 pr-10 bg-white z-40 rounded-full border border-gray-300 focus:outline-none focus:border-pink-500"
                             placeholder="Search products..."
                             autoFocus
                         />
@@ -38,7 +38,7 @@ const SearchBar = () => {
                                 setIsOpen(false);
                                 setSearchTerm('');
                             }}
-                            className="absolute right-3 text-gray-400 hover:text-pink-500"
+                            className="absolute right-3 z-50 text-gray-400 hover:text-pink-500"
                         >
                             <FaTimes />
                         </button>
