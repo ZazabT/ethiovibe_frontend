@@ -83,15 +83,21 @@ const CheckOut = () => {
                 headers: { Authorization: `Bearer ${token}` }
             });
     
-            // Clear cart and checkout ID after successful order
-            dispatch(clearCart());
-            localStorage.removeItem('checkoutId');
-            
-            // Navigate to order confirmation page
-            navigate('/order-confirmation');
-            toast.success('Order placed successfully!');
+            if (response.data.newOrder) {
+                // Clear cart and checkout ID after successful order
+                dispatch(clearCart());
+                localStorage.removeItem('checkoutId');
+                
+                // Navigate to order completed page with the new order ID
+                navigate(`/order-completed/${response.data.newOrder._id}`);
+                toast.success('Order placed successfully!');
+            } else {
+                throw new Error('Order creation failed');
+            }
         } catch (error) {
-            toast.error('Failed to finalize order. Please contact support.');
+            const errorMessage = error.response?.data?.msg || 'Failed to finalize order. Please contact support.';
+            toast.error(errorMessage);
+            console.error('Finalize Error:', error);
         }
     };
 

@@ -85,7 +85,7 @@ const OrderDetail = () => {
       <div className="grid gap-6">
         {/* Order Summary Card */}
         <div className="bg-white rounded-lg p-6 shadow-sm">
-          <div className="grid md:grid-cols-4 gap-4 text-sm">
+          <div className="grid md:grid-cols-5 gap-4 text-sm">
             <div>
               <p className="text-gray-500 mb-1">Order Date</p>
               <p className="font-medium">{new Date(order.createdAt).toLocaleDateString()}</p>
@@ -103,6 +103,10 @@ const OrderDetail = () => {
             <div>
               <p className="text-gray-500 mb-1">Payment Method</p>
               <p className="font-medium capitalize">{order.paymentMethod}</p>
+            </div>
+            <div>
+              <p className="text-gray-500 mb-1">No Items</p>
+              <p className="font-medium items-end">{order.orderItems?.length}</p>
             </div>
           </div>
         </div>

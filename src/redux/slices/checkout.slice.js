@@ -37,7 +37,7 @@ const checkoutSlice = createSlice({
 
     name: 'checkout',
     initialState: {
-        checkout: null,
+        checkout: {},
         isLoading: false,
         isError: null,
     },

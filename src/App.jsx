@@ -30,7 +30,7 @@ function App() {
       <Route path='product/:id' element={<ProductDetails/>} />
       <Route path='collections/:collection' element={<Colloction/>} />
       <Route path='checkout' element={<CheckOut/>} />
-      <Route path='order-confirmation' element={<OrderCompleted/>} />
+      <Route path="/order-completed/:orderId" element={<OrderCompleted />} />
       <Route path='order/:orderId' element={<OrderDetail/>} />
       <Route path='/learn-more' element={<LearnMore/>}/>
       </Route>
