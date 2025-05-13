@@ -1,9 +1,42 @@
-import React from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaFacebookF, FaTwitter, FaInstagram, FaTiktok, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa'
 import { motion } from 'framer-motion'
-
+import { toast } from 'sonner'
+import axios from 'axios'
+import { ImSpinner2 } from "react-icons/im";
 const Footer = () => {
+
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setisError] = useState(null);
+  // Base URL
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error('Please enter your email address');
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setisError(null);
+
+      const response = await axios.post(`${BASE_URL}/api/subscribers`, { email });
+      toast.success('Successfully subscribed to our newsletter!');
+      setEmail('');
+    } catch (error) {
+      const errorMessage = error.response?.data?.msg || 'Failed to subscribe. Please try again.';
+      toast.error(errorMessage);
+      setisError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <footer className="bg-black text-white pt-16 pb-8">
       <div className="container mx-auto px-4">
@@ -79,19 +112,31 @@ const Footer = () => {
         <div className="border-gray-800 pt-8 pb-12">
           <div className="max-w-md mx-auto text-center">
             <h3 className="exo-font text-xl mb-4">Subscribe to Our Newsletter</h3>
-            <form className="flex">
+            <form className="flex" onSubmit={handleSubscribe}>
               <input
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 className="flex-1 px-4 py-2 rounded-l-full bg-gray-800 border-2 border-gray-700 focus:outline-none focus:border-pink-500"
               />
               <button
                 type="submit"
-                className="px-6 py-2 bg-pink-500 text-white rounded-r-full hover:bg-pink-600 transition-colors"
+                className={`px-6 py-2 bg-pink-500 text-white rounded-r-full transition-colors ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-pink-600'
+                  }`}
+                disabled={isLoading}
               >
-                Subscribe
+                {isLoading ? (
+                  <span className="flex items-center">
+                    <ImSpinner2 className="animate-spin mr-2" />
+                    Subscribing...
+                  </span>
+                ) : (
+                  'Subscribe'
+                )}
               </button>
             </form>
+            {isError && <p className="text-red-500 mt-2 text-sm">{isError}</p>}
           </div>
         </div>
 
