@@ -30,8 +30,8 @@ export const register = createAsyncThunk(
     try {
       const response = await axios.post(`${BASE_URL}/api/users/register`, user);
       // Save user to localStorage (no token expected)
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      return response.data;
+      // localStorage.setItem("user", JSON.stringify(response.data.user));
+      return response.data.user;
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || "Registration failed"
