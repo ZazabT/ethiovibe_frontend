@@ -4,6 +4,7 @@ import productReducer from "./slices/product.slice";
 import cartReducer from "./slices/cart.slice";
 import checkOutReducer from './slices/checkout.slice'
 import orderReducer from './slices/order.slice'
+import subscribeReducer from './slices/subscribe.slice'
 // congigure store
 const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
         product: productReducer,
         cart: cartReducer,
         checkOut: checkOutReducer,
-        order:orderReducer
+        order:orderReducer,
+        subscribe:subscribeReducer
     },
 });
 
