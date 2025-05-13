@@ -1,0 +1,67 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+
+// Base URL
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
+
+// Asunc thunk to get all subscribers
+export const getAllSubscribers = createAsyncThunk(
+    "subscriber/getAllSubscribers",
+    async (_, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                return rejectWithValue("No token found.");
+            }
+            const response = await axios.get(`${BASE_URL}/api/subscribers`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                }
+            );
+
+            // Return the data
+            return response.data.subscribers;
+        } catch (error) {
+            // Log the error details for debugging
+            console.error('Error fetching subscribers:', error);
+            return rejectWithValue(error.response?.data?.message || 'Failed to fetch subscribers')
+        }
+    }
+
+);
+
+
+// initial state
+const initialState = {
+    subscribers : [],
+    isLoading: false,
+    isError: null,
+}
+
+// create slice
+const subscriberSlice = createSlice({
+    name: "subscriber",
+    initialState,  
+    reducers:{},
+    extraReducers: (builder) => {
+        builder.addCase(getAllSubscribers.pending , (state)=>{
+            state.isError = null;
+            state.isLoading = true;
+        }).addCase(getAllSubscribers.fulfilled , (state ,action)=>{
+            state.isLoading = false;
+            state.isError = null;
+            state.subscribers = action.payload;
+        }).addCase(getAllSubscribers.rejected , (state , action)=>{
+            state.isError = action.payload.message;
+            state.isLoading = false;
+        })
+    }
+})
+
+
+
+export default subscriberSlice.reducer;
