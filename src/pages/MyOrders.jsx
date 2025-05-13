@@ -173,8 +173,9 @@ const MyOrders = () => {
                     <span className="text-sm font-semibold text-gray-900">Br {order.totalPrice.toLocaleString()}</span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
+                  
                     <Link
-                      to={`/orders/${order._id}`}
+                      to={`/order/${order._id}`}
                       className="inline-flex items-center px-4 py-2 text-sm font-medium text-pink-600 bg-pink-50 rounded-lg hover:bg-pink-100 transition-colors"
                     >
                       View Details
