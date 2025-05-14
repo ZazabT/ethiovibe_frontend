@@ -146,7 +146,7 @@ const adminOrderSlice = createSlice({
                     state.orders[index] = updatedOrder;
                 }
             })
-            .addCase(getAllOrders.rejected, (state, action) => {
+            .addCase(updateOrder.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = action.payload || action.error.message;
             })

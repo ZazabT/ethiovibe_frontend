@@ -6,37 +6,28 @@ import axios from "axios";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 // Async thunc to fetch all users
-export const getAllUsers = ('admin/user/getAllUsers', async ({ rejectWithValue }) => {
-
-    try {
+export const getAllUsers = createAsyncThunk(
+    'admin/user/getAllUsers',
+    async (_, { rejectWithValue }) => {
+      try {
         const token = localStorage.getItem("token");
-
-        if (!token) {
-            return rejectWithValue("No token found.");
-        }
-
-        const response = await axios.get(`${BASE_URL}/api/admin/users` , 
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            }
-        );
-        return response.data.users
-    } catch (error) {
-        // Log the error details for debugging
-        console.error('Error fetching user:', error);
-
-        // Optionally, you can use rejectWithValue to pass a custom error message
-        return rejectWithValue(
-            error.response?.data?.message || 'Failed to fetch users'
-        );
+        if (!token) return rejectWithValue("No token found.");
+  
+        const response = await axios.get(`${BASE_URL}/api/admin/users`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        return response.data.users;
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        return rejectWithValue(error.response?.data?.message || 'Failed to fetch users');
+      }
     }
-});
+  );
 
 
 // Async thunc to create user
-export const createUser = ('admin/user/createUser', async ( user ,{ rejectWithValue }) => {
+export const createUser =createAsyncThunk('admin/user/createUser', async ( user ,{ rejectWithValue }) => {
 
     try {
         const token = localStorage.getItem("token");
@@ -66,7 +57,7 @@ export const createUser = ('admin/user/createUser', async ( user ,{ rejectWithVa
 
 
 // Async thunc to  \\update user
-export const updateUser = ('admin/user/updateUser', async ( {id , user} ,{ rejectWithValue }) => {
+export const updateUser =createAsyncThunk('admin/user/updateUser', async ( {id , user} ,{ rejectWithValue }) => {
 
     try {
         const token = localStorage.getItem("token");
@@ -97,7 +88,7 @@ export const updateUser = ('admin/user/updateUser', async ( {id , user} ,{ rejec
 
 
 // Async thunc to delete user
-export const deleteUser = ('admin/user/deleteUser', async ( id ,{ rejectWithValue }) => {
+export const deleteUser =createAsyncThunk('admin/user/deleteUser', async ( id ,{ rejectWithValue }) => {
 
     try {
         const token = localStorage.getItem("token");
