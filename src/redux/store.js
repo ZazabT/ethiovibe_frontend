@@ -5,6 +5,8 @@ import cartReducer from "./slices/cart.slice";
 import checkOutReducer from './slices/checkout.slice'
 import orderReducer from './slices/order.slice'
 import subscribeReducer from './slices/subscribe.slice'
+import adminProductReducer from './slices/adminSlice/adminProduct.slice'
+import adminUserReducer from './slices/adminSlice/user.slice'
 // congigure store
 const store = configureStore({
     reducer: {
@@ -13,7 +15,9 @@ const store = configureStore({
         cart: cartReducer,
         checkOut: checkOutReducer,
         order:orderReducer,
-        subscribe:subscribeReducer
+        subscribe:subscribeReducer,
+        adminProduct:adminProductReducer,
+        adminUser:adminUserReducer,
     },
 });
 
