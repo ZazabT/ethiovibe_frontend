@@ -56,7 +56,7 @@ const subscriberSlice = createSlice({
             state.isError = null;
             state.subscribers = action.payload;
         }).addCase(getAllSubscribers.rejected , (state , action)=>{
-            state.isError = action.payload.message;
+            state.isError = action.error.message;
             state.isLoading = false;
         })
     }

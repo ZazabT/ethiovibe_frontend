@@ -11,8 +11,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { name: 'Dashboard', icon: FaHome, path: '/admin' },
     { name: 'Products', icon: FaBox, path: '/admin/products' },
     { name: 'Orders', icon: FaShoppingCart, path: '/admin/orders' },
-    { name: 'Customers', icon: FaUsers, path: '/admin/customers' },
-    { name: 'Analytics', icon: FaChartBar, path: '/admin/analytics' },
+    { name: 'Users', icon: FaUsers, path: '/admin/users' },
+    { name: 'Subscribers', icon: FaChartBar, path: '/admin/subscribers' },
   ];
 
   return (
