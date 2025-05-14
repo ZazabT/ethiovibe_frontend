@@ -7,6 +7,7 @@ import orderReducer from './slices/order.slice'
 import subscribeReducer from './slices/subscribe.slice'
 import adminProductReducer from './slices/adminSlice/adminProduct.slice'
 import adminUserReducer from './slices/adminSlice/user.slice'
+import adminOrderReducer from './slices/adminSlice/adminOrder.slice'
 // congigure store
 const store = configureStore({
     reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
         subscribe:subscribeReducer,
         adminProduct:adminProductReducer,
         adminUser:adminUserReducer,
+        adminOrder:adminOrderReducer,
     },
 });
 
