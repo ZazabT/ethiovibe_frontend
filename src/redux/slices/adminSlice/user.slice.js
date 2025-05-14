@@ -113,7 +113,7 @@ export const deleteUser = ('admin/user/deleteUser', async ( id ,{ rejectWithValu
                 }
             }
         );
-        return response.data
+        return response.data.user;
     } catch (error) {
         // Log the error details for debugging
         console.error('Error Deleting user:', error);
@@ -151,8 +151,8 @@ const userSclice = createSlice({
         addCase(getAllUsers.fulfilled , ( state , action ) => {
             state.isLoading = false;
             state.isError = null;
-            state.totalUser = action.payload.totalUsers;
             state.users = action.payload;
+            state.totalUser = action.payload.length;
         }).
         addCase(getAllUsers.rejected , (state , action) => {
             state.isLoading = false;
@@ -203,6 +203,8 @@ const userSclice = createSlice({
         addCase(deleteUser.fulfilled , ( state , action ) => {
             state.isLoading = false;
             state.isError = null;
+            const deletedUserId = action.payload._id;
+            state.users = state.users.filter((user) => user._id !== deletedUserId);
         }).
         addCase(deleteUser.rejected , (state , action) => {
             state.isLoading = false;
