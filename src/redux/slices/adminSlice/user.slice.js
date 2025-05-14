@@ -163,11 +163,11 @@ const userSclice = createSlice({
         addCase(createUser.pending , (state) => {
             state.isLoading = true;
             state.isError = null
-            state.users.push(action.payload.user);
         }).
         addCase(createUser.fulfilled , ( state , action ) => {
             state.isLoading = false;
             state.isError = null;
+            state.users.push(action.payload.user);
         }).
         addCase(createUser.rejected , (state , action) => {
             state.isLoading = false;
