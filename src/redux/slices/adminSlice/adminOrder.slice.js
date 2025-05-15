@@ -5,8 +5,9 @@ import axios from "axios";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 // Async thunk to fetch all orders
-export const getAllOrders = createAsyncThunk('admin/order/getAllOrders', async ({ rejectWithValue }) => {
+export const getAllOrders = createAsyncThunk('admin/order/getAllOrders', async ( _ ,{ rejectWithValue }) => {
 
+    console.log('Fetching orders...');
     try {
 
         const token = localStorage.getItem("token");
@@ -15,7 +16,7 @@ export const getAllOrders = createAsyncThunk('admin/order/getAllOrders', async (
             return rejectWithValue("No token found.");
         }
 
-        const response = await axios.get(`${BASE_URL}/api/orders`,
+        const response = await axios.get(`${BASE_URL}/api/admin/orders`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -30,7 +31,9 @@ export const getAllOrders = createAsyncThunk('admin/order/getAllOrders', async (
 
         // Optionally, you can use rejectWithValue to pass a custom error message
         return rejectWithValue(
-            error.response?.data?.message || 'Failed to getting orders'
+            error.response?.data?.message ||
+            error.response?.data?.msg ||
+            'Failed to delete order'
         );
     }
 });
@@ -47,7 +50,7 @@ export const updateOrder = createAsyncThunk('admin/order/updateOrder', async ({ 
             return rejectWithValue("No token found.");
         }
 
-        const response = await axios.put(`${BASE_URL}/api/orders/${id}`, { deliveryStatus },
+        const response = await axios.put(`${BASE_URL}/api/admin/orders/${id}`, { deliveryStatus },
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -62,7 +65,9 @@ export const updateOrder = createAsyncThunk('admin/order/updateOrder', async ({ 
 
         // Optionally, you can use rejectWithValue to pass a custom error message
         return rejectWithValue(
-            error.response?.data?.message || 'Failed to update orders'
+            error.response?.data?.message ||
+            error.response?.data?.msg ||
+            'Failed to delete order'
         );
     }
 });
@@ -79,13 +84,11 @@ export const deleteOrder = createAsyncThunk('admin/order/deleteOrder', async (id
             return rejectWithValue("No token found.");
         }
 
-        const response = await axios.delete(`${BASE_URL}/api/orders/${id}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
+      const response =  await axios.delete(`${BASE_URL}/api/admin/orders/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
         return response.data.order;
     } catch (error) {
@@ -94,7 +97,9 @@ export const deleteOrder = createAsyncThunk('admin/order/deleteOrder', async (id
 
         // Optionally, you can use rejectWithValue to pass a custom error message
         return rejectWithValue(
-            error.response?.data?.message || 'Failed to update orders'
+            error.response?.data?.message ||
+            error.response?.data?.msg ||
+            'Failed to delete order'
         );
     }
 });
