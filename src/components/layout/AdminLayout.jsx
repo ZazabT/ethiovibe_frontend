@@ -36,11 +36,7 @@ const AdminLayout = () => {
 
             {/* Right Side Actions */}
             <div className="flex items-center space-x-4">
-              {/* Notifications */}
-              <button className="relative p-2 text-gray-500 hover:text-pink-600 transition-colors">
-                <FaBell size={20} />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-pink-500 rounded-full"></span>
-              </button>
+             
 
               {/* Admin Profile */}
               <div className="flex items-center space-x-3 border-l pl-4">

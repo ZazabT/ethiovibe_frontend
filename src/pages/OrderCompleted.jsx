@@ -28,7 +28,7 @@ const OrderCompleted = () => {
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 p-8">
-        <motion.div 
+        <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.5 }}
@@ -38,7 +38,7 @@ const OrderCompleted = () => {
         </motion.div>
 
         <div className="text-center">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
@@ -46,17 +46,20 @@ const OrderCompleted = () => {
           >
             Order Completed!
           </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="mt-2 text-sm text-gray-600"
-          >
-            Thank you for your purchase. Your order #{order._id.slice(-6)} has been received.
-          </motion.p>
+          {order?._id && (
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="mt-2 text-sm text-gray-600"
+            >
+              Thank you for your purchase. Your order #{order._id.slice(-6)} has been received.
+            </motion.p>
+          )}
+
         </div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
@@ -66,7 +69,9 @@ const OrderCompleted = () => {
           <dl className="mt-4 divide-y divide-gray-200 border border-gray-200 rounded-xl overflow-hidden">
             <div className="flex justify-between p-4 hover:bg-gray-50 transition-colors">
               <dt className="text-sm font-medium text-gray-500">Order number</dt>
-              <dd className="text-sm font-medium text-gray-900">#{order._id.slice(-6)}</dd>
+              <dd className="text-sm font-medium text-gray-900">
+                #{order?._id?.slice(-6) || '------'}
+              </dd>
             </div>
             <div className="flex justify-between p-4 hover:bg-gray-50 transition-colors">
               <dt className="text-sm font-medium text-gray-500">Total Amount</dt>
@@ -83,24 +88,24 @@ const OrderCompleted = () => {
               <dt className="text-sm font-medium text-gray-500">Status</dt>
               <dd className="text-sm font-medium text-green-600">{order.deliveryStatus}</dd>
             </div>
-            
+
           </dl>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
           className="mt-8 space-y-4"
         >
-          <Link 
+          <Link
             to={`/order/${order._id}`}
             className="w-full flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-pink-500 hover:bg-pink-600 transition-colors duration-200"
           >
             Track Order
           </Link>
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 text-base font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200"
           >
             Continue Shopping
