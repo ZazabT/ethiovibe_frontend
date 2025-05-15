@@ -9,25 +9,26 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 export const getAllUsers = createAsyncThunk(
     'admin/user/getAllUsers',
     async (_, { rejectWithValue }) => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) return rejectWithValue("No token found.");
-  
-        const response = await axios.get(`${BASE_URL}/api/admin/users`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-  
-        return response.data.users;
-      } catch (error) {
-        console.error('Error fetching users:', error);
-        return rejectWithValue(error.response?.data?.message || 'Failed to fetch users');
-      }
+        try {
+            const token = localStorage.getItem("token");
+            if (!token) return rejectWithValue("No token found.");
+
+            const response = await axios.get(`${BASE_URL}/api/admin/users`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+            return response.data.users;
+        } catch (error) {
+            console.error('Error fetching users:', error);
+            return rejectWithValue(error.response?.data?.message || 'Failed to fetch users');
+        }
     }
-  );
+);
 
 
 // Async thunc to create user
-export const createUser =createAsyncThunk('admin/user/createUser', async ( user ,{ rejectWithValue }) => {
+export const createUser = createAsyncThunk('admin/user/createUser', async (user, { rejectWithValue }) => {
 
     try {
         const token = localStorage.getItem("token");
@@ -36,7 +37,7 @@ export const createUser =createAsyncThunk('admin/user/createUser', async ( user 
             return rejectWithValue("No token found.");
         }
 
-        const response = await axios.post(`${BASE_URL}/api/admin/users` , user ,
+        const response = await axios.post(`${BASE_URL}/api/admin/users`, user,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -57,7 +58,7 @@ export const createUser =createAsyncThunk('admin/user/createUser', async ( user 
 
 
 // Async thunc to  \\update user
-export const updateUser =createAsyncThunk('admin/user/updateUser', async ( {id , user} ,{ rejectWithValue }) => {
+export const updateUser = createAsyncThunk('admin/user/updateUser', async ({ id, user }, { rejectWithValue }) => {
 
     try {
         const token = localStorage.getItem("token");
@@ -66,7 +67,7 @@ export const updateUser =createAsyncThunk('admin/user/updateUser', async ( {id ,
             return rejectWithValue("No token found.");
         }
 
-        const response = await axios.put(`${BASE_URL}/api/admin/users/${id}` , user ,
+        const response = await axios.put(`${BASE_URL}/api/admin/users/${id}`, user,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -88,7 +89,7 @@ export const updateUser =createAsyncThunk('admin/user/updateUser', async ( {id ,
 
 
 // Async thunc to delete user
-export const deleteUser =createAsyncThunk('admin/user/deleteUser', async ( id ,{ rejectWithValue }) => {
+export const deleteUser = createAsyncThunk('admin/user/deleteUser', async (id, { rejectWithValue }) => {
 
     try {
         const token = localStorage.getItem("token");
@@ -97,7 +98,7 @@ export const deleteUser =createAsyncThunk('admin/user/deleteUser', async ( id ,{
             return rejectWithValue("No token found.");
         }
 
-        const response = await axios.delete(`${BASE_URL}/api/admin/users/${id}` ,
+        const response = await axios.delete(`${BASE_URL}/api/admin/users/${id}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -120,7 +121,7 @@ export const deleteUser =createAsyncThunk('admin/user/deleteUser', async ( id ,{
 // initial state
 const initialState = {
     users: [],
-    totalUser : 0,
+    totalUser: 0,
     isLoading: false,
     isError: null,
 }
@@ -131,76 +132,78 @@ const userSclice = createSlice({
 
     name: 'user',
     initialState,
-    reducers:{},
+    reducers: {},
     extraReducers: (builder) => {
         // get users
         builder.
-        addCase(getAllUsers.pending , (state) => {
-            state.isLoading = true;
-            state.isError = null
-        }).
-        addCase(getAllUsers.fulfilled , ( state , action ) => {
-            state.isLoading = false;
-            state.isError = null;
-            state.users = action.payload;
-            state.totalUser = action.payload.length;
-        }).
-        addCase(getAllUsers.rejected , (state , action) => {
-            state.isLoading = false;
-            state.isError = action.error.message;
-        }).
-        // create user
+            addCase(getAllUsers.pending, (state) => {
+                state.isLoading = true;
+                state.isError = null
+            }).
+            addCase(getAllUsers.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = null;
+                state.users = action.payload;
+                state.totalUser = action.payload.length;
+            }).
+            addCase(getAllUsers.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = action.error.message;
+            }).
+            // create user
 
-        addCase(createUser.pending , (state) => {
-            state.isLoading = true;
-            state.isError = null
-        }).
-        addCase(createUser.fulfilled , ( state , action ) => {
-            state.isLoading = false;
-            state.isError = null;
-            state.users.push(action.payload.user);
-        }).
-        addCase(createUser.rejected , (state , action) => {
-            state.isLoading = false;
-            state.isError = action.error.message;
-        }).
+            addCase(createUser.pending, (state) => {
+                state.isLoading = true;
+                state.isError = null
+            }).
+            addCase(createUser.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = null;
+                state.users.push(action.payload);
+                state.totalUser += 1;
+            }).
+            addCase(createUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = action.error.message;
+            }).
 
-        // update user
+            // update user
 
-        addCase(updateUser.pending , (state) => {
-            state.isLoading = true;
-            state.isError = null
-        }).
-        addCase(updateUser.fulfilled , ( state , action ) => {
-            state.isLoading = false;
-            state.isError = null;
-            const updatedUser = action.payload;
-            const index = state.users.findIndex((user) => user._id === updatedUser._id);
-            if (index !== -1) {
-                state.users[index] = updatedUser;
-            }
-        }).
-        addCase(updateUser.rejected , (state , action) => {
-            state.isLoading = false;
-            state.isError = action.error.message;
-        }).
+            addCase(updateUser.pending, (state) => {
+                state.isLoading = true;
+                state.isError = null
+            }).
+            addCase(updateUser.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = null;
+                const updatedUser = action.payload;
+                console.log(updatedUser);
+                state.users = state.users.map((user) => 
+                    user._id === updatedUser._id ? updatedUser : user
+                );
+            }).
+            addCase(updateUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = action.error.message;
+            }).
 
-        // delete user
+            // delete user
 
-        addCase(deleteUser.pending , (state) => {
-            state.isLoading = true;
-            state.isError = null
-        }).
-        addCase(deleteUser.fulfilled , ( state , action ) => {
-            state.isLoading = false;
-            state.isError = null;
-            const deletedUserId = action.payload._id;
-            state.users = state.users.filter((user) => user._id !== deletedUserId);
-        }).
-        addCase(deleteUser.rejected , (state , action) => {
-            state.isLoading = false;
-            state.isError = action.error.message;
-        });
+            addCase(deleteUser.pending, (state) => {
+                state.isLoading = true;
+                state.isError = null
+            }).
+            addCase(deleteUser.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = null;
+                const deletedUserId = action.payload._id;
+                state.users = state.users.filter((user) => user._id !== deletedUserId);
+                state.totalUser -= 1;
+            }).
+            addCase(deleteUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = action.error.message;
+            });
     }
 });
 

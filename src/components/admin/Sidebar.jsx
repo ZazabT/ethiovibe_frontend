@@ -79,16 +79,16 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
             </div>
             <div>
-              <h3 className="text-white font-medium">Admin User</h3>
-              <p className="text-pink-200 text-sm">Super Admin</p>
+              <h3 className="text-white font-medium">{user.name}</h3>
+              <p className="text-pink-200 text-sm">{user.role}</p>
             </div>
           </div>
           <div className="mt-4 grid grid-cols-2 gap-2">
-            <Link to="/admin/profile" className="flex items-center justify-center px-3 py-1.5 bg-pink-500/20 rounded-lg text-pink-100 text-sm hover:bg-pink-500/30 transition-colors">
+            <Link to="/profile" className="flex items-center justify-center px-3 py-1.5 bg-pink-500/20 rounded-lg text-pink-100 text-sm hover:bg-pink-500/30 transition-colors">
               <FaUserCog className="mr-2" size={14} />
               Profile
             </Link>
-            <Link to="/admin/store" className="flex items-center justify-center px-3 py-1.5 bg-pink-500/20 rounded-lg text-pink-100 text-sm hover:bg-pink-500/30 transition-colors">
+            <Link to="/collections/all" className="flex items-center justify-center px-3 py-1.5 bg-pink-500/20 rounded-lg text-pink-100 text-sm hover:bg-pink-500/30 transition-colors">
               <FaStore className="mr-2" size={14} />
               Store
             </Link>
@@ -134,6 +134,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       </div>
     </aside>
   );
-};s
+};
 
 export default Sidebar;
