@@ -135,6 +135,7 @@ const Users = () => {
 
   return (
     <div className="min-h-screen">
+      {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-2xl font-semibold text-gray-800 mb-1">Users Management</h1>
