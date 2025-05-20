@@ -11,6 +11,7 @@ import { createUser, deleteUser, getAllUsers, updateUser } from '../../redux/sli
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 
+
 const Users = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -187,7 +188,6 @@ const Users = () => {
         <div className="p-8">
           <div className="flex flex-col items-center justify-center">
             <ImSpinner2 className="animate-spin text-pink-500 text-4xl mb-4" />
-            <p className="text-gray-500">Loading users...</p>
           </div>
         </div>
       ) : isError ? (
