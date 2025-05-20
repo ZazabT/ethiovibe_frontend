@@ -9,7 +9,6 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 // Async thunk to get all produscts
 
 export const getAllProducts = createAsyncThunk('admin/product/getAllProducts', async ( _ ,{ rejectWithValue }) => {
-    console.log('Fetching products...');
     try {
         const token = localStorage.getItem("token");
 

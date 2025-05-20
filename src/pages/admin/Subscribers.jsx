@@ -47,7 +47,7 @@ const Subscribers = () => {
           <p className="text-sm text-gray-500">Manage your newsletter subscriber list</p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-6 py-3 bg-white rounded-xl shadow-sm border border-gray-100">
+          <div className="flex items-center gap-2 px-6 py-3 bg-gray-100 rounded-lg">
             <div className="text-right">
               <div className="text-xs text-gray-500 uppercase tracking-wide">Total Subscribers</div>
               <div className="text-lg font-semibold text-gray-800 mt-0.5 flex justify-center">
@@ -59,7 +59,7 @@ const Subscribers = () => {
       </div>
 
       {/* Filters */}
-      <div className="mb-6 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+      <div className="mb-6 rounded-lg border border-gray-200">
         <div className="flex items-center gap-4">
           <div className="flex-1 relative">
             <input
