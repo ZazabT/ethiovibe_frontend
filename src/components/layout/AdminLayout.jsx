@@ -13,7 +13,7 @@ const AdminLayout = () => {
       {/* Main Content */}
       <div className="md:ml-72 min-h-screen">
         {/* Top Header */}
-        <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
+        <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
           <div className="px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
@@ -34,21 +34,6 @@ const AdminLayout = () => {
               </div>
             </div>
 
-            {/* Right Side Actions */}
-            <div className="flex items-center space-x-4">
-             
-
-              {/* Admin Profile */}
-              <div className="flex items-center space-x-3 border-l pl-4">
-                <div className="text-right hidden sm:block">
-                  <p className="text-sm font-medium text-gray-700">Admin User</p>
-                  <p className="text-xs text-gray-500">admin@ethiovibe.com</p>
-                </div>
-                <button className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center">
-                  <FaUser className="text-pink-600" />
-                </button>
-              </div>
-            </div>
           </div>
         </header>
 
