@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
-import { FaPlus, FaEdit, FaTrash, FaSearch } from 'react-icons/fa';
-
+import { FaEnvelope, FaPlus ,FaTrash, FaEdit ,FaSearch } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
+import { ImSpinner2 } from 'react-icons/im';
+import { RiDeleteBin5Line } from 'react-icons/ri';
+import { format } from 'date-fns';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { toast } from 'sonner';
+import { FaUsers, FaBan } from 'react-icons/fa';
+import { createProduct ,deleteProduct ,getAllProducts ,updateProduct   } from '../../redux/slices/adminSlice/adminProduct.slice'
+import { MdOutlineAddBusiness } from "react-icons/md";
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState('');
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const pathname = useLocation();
+  const { isLoading, products, totalProducts , isError  } = useSelector((state) => state.adminProduct);
   // Demo products data
   const demoProducts = [
     {
@@ -53,13 +64,38 @@ const Products = () => {
     }
   ];
 
+  // get products
+  useEffect(() => {
+    dispatch(getAllProducts());
+    console.log(products);
+  }, [dispatch]);
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">Products</h1>
-        <button className="bg-pink-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-pink-600">
-          <FaPlus /> Add Product
-        </button>
+       <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-2xl font-semibold text-gray-800 mb-1">Product Management</h1>
+          <p className="text-sm text-gray-500">Manage and monitor product</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg">
+            <div className="text-right">
+              <div className="text-sm text-gray-500">Total producs</div>
+              <div className="text-lg font-semibold text-gray-800 flex justify-center">
+                {isLoading ? <ImSpinner2 className="animate-spin inline-block" /> : totalProducts}
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              resetForm();
+              setIsAddModalOpen(true);
+            }}
+            className="flex items-center gap-2 bg-pink-500 text-white px-6 py-2 rounded-lg hover:bg-pink-600 transition-colors shadow-sm"
+          >
+            < MdOutlineAddBusiness className="text-xl" />
+            <span>Add Product</span>
+          </button>
+        </div>
       </div>
 
       {/* Search and Filter */}
@@ -77,10 +113,10 @@ const Products = () => {
           </div>
           <select className="border rounded-lg px-4 py-2">
             <option>All Categories</option>
-            <option>Fashion</option>
-            <option>Home & Living</option>
-            <option>Food</option>
-            <option>Accessories</option>
+            <option>Topwear</option>
+            <option>Underwear</option>
+            <option>Children</option>
+            <option>Other</option>
           </select>
         </div>
       </div>

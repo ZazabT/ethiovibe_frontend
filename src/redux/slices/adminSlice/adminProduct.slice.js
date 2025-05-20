@@ -8,8 +8,8 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 // Async thunk to get all produscts
 
-export const getAllProducts = createAsyncThunk('admin/product/getAllProducts', async ({ rejectWithValue }) => {
-
+export const getAllProducts = createAsyncThunk('admin/product/getAllProducts', async ( _ ,{ rejectWithValue }) => {
+    console.log('Fetching products...');
     try {
         const token = localStorage.getItem("token");
 
@@ -17,7 +17,7 @@ export const getAllProducts = createAsyncThunk('admin/product/getAllProducts', a
             return rejectWithValue("No token found.");
         }
 
-        const response = axios.get(`${BASE_URL}/api/admin/products`,
+        const response = await axios.get(`${BASE_URL}/api/admin/products`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -83,7 +83,7 @@ export const updateProduct = createAsyncThunk('/admin/product/updateProduct', as
             return rejectWithValue("No token found.");
         }
 
-        const response = await axios.put(`${BASE_URL}/api/products${id}`, product,
+        const response = await axios.put(`${BASE_URL}/api/products/${id}`, product,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -108,7 +108,7 @@ export const updateProduct = createAsyncThunk('/admin/product/updateProduct', as
 
 // Async thunk to delete product
 
-export const deleteProduct = createAsyncThunk('/admin/product/deleteProduct', async ({ id, product }, { rejectWithValue }) => {
+export const deleteProduct = createAsyncThunk('/admin/product/deleteProduct', async ({ id }, { rejectWithValue }) => {
 
     try {
         const token = localStorage.getItem("token");
@@ -117,7 +117,7 @@ export const deleteProduct = createAsyncThunk('/admin/product/deleteProduct', as
             return rejectWithValue("No token found.");
         }
 
-        const response = await axios.post(`${BASE_URL}/api/products${id}`,
+        const response = await axios.delete(`${BASE_URL}/api/products${id}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,

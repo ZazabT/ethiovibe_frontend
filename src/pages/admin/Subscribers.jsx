@@ -37,8 +37,7 @@ const Subscribers = () => {
         });
     }
   };
-
-
+  
   return (
     <div className="min-h-screen">
       {/* Header */}
