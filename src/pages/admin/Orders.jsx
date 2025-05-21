@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect , useState} from 'react';
 import { FaSearch, FaEye, FaBan, FaUsers } from 'react-icons/fa';
 import { ImSpinner2 } from 'react-icons/im';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,13 +8,27 @@ import { format } from 'date-fns';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 import { toast } from 'sonner';
 import { deleteOrder, updateOrder } from '../../redux/slices/adminSlice/adminOrder.slice';
-
+import Pagination from '../../components/common/Pagination'
 const Orders = () => {
   const { isLoading, isError, orders, totalOrders } = useSelector((state) => state.adminOrder);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pathname = useLocation();
-   const getStatusStyle = (status) => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
+
+  // Calculate pagination
+  const indexOfLastOrder = (currentPage + 1) * itemsPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - itemsPerPage;
+  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const pageCount = Math.ceil((orders?.length || 0) / itemsPerPage);
+
+  // handle page change
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+    window.scrollTo(0, 0);
+  }
+  const getStatusStyle = (status) => {
     const styles = {
       PENDING: 'bg-yellow-100 text-yellow-800',
       PROCESSING: 'bg-blue-100 text-blue-800',
@@ -39,9 +53,9 @@ const Orders = () => {
 
 
   // Handle status update
-  const handleStatusUpdate = async ( orderId, newStatus) => {
-    dispatch(updateOrder({ id:orderId,  deliveryStatus:newStatus })).unwrap().then(() => {
-      toast.success('Order status updated successfully'); 
+  const handleStatusUpdate = async (orderId, newStatus) => {
+    dispatch(updateOrder({ id: orderId, deliveryStatus: newStatus })).unwrap().then(() => {
+      toast.success('Order status updated successfully');
     }).catch((error) => {
       toast.error('Failed to update order status');
       console.error(error);
@@ -52,10 +66,10 @@ const Orders = () => {
   const handleDeleteOrder = async (orderId) => {
     if (window.confirm('Are you sure you want to delete this order?')) {
       dispatch(deleteOrder(orderId)).unwrap().then(() => {
-        toast.success('Order deleted successfully'); 
+        toast.success('Order deleted successfully');
       }).catch((error) => {
         toast.error('Failed to delete order');
-        console.error(error); 
+        console.error(error);
       })
     }
   };
@@ -110,10 +124,10 @@ const Orders = () => {
 
       {/* Content */}
       {isLoading ? (
-        <div className="p-8">
-          <div className="flex flex-col items-center justify-center">
-            <ImSpinner2 className="animate-spin text-pink-500 text-4xl mb-4" />
-            <p className="text-gray-500">Loading orders...</p>
+        <div className="p-8 min-h-[calc(80vh-200px)] flex items-center justify-center">
+          <div className="flex flex-col h-full items-center justify-center">
+            <ImSpinner2 className="animate-spin text-pink-500 text-5xl mb-4" />
+            
           </div>
         </div>
       ) : isError ? (
@@ -158,14 +172,14 @@ const Orders = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {orders.map((order) => (
+              {currentOrders.map((order) => (
 
-               
-                
+
+
                 // Update the table row content
                 <tr key={order._id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                    #{order._id.slice(0,6)}
+                    #{order._id.slice(0, 6)}
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center">
@@ -208,14 +222,14 @@ const Orders = () => {
                         <option value="RETURNED">Returned</option>
                         <option value="REFUNDED">Refunded</option>
                       </select>
-                      <button 
+                      <button
                         onClick={() => navigate(``)}
                         className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
                         title="View Order Details"
                       >
                         <FaEye className="text-blue-500 hover:text-blue-600 text-lg" />
                       </button>
-                      <button 
+                      <button
                         onClick={() => handleDeleteOrder(order._id)}
                         className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
                         title="Delete Order"
@@ -230,18 +244,17 @@ const Orders = () => {
           </table>
 
           {/* Pagination */}
-          <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+          <div className="bg-white px-6 py-4 border-t border-gray-200">
             <div className="flex items-center justify-between">
               <div className="text-sm text-gray-700">
-                Showing <span className="font-medium">1</span> to <span className="font-medium">10</span> of{' '}
-                <span className="font-medium">20</span> results
+                Showing {indexOfFirstOrder + 1} to {Math.min(indexOfLastOrder, orders?.length || 0)} of{' '}
+                <span className="font-medium">{orders?.length || 0}</span> orders
               </div>
-              <div className="flex space-x-2">
-                <button className="px-3 py-1 border rounded-md text-sm hover:bg-gray-50">Previous</button>
-                <button className="px-3 py-1 border rounded-md text-sm bg-pink-500 text-white">1</button>
-                <button className="px-3 py-1 border rounded-md text-sm hover:bg-gray-50">2</button>
-                <button className="px-3 py-1 border rounded-md text-sm hover:bg-gray-50">Next</button>
-              </div>
+              <Pagination
+                pageCount={pageCount}
+                onPageChange={handlePageChange}
+                currentPage={currentPage}
+              />
             </div>
           </div>
         </div>
