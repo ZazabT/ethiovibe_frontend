@@ -29,38 +29,46 @@ const Dashboard = () => {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       })}`,
-      icon: <MdAttachMoney className="text-2xl" />,
-      bgColor: 'bg-gradient-to-br from-green-100 to-emerald-100',
-      iconBg: 'bg-green-100',
+      icon: <MdAttachMoney className="text-3xl" />,
+      bgColor: 'bg-green-200',
+      iconBg: 'bg-white/80 shadow-sm backdrop-blur-sm',
       trend: '+12.5%',
-      borderColor: 'border-green-200'
+      trendColor: 'text-green-600',
+      borderColor: 'border-green-100',
+      shadowColor: 'shadow-green-100/50'
     },
     {
       title: 'Total Orders',
       value: totalOrders,
-      icon: <FaShoppingBag className="text-2xl" />,
-      bgColor: 'bg-gradient-to-br from-blue-100 to-sky-100',
-      iconBg: 'bg-blue-100',
+      icon: <FaShoppingBag className="text-3xl" />,
+      bgColor: 'bg-blue-200',
+      iconBg: 'bg-white/80 shadow-sm backdrop-blur-sm',
       trend: '+8.2%',
-      borderColor: 'border-blue-200'
+      trendColor: 'text-blue-600',
+      borderColor: 'border-blue-100',
+      shadowColor: 'shadow-blue-100/50'
     },
     {
       title: 'Total Products',
       value: totalProducts,
-      icon: <FaBox className="text-2xl" />,
-      bgColor: 'bg-gradient-to-br from-purple-100 to-indigo-100',
-      iconBg: 'bg-purple-100',
+      icon: <FaBox className="text-3xl" />,
+      bgColor: 'bg-purple-200',
+      iconBg: 'bg-white/80 shadow-sm backdrop-blur-sm',
       trend: '+5.3%',
-      borderColor: 'border-purple-200'
+      trendColor: 'text-purple-600',
+      borderColor: 'border-purple-100',
+      shadowColor: 'shadow-purple-100/50'
     },
     {
       title: 'Total Users',
       value: totalUser,
-      icon: <FaUsers className="text-2xl" />,
-      bgColor: 'bg-gradient-to-br from-orange-100 to-amber-100',
-      iconBg: 'bg-orange-100',
+      icon: <FaUsers className="text-3xl" />,
+      bgColor: 'bg-cyan-200',
+      iconBg: 'bg-white/80 shadow-sm backdrop-blur-sm',
       trend: '+15.7%',
-      borderColor: 'border-orange-200'
+      trendColor: 'text-cyan-600',
+      borderColor: 'border-cyan-100',
+      shadowColor: 'shadow-cyan-100/50'
     },
   ];
 
@@ -79,14 +87,14 @@ const Dashboard = () => {
           <div
             key={index}
             className={`${stat.bgColor} rounded-2xl p-6 transition-all duration-300 
-      hover:scale-105 hover:shadow-lg border ${stat.borderColor}`}
+    hover:scale-105 ${stat.shadowColor} hover:shadow-xl border ${stat.borderColor} relative overflow-hidden`}
           >
             <div className="flex items-center justify-between mb-4">
-              <div className={`p-3 rounded-xl ${stat.iconBg} transition-colors`}>
+              <div className={`p-3 rounded-xl ${stat.iconBg} transition-transform duration-300 hover:rotate-12`}>
                 {stat.icon}
               </div>
-              <div className="flex items-center gap-1 text-green-600 bg-white/80 
-          backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-medium">
+              <div className={`flex items-center gap-1 ${stat.trendColor} bg-white/80 
+                backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-medium`}>
                 <span>{stat.trend}</span>
                 <MdTrendingUp className="text-lg" />
               </div>
