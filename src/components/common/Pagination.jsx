@@ -1,9 +1,14 @@
 import React from 'react';
 import ReactPaginate from 'react-paginate';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
-
+import {motion} from'framer-motion';
 const Pagination = ({ pageCount, onPageChange, currentPage }) => {
   return (
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8, ease: [0.43, 0.13, 0.23, 0.96] }}
+    >
     <ReactPaginate
       breakLabel={<span className="px-3 py-2">...</span>}
       nextLabel={
@@ -33,6 +38,7 @@ const Pagination = ({ pageCount, onPageChange, currentPage }) => {
       disabledLinkClassName="hover:bg-transparent cursor-not-allowed"
       breakClassName="text-gray-400"
     />
+    </motion.div>
   );
 };
 

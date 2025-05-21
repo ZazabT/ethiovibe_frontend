@@ -10,10 +10,10 @@ import { getAllSubscribers } from '../../redux/slices/subscribe.slice';
 import { useNavigate } from 'react-router-dom';
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const { orders, totalOrders, totalSells } = useSelector((state) => state.adminOrder);
-  const { products, totalProducts } = useSelector((state) => state.adminProduct);
-  const { users, totalUser } = useSelector((state) => state.adminUser);
-  const { subscribers, totalSubscriber } = useSelector((state) => state.subscribe);
+  const { orders, totalOrders, totalSells ,isLoading : orderLoading} = useSelector((state) => state.adminOrder);
+  const { products, totalProducts , isLoading : productLoading } = useSelector((state) => state.adminProduct);
+  const { users, totalUser , isLoading : userLoading } = useSelector((state) => state.adminUser);
+  const { subscribers, totalSubscriber , isLoading : subLoading } = useSelector((state) => state.subscribe);
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(getAllOrders());
