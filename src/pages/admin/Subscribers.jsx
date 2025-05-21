@@ -9,13 +9,27 @@ import { toast } from 'sonner';
 import { getAllSubscribers } from '../../redux/slices/subscribe.slice';
 import { deleteSubscriber } from '../../redux/slices/subscribe.slice';
 import { FaUsers, FaBan } from 'react-icons/fa';
-
+import Pagination from '../../components/common/Pagination';
 const Subscribers = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pathname = useLocation();
   const { subscribers, isLoading, totalSubscriber, isError } = useSelector((state) => state.subscribe);
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
+
+  // Calculate pagination
+  const indexOfLastSubscriber = (currentPage + 1) * itemsPerPage;
+  const indexOfFirstSubscriber = indexOfLastSubscriber - itemsPerPage;
+  const currentSubscribers = subscribers?.slice(indexOfFirstSubscriber, indexOfLastSubscriber);
+  const pageCount = Math.ceil((subscribers?.length || 0) / itemsPerPage);
+
+  // Change page
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo(0, 0);
+  };
   useEffect(() => {
     dispatch(getAllSubscribers());
   }, [dispatch]);
@@ -74,10 +88,10 @@ const Subscribers = () => {
 
       {/* Content */}
       {isLoading ? (
-        <div className="p-8">
+        <div className="p-8 min-h-[calc(80vh-200px)] flex items-center justify-center">
           <div className="flex flex-col items-center justify-center">
-            <ImSpinner2 className="animate-spin text-pink-500 text-4xl mb-4" />
-            <p className="text-gray-500">Loading orders...</p>
+            <ImSpinner2 className="animate-spin text-pink-500 text-5xl mb-4" />
+            
           </div>
         </div>
       ) : isError ? (
@@ -119,7 +133,7 @@ const Subscribers = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {subscribers.map((subscriber) => (
+              {currentSubscribers.map((subscriber) => (
                 <tr key={subscriber._id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center">
@@ -147,24 +161,17 @@ const Subscribers = () => {
           </table>
 
           {/* Pagination */}
-          <div className="px-6 py-4 border-t border-gray-100">
+          <div className="bg-white px-6 py-4 border-t border-gray-200">
             <div className="flex items-center justify-between">
-              <p className="text-sm text-gray-500">
-                Showing <span className="font-medium">1</span> to{' '}
-                <span className="font-medium">{subscribers.length}</span> of{' '}
-                <span className="font-medium">{totalSubscriber}</span> subscribers
-              </p>
-              <div className="flex gap-2">
-                <button className="px-4 py-2 border border-gray-200 rounded-lg text-sm hover:bg-gray-50 transition-colors">
-                  Previous
-                </button>
-                <button className="px-4 py-2 bg-pink-500 text-white rounded-lg text-sm hover:bg-pink-600 transition-colors">
-                  1
-                </button>
-                <button className="px-4 py-2 border border-gray-200 rounded-lg text-sm hover:bg-gray-50 transition-colors">
-                  Next
-                </button>
+              <div className="text-sm text-gray-700">
+                Showing {indexOfFirstSubscriber + 1} to {Math.min(indexOfLastSubscriber, subscribers?.length || 0)} of{' '}
+                <span className="font-medium">{subscribers?.length || 0}</span> subscribers
               </div>
+              <Pagination
+                pageCount={pageCount}
+                onPageChange={handlePageChange}
+                currentPage={currentPage}
+              />
             </div>
           </div>
         </div>
