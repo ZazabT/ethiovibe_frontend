@@ -67,15 +67,16 @@ const Collection = () => {
     setSearchParams(searchParams);
   };
 
+  // Update the pagination state and logic
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 9; // 3x3 grid
-
-  // Calculate pagination
+  const itemsPerPage = 12;
+  
+  // Calculate pagination correctly
   const indexOfLastProduct = (currentPage + 1) * itemsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+  const indexOfFirstProduct = currentPage * itemsPerPage; // Fixed this line
   const currentProducts = products?.slice(indexOfFirstProduct, indexOfLastProduct);
   const pageCount = Math.ceil((products?.length || 0) / itemsPerPage);
-
+  
   // Handle page change
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
@@ -84,7 +85,6 @@ const Collection = () => {
       behavior: 'smooth'
     });
   };
-
   return (
     <div className='min-h-screen'>
       {/* Dark Overlay */}
@@ -177,7 +177,7 @@ const Collection = () => {
                 </button>
               </div>
             ) : (
-              products.map((product) => (
+              currentProducts.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))
             )}
@@ -185,8 +185,8 @@ const Collection = () => {
 
           {/* Pagination */}
           {!isLoading && !isError && products?.length > 0 && (
-            <div className="mt-8 border-t border-gray-100 pt-6">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="mt-12 border-t border-gray-100 pt-8 pb-4">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                 <div className="text-sm text-gray-500">
                   Showing <span className="font-medium text-gray-700">{indexOfFirstProduct + 1}</span> to{' '}
                   <span className="font-medium text-gray-700">
@@ -194,11 +194,14 @@ const Collection = () => {
                   </span>{' '}
                   of <span className="font-medium text-gray-700">{products.length}</span> products
                 </div>
-                <Pagination
-                  pageCount={pageCount}
-                  onPageChange={handlePageChange}
-                  currentPage={currentPage}
-                />
+                <div className="w-full sm:w-auto flex justify-center">
+                  <Pagination
+                    pageCount={pageCount}
+                    onPageChange={handlePageChange}
+                    currentPage={currentPage}
+                    className="pagination-bar"
+                  />
+                </div>
               </div>
             </div>
           )}
