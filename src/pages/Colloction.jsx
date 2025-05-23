@@ -7,6 +7,7 @@ import { ImSpinner2 } from 'react-icons/im';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts } from '../redux/slices/product.slice';
 import { BsSearch } from "react-icons/bs";
+import Pagination from '../components/common/Pagination';
 
 const Collection = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
@@ -64,6 +65,24 @@ const Collection = () => {
     const newSortBy = event.target.value;
     searchParams.set('sortBy', newSortBy);
     setSearchParams(searchParams);
+  };
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 9; // 3x3 grid
+
+  // Calculate pagination
+  const indexOfLastProduct = (currentPage + 1) * itemsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+  const currentProducts = products?.slice(indexOfFirstProduct, indexOfLastProduct);
+  const pageCount = Math.ceil((products?.length || 0) / itemsPerPage);
+
+  // Handle page change
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
   return (
@@ -163,6 +182,26 @@ const Collection = () => {
               ))
             )}
           </div>
+
+          {/* Pagination */}
+          {!isLoading && !isError && products?.length > 0 && (
+            <div className="mt-8 border-t border-gray-100 pt-6">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="text-sm text-gray-500">
+                  Showing <span className="font-medium text-gray-700">{indexOfFirstProduct + 1}</span> to{' '}
+                  <span className="font-medium text-gray-700">
+                    {Math.min(indexOfLastProduct, products.length)}
+                  </span>{' '}
+                  of <span className="font-medium text-gray-700">{products.length}</span> products
+                </div>
+                <Pagination
+                  pageCount={pageCount}
+                  onPageChange={handlePageChange}
+                  currentPage={currentPage}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
