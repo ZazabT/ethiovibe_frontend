@@ -207,9 +207,9 @@ const Products = () => {
                         ? 'bg-green-100 text-green-800' 
                         : product.countInStock > 10 
                         ? 'bg-orange-100 text-orange-800'
-                        : 'bg-red-100 text-red-800'
+                        : 'bg-red-200 text-red-800'
                     }`}>
-                      {product.countInStock > 0 ? `In Stock (${product.countInStock})` : 'Out of Stock'}
+                      {product.countInStock > 30 ? 'In Stock' : product.countInStock > 10 ? 'Low Stock' : 'Out of Stock'}
                     </span>
                   </td>
                   <td className="px-6 py-4">
