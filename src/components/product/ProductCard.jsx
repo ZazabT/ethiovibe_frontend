@@ -2,9 +2,17 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 
+
 const ProductCard = ({ product }) => {
+
+  // Check if the product is out of stock
+  if (product.countInStock === 0 || product.stockStatus
+    === 'OUT_OF_STOCK') {
+    return null;
+  }
+
   return (
-    <motion.div 
+    <motion.div
       whileHover={{ y: -5 }}
       className=" bg- overflow-hidden  transition-all duration-300"
     >
@@ -12,8 +20,8 @@ const ProductCard = ({ product }) => {
         <div className="">
           <div className="group cursor-pointer">
             <div className="relative overflow-hidden mb-4">
-              <img 
-                src={product.images[0].url} 
+              <img
+                src={product.images[0].url}
                 alt={product.name}
                 className="w-full h-[400px] object-cover transition-transform duration-500 group-hover:scale-110"
               />
@@ -27,7 +35,7 @@ const ProductCard = ({ product }) => {
               <h3 className="text-lg font-medium exo-font truncate">{product.name}</h3>
               <div className="flex items-center gap-2">
                 <span className="text-lg font-semibold text-pink-500">
-                  ETB {product.discountPercentage > 0 
+                  ETB {product.discountPercentage > 0
                     ? (product.price - (product.price * product.discountPercentage / 100)).toFixed(2)
                     : product.price
                   }
