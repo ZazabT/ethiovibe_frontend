@@ -25,7 +25,24 @@ const ProductCard = ({ product }) => {
             </div>
             <div className="space-y-2 pb-4">
               <h3 className="text-lg font-medium exo-font truncate">{product.name}</h3>
-              <p className="text-pink-500 yuji-font">br{product.price}</p>
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-semibold text-pink-500">
+                  ETB {product.discountPercentage > 0 
+                    ? (product.price - (product.price * product.discountPercentage / 100)).toFixed(2)
+                    : product.price
+                  }
+                </span>
+                {product.discountPercentage > 0 && (
+                  <span className="text-sm text-gray-500 line-through">
+                    ETB {product.price}
+                  </span>
+                )}
+              </div>
+              {product.countInStock < 10 && (
+                <p className="text-xs text-orange-500 font-medium">
+                  Only {product.countInStock} left in stock
+                </p>
+              )}
             </div>
           </div>
         </div>

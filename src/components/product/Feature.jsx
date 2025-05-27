@@ -31,13 +31,13 @@ const Feature = () => {
       <div className="max-w-6xl mx-auto px-4">
          {/* Header */}
          <div className="text-center mb-12">
-                <h2 className="md:text-4xl text-xl yuji-font font-semibold mb-4">Other Products</h2>
-                <div className="flex items-center justify-center gap-4">
-                    <span className="w-10 h-[2px] bg-pink-500"/>
-                    <p className=" md:text-xl text-sm text-gray-600">Our Defferent Categories</p>
-                    <span className="w-10 h-[2px] bg-pink-500"/>
-                </div>
+        <h2 className="md:text-4xl text-xl yuji-font font-semibold mb-4">Why Choose Us</h2>
+        <div className="flex items-center justify-center gap-4">
+          <span className="w-10 h-[2px] bg-pink-500" />
+          <p className="md:text-xl text-sm text-gray-600">Our Outstanding Features</p>
+          <span className="w-10 h-[2px] bg-pink-500" />
         </div>
+      </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
